@@ -1,0 +1,113 @@
+<%= form_for(@car) do |f| %>
+  <% if @car.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@car.errors.count, "error") %> prohibited this car from being saved:</h2>
+
+      <ul>
+      <% @car.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :year %><br />
+    <%= f.number_field :year %>
+  </div>
+  <div class="field">
+    <%= f.label :make %><br />
+    <%= f.text_field :make %>
+  </div>
+  <div class="field">
+    <%= f.label :model %><br />
+    <%= f.text_field :model %>
+  </div>
+  <div class="field">
+    <%= f.label :size %><br />
+    <%= f.text_field :size %>
+  </div>
+  <div class="field">
+    <%= f.label :state %><br />
+    <%= f.text_field :state %>
+  </div>
+  <div class="field">
+    <%= f.label :vin %><br />
+    <%= f.text_field :vin %>
+  </div>
+  <div class="field">
+    <%= f.label :license_plate_number %><br />
+    <%= f.text_field :license_plate_number %>
+  </div>
+  <div class="field">
+    <%= f.label :date_towed %><br />
+    <%= f.datetime_select :date_towed %>
+  </div>
+  <div class="field">
+    <%= f.label :tow_requested_by %><br />
+    <%= f.text_field :tow_requested_by %>
+  </div>
+  <div class="field">
+    <%= f.label :tow_reason %><br />
+    <%= f.text_field :tow_reason %>
+  </div>
+  <div class="field">
+    <%= f.label :mail_notice_of_lien_date %><br />
+    <%= f.datetime_select :mail_notice_of_lien_date %>
+  </div>
+  <div class="field">
+    <%= f.label :owner_name %><br />
+    <%= f.text_field :owner_name %>
+  </div>
+  <div class="field">
+    <%= f.label :owner_address %><br />
+    <%= f.text_field :owner_address %>
+  </div>
+  <div class="field">
+    <%= f.label :owner_city_state_zip %><br />
+    <%= f.text_field :owner_city_state_zip %>
+  </div>
+  <div class="field">
+    <%= f.label :lien_holder_name %><br />
+    <%= f.text_field :lien_holder_name %>
+  </div>
+  <div class="field">
+    <%= f.label :lien_holder_address %><br />
+    <%= f.text_field :lien_holder_address %>
+  </div>
+  <div class="field">
+    <%= f.label :lien_holder_city_state_zip %><br />
+    <%= f.text_field :lien_holder_city_state_zip %>
+  </div>
+  <div class="field">
+    <%= f.label :charge_towing %><br />
+    <%= f.text_field :charge_towing %>
+  </div>
+  <div class="field">
+    <%= f.label :charge_storage %><br />
+    <%= f.text_field :charge_storage %>
+  </div>
+  <div class="field">
+    <%= f.label :charge_admin %><br />
+    <%= f.text_field :charge_admin %>
+  </div>
+  <div class="field">
+    <%= f.label :tax %><br />
+    <%= f.text_field :tax %>
+  </div>
+  <div class="field">
+    <%= f.label :storage_rate %><br />
+    <%= f.text_field :storage_rate %>
+  </div>
+  <div class="field">
+    <%= f.label :mvd_inquiry_made %><br />
+    <%= f.check_box :mvd_inquiry_made %>
+  </div>
+  <div class="field">
+    <%= f.label :preparers_name %><br />
+    <%= f.text_field :preparers_name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,31 @@
+<h1>Listing cars</h1>
+
+<table>
+  <tr>
+    <th>Year</th>
+    <th>Make</th>
+    <th>Model</th>
+    <th>Size</th>
+    <th>License plate number</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @cars.each do |car| %>
+  <tr class="<%= cycle 'list_line_odd', 'list_line_even'%>">
+    <td><%= car.year %></td>
+    <td><%= car.make %></td>
+    <td><%= car.model %></td>
+    <td><%= car.size %></td>
+    <td><%= car.license_plate_number %></td>
+    <td><%= link_to 'Show', car %></td>
+    <td><%= link_to 'Edit', edit_car_path(car) %></td>
+    <td><%= link_to 'Destroy', car, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Car', new_car_path %>

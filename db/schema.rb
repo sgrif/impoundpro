@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120126233241) do
+ActiveRecord::Schema.define(:version => 20120202204653) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(:version => 20120126233241) do
     t.boolean  "has_registered_owner"
     t.boolean  "has_lien_holder"
     t.boolean  "has_charges"
+    t.string   "color"
   end
 
 end

@@ -80,4 +80,12 @@ class CarsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def cert_owner
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render :layout => false} #cert_owner.pdf.prawn
+    end
+  end
 end

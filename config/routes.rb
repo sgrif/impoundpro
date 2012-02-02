@@ -1,5 +1,9 @@
 Tyler::Application.routes.draw do
-  resources :cars
+  resources :cars do
+    member do
+      get 'cert_owner'
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -59,4 +63,5 @@ Tyler::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
   
   root :to => 'cars#index'
+  
 end

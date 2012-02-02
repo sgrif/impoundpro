@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120126210907) do
+ActiveRecord::Schema.define(:version => 20120126233241) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -40,6 +40,9 @@ ActiveRecord::Schema.define(:version => 20120126210907) do
     t.string   "preparers_name"
     t.datetime "created_at",                                               :null => false
     t.datetime "updated_at",                                               :null => false
+    t.boolean  "has_registered_owner"
+    t.boolean  "has_lien_holder"
+    t.boolean  "has_charges"
   end
 
 end

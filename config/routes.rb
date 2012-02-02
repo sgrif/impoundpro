@@ -2,6 +2,7 @@ Tyler::Application.routes.draw do
   resources :cars do
     member do
       get 'cert_owner'
+      get 'cert_lh'
     end
   end
 

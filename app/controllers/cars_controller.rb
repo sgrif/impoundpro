@@ -88,4 +88,12 @@ class CarsController < ApplicationController
       format.pdf {render :layout => false} #cert_owner.pdf.prawn
     end
   end
+  
+  def cert_lh
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render :layout => false} #cert_lf.pdf.prawn
+    end
+  end
 end

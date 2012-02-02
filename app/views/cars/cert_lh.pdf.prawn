@@ -2,10 +2,10 @@ prawn_document() do |pdf|
   form_path = "#{Rails.root}/app/assets/images/01-Lien-Notice.jpg"
   pdf.image form_path, :width => 571, :height => 746, :at => [-20, 740]
   
-  pdf.draw_text "X", :at => [22, 625] if @car.has_registered_owner
-  pdf.draw_text @car.owner_name, :at => [35, 600]
-  pdf.draw_text @car.owner_address, :at => [45, 570]
-  pdf.draw_text @car.owner_city_state_zip, :at => [120, 540]
+  pdf.draw_text "X", :at => [152, 625] if @car.has_lien_holder
+  pdf.draw_text @car.lien_holder_name, :at => [35, 600]
+  pdf.draw_text @car.lien_holder_address, :at => [45, 570]
+  pdf.draw_text @car.lien_holder_city_state_zip, :at => [120, 540]
   
   pdf.font_size 16
   pdf.draw_text @car.year, :at => [0, 485]

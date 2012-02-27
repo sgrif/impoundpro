@@ -1,8 +1,10 @@
 Tyler::Application.routes.draw do
-  resources :cars do
-    member do
-      get 'cert_owner'
-      get 'cert_lh'
+  resources :users do
+    resources :cars do
+      member do
+        get 'cert_owner'
+        get 'cert_lh'
+      end
     end
   end
 

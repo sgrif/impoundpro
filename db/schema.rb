@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120202204653) do
+ActiveRecord::Schema.define(:version => 20120227172957) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -44,6 +44,18 @@ ActiveRecord::Schema.define(:version => 20120202204653) do
     t.boolean  "has_lien_holder"
     t.boolean  "has_charges"
     t.string   "color"
+    t.integer  "user_id"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "email"
+    t.string   "hashed_password"
+    t.string   "salt"
+    t.string   "name"
+    t.string   "address"
+    t.string   "city_state_zip"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
 end

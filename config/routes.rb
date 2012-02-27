@@ -1,10 +1,28 @@
 Tyler::Application.routes.draw do
+  
+  get "admin" => 'admin#index'
+  
+  controller :sessions do
+    get 'login' => :new
+  
+    post 'login' => :create
+  
+    delete 'logout' => :destroy
+  end
+
   resources :users do
     resources :cars do
       member do
         get 'cert_owner'
         get 'cert_lh'
       end
+    end
+  end
+  
+  resources :cars do
+    member do
+      get 'cert_owner'
+      get 'cert_lh'
     end
   end
 

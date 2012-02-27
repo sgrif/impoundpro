@@ -1,8 +1,12 @@
 class CarsController < ApplicationController
+  
+  before_filter :authorize, :except => :index
+  
   # GET /cars
   # GET /cars.json
   def index
-    @cars = Car.all
+    
+    @cars = User.find(params[:user_id]).cars
 
     respond_to do |format|
       format.html # index.html.erb
@@ -94,6 +98,14 @@ class CarsController < ApplicationController
     
     respond_to do |format|
       format.pdf {render :layout => false} #cert_lf.pdf.prawn
+    end
+  end
+  
+  protected
+  
+  def authorize
+    unless Car.find(params[:id]).user == User.find_by_id(session[:user_id])
+      redirect_to user_cars_url(session[:user_id])
     end
   end
 end

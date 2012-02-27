@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.delete_all
 User.create(email: 'sgriffin@griffinassoc.com', password: 'password', name: 'Griffin & Associates', address: '119 Dartmouth SE', city_state_zip: 'Albuquerque NM, 87106')
+User.create(email: 'ferret4prez@gmail.com', password: 'password', name: 'Griffin & Associates', address: '119 Dartmouth SE', city_state_zip: 'Albuquerque NM, 87106')
 
 Car.delete_all
 Car.create(year: 2008, make: 'Saturn', model: 'Aura', size: '4-Door', color: 'blue', state: 'NM', vin: '1G3JFYR7389E11374', license_plate_number: 'LGG767', date_towed: '2012-01-26 20:57:00 UTC', tow_requested_by: 'test_tow_requested_by', tow_reason: 'test_tow_reason', mail_notice_of_lien_date: '2012-01-26 20:57:00 UTC', has_registered_owner: true, owner_name: 'Tyler Rodriguez', owner_address: 'PO Box 91252', owner_city_state_zip: 'Albuquerque, NM 87199', has_lien_holder:true, lien_holder_name: 'test_lien_holder_name', lien_holder_address: 'test_lien_holder_address', lien_holder_city_state_zip: 'test_lien_holder_city_state_zip', has_charges:true, charge_towing: 120.00, charge_storage: 45.00, charge_admin: 25.00, tax: 0.74375, storage_rate: 15.00, mvd_inquiry_made: true, preparers_name: 'Sean Griffin', user: User.find_by_email('sgriffin@griffinassoc.com'))

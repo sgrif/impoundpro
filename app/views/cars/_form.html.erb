@@ -111,6 +111,7 @@
     <%= f.label :preparers_name %><br />
     <%= f.text_field :preparers_name %>
   </div>
+  <%= f.hidden_field :user_id, :value => params[:user_id] %>
   <div class="actions">
     <%= f.submit %>
   </div>

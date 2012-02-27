@@ -28,4 +28,5 @@
 
 <br />
 
-<%= link_to 'New Car', new_car_path %>
+<%= link_to 'New Car', new_user_car_path(params[:user_id]) %> | 
+<%= link_to 'Logout', logout_url, method: :delete %>

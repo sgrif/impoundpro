@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_filter :admin_only
+  
   # GET /users
   # GET /users.json
   def index
@@ -80,4 +82,15 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  protected
+  
+  def admin_only
+    user = User.find(session[:user_id])
+    #TODO Replace with admin email
+    unless user.email == "ferret4prez@gmail.com"
+      redirect_to cars_url
+    end
+  end
+  
 end

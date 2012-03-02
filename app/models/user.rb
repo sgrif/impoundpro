@@ -5,7 +5,9 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :uniqueness => true
   validates :name, :presence => true
   validates :address, :presence => true
-  validates :city_state_zip, :presence => true
+  validates :city, :presence => true
+  validates :state, :presence => true
+  validates :zip, :presence => true
   
   validates :password, :confirmation => true
   attr_accessor :password_confirmation

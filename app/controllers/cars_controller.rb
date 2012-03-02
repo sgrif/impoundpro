@@ -6,7 +6,7 @@ class CarsController < ApplicationController
   # GET /cars.json
   def index
     
-    @cars = User.find(params[:user_id]).cars
+    @cars = User.find(session[:user_id]).cars
 
     respond_to do |format|
       format.html # index.html.erb

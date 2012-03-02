@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120227172957) do
+ActiveRecord::Schema.define(:version => 20120302160554) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -27,24 +27,28 @@ ActiveRecord::Schema.define(:version => 20120227172957) do
     t.datetime "mail_notice_of_lien_date"
     t.string   "owner_name"
     t.string   "owner_address"
-    t.string   "owner_city_state_zip"
     t.string   "lien_holder_name"
     t.string   "lien_holder_address"
-    t.string   "lien_holder_city_state_zip"
-    t.decimal  "charge_towing",              :precision => 8, :scale => 2
-    t.decimal  "charge_storage",             :precision => 8, :scale => 2
-    t.decimal  "charge_admin",               :precision => 8, :scale => 2
+    t.decimal  "charge_towing",            :precision => 8, :scale => 2
+    t.decimal  "charge_storage",           :precision => 8, :scale => 2
+    t.decimal  "charge_admin",             :precision => 8, :scale => 2
     t.float    "tax"
-    t.decimal  "storage_rate",               :precision => 8, :scale => 2
+    t.decimal  "storage_rate",             :precision => 8, :scale => 2
     t.boolean  "mvd_inquiry_made"
     t.string   "preparers_name"
-    t.datetime "created_at",                                               :null => false
-    t.datetime "updated_at",                                               :null => false
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
     t.boolean  "has_registered_owner"
     t.boolean  "has_lien_holder"
     t.boolean  "has_charges"
     t.string   "color"
     t.integer  "user_id"
+    t.string   "owner_city"
+    t.string   "owner_state"
+    t.string   "owner_zip"
+    t.string   "lien_holder_city"
+    t.string   "lien_holder_state"
+    t.string   "lien_holder_zip"
   end
 
   create_table "users", :force => true do |t|
@@ -53,9 +57,11 @@ ActiveRecord::Schema.define(:version => 20120227172957) do
     t.string   "salt"
     t.string   "name"
     t.string   "address"
-    t.string   "city_state_zip"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
   end
 
 end

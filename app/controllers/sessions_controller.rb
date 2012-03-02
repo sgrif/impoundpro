@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     if user = User.authenticate(params[:email], params[:password])
       session[:user_id] = user.id
       
-      redirect_to user_cars_url(user)
+      redirect_to cars_url
     else
       redirect_to login_url, :alert => "Invalid user/password combination"
     end

@@ -5,7 +5,7 @@ prawn_document() do |pdf|
   pdf.draw_text "X", :at => [152, 625] if @car.has_lien_holder
   pdf.draw_text @car.lien_holder_name, :at => [35, 600]
   pdf.draw_text @car.lien_holder_address, :at => [45, 570]
-  pdf.draw_text @car.lien_holder_city_state_zip, :at => [120, 540]
+  pdf.draw_text "#{@car.lien_holder_city}, #{@car.lien_holder_state}, #{@car.lien_holder_zip}", :at => [120, 540]
   
   pdf.font_size 16
   pdf.draw_text @car.year, :at => [0, 485]
@@ -32,9 +32,11 @@ prawn_document() do |pdf|
   pdf.draw_text Time.now.to_s(:month_and_day), :at => [40, 248]
   pdf.draw_text Time.now.to_s(:short_year), :at => [140, 248]
   
-  #TODO Add user info
-  
   pdf.font_size 16
+  pdf.draw_text @car.user.name, :at => [0, 210]
+  pdf.draw_text @car.user.address, :at => [0, 174]
+  pdf.draw_text "#{@car.user.city}, #{@car.user.state}, #{@car.user.zip}", :at => [0, 140]
+  
   pdf.draw_text @car.preparers_name, :at => [130, 80]
   pdf.font_size 12
   pdf.draw_text Date.today.to_s(:long), :at => [440, 30]

@@ -8,6 +8,8 @@ Tyler::Application.routes.draw do
     post 'login' => :create
   
     delete 'logout' => :destroy
+    
+    get 'logout' => :destroy
   end
 
   resources :users do

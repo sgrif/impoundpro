@@ -122,6 +122,7 @@ class CarsController < ApplicationController
   end
   
   # GET /cars/1/lien_holder_mail_labels.pdf
+  #TODO Not in menus
   def lien_holder_mail_labels
     @car = Car.find(params[:id])
     
@@ -131,6 +132,7 @@ class CarsController < ApplicationController
   end
   
   # GET /cars/1/driver_mail_labels.pdf
+  #TODO Not in menus
   def driver_mail_labels
     @car = Car.find(params[:id])
     
@@ -163,6 +165,15 @@ class CarsController < ApplicationController
     
     respond_to do |format|
       format.pdf {render layout: false} #title_application.pdf.prawn
+    end
+  end
+  
+  # GET /cars/1/fifty_state_check.pdf
+  def fifty_state_check
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render layout: false} #fifty_state_check.pdf.prawn
     end
   end
   

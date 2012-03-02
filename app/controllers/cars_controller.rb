@@ -112,6 +112,33 @@ class CarsController < ApplicationController
     end
   end
   
+  # GET /cars/1/owner_mail_labels.pdf
+  def owner_mail_labels
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render layout: false} #owner_mail_labels.pdf.prawn
+    end
+  end
+  
+  # GET /cars/1/lien_holder_mail_labels.pdf
+  def lien_holder_mail_labels
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render layout: false} #lien_holder_mail_labels.pdf.prawn
+    end
+  end
+  
+  # GET /cars/1/driver_mail_labels.pdf
+  def driver_mail_labels
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render layout: false} #driver_mail_labels.pdf.prawn
+    end
+  end
+  
   # GET /cars/1/notice_of_public_sale.pdf
   def notice_of_public_sale
     @car = Car.find(params[:id])

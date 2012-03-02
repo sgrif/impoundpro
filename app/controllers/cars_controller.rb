@@ -112,6 +112,15 @@ class CarsController < ApplicationController
     end
   end
   
+  # GET /cars/1/notice_of_public_sale.pdf
+  def notice_of_public_sale
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render :layout => false} #notice_of_public_sale.pdf.prawn
+    end
+  end
+  
   protected
   
   def authorize

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302160554) do
+ActiveRecord::Schema.define(:version => 20120302183817) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20120302160554) do
     t.string   "city"
     t.string   "state"
     t.string   "zip"
+    t.string   "county"
   end
 
 end

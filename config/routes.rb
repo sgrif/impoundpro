@@ -13,18 +13,19 @@ Tyler::Application.routes.draw do
   end
 
   resources :users do
-    resources :cars do
-      member do
-        get 'cert_owner'
-        get 'cert_lh'
-      end
-    end
+    resources :cars
   end
   
   resources :cars do
-    member do
-      get 'cert_owner'
-      get 'cert_lh'
+    member do 
+      get 'owner_lien_notice'
+      get 'lien_holder_lien_notice'
+      get 'driver_lien_notice'
+      get 'mail_labels'
+      get 'notice_of_public_sale'
+      get 'affidavit_of_resale'
+      get 'title_application'
+      get 'fifty_state_check'
     end
   end
 

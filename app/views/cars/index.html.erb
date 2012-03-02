@@ -1,32 +1,94 @@
 <h1>Active Lien Procedure Vehicles</h1>
 
 <table>
-  <tr>
-    <th>Year</th>
-    <th>Make</th>
-    <th>Model</th>
-    <th>Size</th>
-    <th>License plate number</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
 
 <% @cars.each do |car| %>
   <tr class="<%= cycle 'list_line_odd', 'list_line_even'%>">
-    <td><%= car.year %></td>
-    <td><%= car.make %></td>
-    <td><%= car.model %></td>
-    <td><%= car.size %></td>
-    <td><%= car.license_plate_number %></td>
-    <td><%= link_to 'Show', car %></td>
-    <td><%= link_to 'Edit', edit_car_path(car) %></td>
-    <td><%= link_to 'Destroy', car, confirm: 'Are you sure?', method: :delete %></td>
+    <td>
+    	<table>
+    		<tr>
+    			<td>
+    				Make: 
+    			</td>
+    			<td colspan="2" class="car_data">
+    				<%= car.make %>
+    			</td>
+    			<td>
+    				Model: 
+    			</td>
+    			<td colspan="2" class="car_data">
+    				<%= car.model %>
+    			</td>
+    			<td>
+    				VIN: 
+    			</td>
+    			<td colspan="3" class="car_data">
+    				<%= car.vin %>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td>
+    				Year: 
+    			</td>
+    			<td colspan="2" class="car_data">
+    				<%= car.year %>
+    			</td>
+    			<td>
+    				Color: 
+    			</td>
+    			<td colspan="2" class="car_data">
+    				<%= car.color %>
+    			</td>
+    			<td>
+    			</td>
+    			<td colspan="3" class="car_data">
+    				<%= link_to 'View Owner and LH Details', car %>
+    			</td>
+    		</tr>
+    		<tr>
+    			<td colspan="10" style="text-align: center;">
+    				Print
+    			</td>
+    		</tr>
+    		<tr class="forms">
+    			<td>
+    				<%= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, :format => :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(car, :format => :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, :format => :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Mail Labels', mail_labels_car_path(car, :format => :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(car, :format => :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Aff of Resale', affidavit_of_resale_car_path(car, :format => :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Title Application', title_application_car_path(car, :format => :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to '50 State Check', fifty_state_check_car_path(car, :format => :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Edit Car', edit_car_path(car) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Delete Car', car, confirm: "Are you sure?", method: :delete %>
+    			</td>
+    		</tr>
+    	</table>
+    </td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Car', new_user_car_path(params[:user_id]) %> | 
+<%= link_to 'New Car', new_user_car_path(session[:user_id]) %> | 
 <%= link_to 'Logout', logout_url, method: :delete %>

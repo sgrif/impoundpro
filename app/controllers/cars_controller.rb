@@ -85,7 +85,7 @@ class CarsController < ApplicationController
     end
   end
   
-  def cert_owner
+  def owner_lien_notice
     @car = Car.find(params[:id])
     
     respond_to do |format|
@@ -93,7 +93,7 @@ class CarsController < ApplicationController
     end
   end
   
-  def cert_lh
+  def lien_holder_lien_notice
     @car = Car.find(params[:id])
     
     respond_to do |format|

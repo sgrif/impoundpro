@@ -85,19 +85,30 @@ class CarsController < ApplicationController
     end
   end
   
+  # GET /cars/1/owner_lien_notice.pdf
   def owner_lien_notice
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render :layout => false} #cert_owner.pdf.prawn
+      format.pdf {render :layout => false} #owner_lien_notice.pdf.prawn
     end
   end
   
+  # GET /cars/1/owner_lien_notice.pdf
   def lien_holder_lien_notice
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render :layout => false} #cert_lf.pdf.prawn
+      format.pdf {render :layout => false} #lien_holder_lien_notice.pdf.prawn
+    end
+  end
+  
+  # GET /cars/1/owner_lien_notice.pdf
+  def driver_lien_notice
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render :layout => false} #driver_lien_notice.pdf.prawn
     end
   end
   

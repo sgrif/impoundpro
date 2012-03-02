@@ -20,11 +20,15 @@ prawn_document() do |pdf|
   pdf.font_size 12
   pdf.text "<u>On: #{(@car.mail_notice_of_lien_date + 44.days).to_s(:short_date)}</u> at 5:00 pm the undersigned will offer to tell the following described vehicle to satisfy the charges for towing, storage, labor, and any other charges against the vehicle listed below.", inline_format: true
   
+  #TODO Is this date always 44 days after mail notice of lien date?
+  
   pdf.move_down 50
   pdf.font_size 14
   pdf.span(pdf.bounds.width - 10, position: 10) do
     pdf.text "<u>Year:</u>   #{@car.year}      <u>Make:</u>   #{@car.make}      <u>Model:</u>   #{@car.model}", inline_format: true, leading: 30
     pdf.text "<u>VIN:</u>   #{@car.vin}   <u>Titled:</u>   #{@car.owner_name}   <u>LP #:</u>   #{@car.license_plate_number}", inline_format: true
+    
+    #TODO Does titled refer to the registered owner?
   end
     
   pdf.move_down 15

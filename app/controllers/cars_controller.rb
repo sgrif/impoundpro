@@ -148,6 +148,15 @@ class CarsController < ApplicationController
     end
   end
   
+  # GET /cars/1/affidavit_of_resale.pdf
+  def affidavit_of_resale
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render layout: false} #affidavit_of_resale.pdf.prawn
+    end
+  end
+  
   protected
   
   def authorize

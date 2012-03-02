@@ -157,6 +157,15 @@ class CarsController < ApplicationController
     end
   end
   
+  # GET /cars/1/title_application.pdf
+  def title_application
+    @car = Car.find(params[:id])
+    
+    respond_to do |format|
+      format.pdf {render layout: false} #title_application.pdf.prawn
+    end
+  end
+  
   protected
   
   def authorize

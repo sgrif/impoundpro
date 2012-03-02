@@ -30,8 +30,12 @@
     border: 1px solid black;
   }
   
-  .forms td {
+  .forms > td {
     border: 1px solid black;
     width: 80px;
+  }
+  
+  a.delete_car {
+    color: #CC0000;
   }
 }

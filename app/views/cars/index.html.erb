@@ -52,34 +52,34 @@
     		</tr>
     		<tr class="forms">
     			<td>
-    				<%= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, :format => :pdf) %>
+    				<%= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, format: :pdf) %>
     			</td>
     			<td>
-    				<%= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(car, :format => :pdf) %>
+    				<%= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(car, format: :pdf) %>
     			</td>
     			<td>
-    				<%= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, :format => :pdf) %>
+    				<%= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, format: :pdf) %>
     			</td>
     			<td>
-    				<%= link_to 'Mail Labels', mail_labels_car_path(car, :format => :pdf) %>
+    				<%= link_to 'Mail Labels', owner_mail_labels_car_path(car, format: :pdf) %>
     			</td>
     			<td>
-    				<%= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(car, :format => :pdf) %>
+    				<%= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(car, format: :pdf) %>
     			</td>
     			<td>
-    				<%= link_to 'Aff of Resale', affidavit_of_resale_car_path(car, :format => :pdf) %>
+    				<%= link_to 'Aff of Resale', affidavit_of_resale_car_path(car, format: :pdf) %>
     			</td>
     			<td>
-    				<%= link_to 'Title Application', title_application_car_path(car, :format => :pdf) %>
+    				<%= link_to 'Title Application', title_application_car_path(car, format: :pdf) %>
     			</td>
     			<td>
-    				<%= link_to '50 State Check', fifty_state_check_car_path(car, :format => :pdf) %>
+    				<%= link_to '50 State Check', fifty_state_check_car_path(car, format: :pdf) %>
     			</td>
     			<td>
     				<%= link_to 'Edit Car', edit_car_path(car) %>
     			</td>
     			<td>
-    				<%= link_to 'Delete Car', car, confirm: "Are you sure?", method: :delete %>
+    				<%= link_to 'Delete Car', car, confirm: "Are you sure?", method: :delete, class: :delete_car %>
     			</td>
     		</tr>
     	</table>

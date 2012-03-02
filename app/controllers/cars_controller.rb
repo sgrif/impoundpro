@@ -90,7 +90,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render :layout => false} #owner_lien_notice.pdf.prawn
+      format.pdf {render layout: false} #owner_lien_notice.pdf.prawn
     end
   end
   
@@ -99,7 +99,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render :layout => false} #lien_holder_lien_notice.pdf.prawn
+      format.pdf {render layout: false} #lien_holder_lien_notice.pdf.prawn
     end
   end
   
@@ -108,7 +108,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render :layout => false} #driver_lien_notice.pdf.prawn
+      format.pdf {render layout: false} #driver_lien_notice.pdf.prawn
     end
   end
   
@@ -117,7 +117,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render :layout => false} #notice_of_public_sale.pdf.prawn
+      format.pdf {render layout: false} #notice_of_public_sale.pdf.prawn
     end
   end
   

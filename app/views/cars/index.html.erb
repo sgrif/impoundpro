@@ -10,13 +10,13 @@
     			<td>
     				Make: 
     			</td>
-    			<td colspan="2" class="car_data">
+    			<td colspan="3" class="car_data">
     				<%= car.make %>
     			</td>
     			<td>
     				Model: 
     			</td>
-    			<td colspan="2" class="car_data">
+    			<td colspan="3" class="car_data">
     				<%= car.model %>
     			</td>
     			<td>
@@ -30,13 +30,13 @@
     			<td>
     				Year: 
     			</td>
-    			<td colspan="2" class="car_data">
+    			<td colspan="3" class="car_data">
     				<%= car.year %>
     			</td>
     			<td>
     				Color: 
     			</td>
-    			<td colspan="2" class="car_data">
+    			<td colspan="3" class="car_data">
     				<%= car.color %>
     			</td>
     			<td>
@@ -46,7 +46,7 @@
     			</td>
     		</tr>
     		<tr>
-    			<td colspan="10" style="text-align: center;">
+    			<td colspan="12" style="text-align: center;">
     				Print
     			</td>
     		</tr>
@@ -61,7 +61,13 @@
     				<%= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, format: :pdf) %>
     			</td>
     			<td>
-    				<%= link_to 'Mail Labels', owner_mail_labels_car_path(car, format: :pdf) %>
+    				<%= link_to 'Owner Mail Labels', owner_mail_labels_car_path(car, format: :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Lien Holder Mail Labels', lien_holder_mail_labels_car_path(car, format: :pdf) %>
+    			</td>
+    			<td>
+    				<%= link_to 'Driver Mail Labels', driver_mail_labels_car_path(car, format: :pdf) %>
     			</td>
     			<td>
     				<%= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(car, format: :pdf) %>

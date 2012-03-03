@@ -1,6 +1,6 @@
 class CarsController < ApplicationController
   
-  before_filter :authorize, :except => :index
+  before_filter :authorize, :except => [:index, :unclaimed_vehicles_report]
   
   # GET /cars
   # GET /cars.json
@@ -176,6 +176,19 @@ class CarsController < ApplicationController
       format.pdf {render layout: false} #fifty_state_check.pdf.prawn
     end
   end
+  
+  # GET /cars/1/unclaimed_vehicles_report.pdf
+  def unclaimed_vehicles_report
+    @user = User.find(session[:user_id])
+    @cars = @user.cars.where("created_at >= '#{30.days.ago}'") #TODO Is this the correct criteria for the cars?
+    
+    
+    respond_to do |format|
+      format.pdf {render layout: false} #unclaimed_vehicles_report.pdf.prawn
+    end
+  end
+  
+  
   
   protected
   

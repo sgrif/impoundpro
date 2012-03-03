@@ -16,6 +16,8 @@ Tyler::Application.routes.draw do
     resources :cars
   end
   
+  match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
+  
   resources :cars do
     member do 
       get 'owner_lien_notice'

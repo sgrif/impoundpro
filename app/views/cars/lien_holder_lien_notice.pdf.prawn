@@ -2,7 +2,7 @@ prawn_document() do |pdf|
   form_path = "#{Rails.root}/app/assets/images/01-Lien-Notice.jpg"
   pdf.image form_path, width: 571, height: 746, at: [-20, 740]
   
-  pdf.draw_text "X", at: [152, 625] if @car.has_lien_holder
+  pdf.draw_text "X", at: [152, 625]
   pdf.draw_text @car.lien_holder_name, at: [35, 600]
   pdf.draw_text @car.lien_holder_address, at: [45, 570]
   pdf.draw_text "#{@car.lien_holder_city}, #{@car.lien_holder_state}, #{@car.lien_holder_zip}", at: [120, 540]
@@ -18,11 +18,21 @@ prawn_document() do |pdf|
   pdf.draw_text @car.license_plate_number, at: [420, 450]
   
   pdf.font_size 12
-  pdf.draw_text "X", at: [30, 404] if @car.has_charges
+  pdf.draw_text "X", at: [30, 404]
   pdf.draw_text number_to_currency(@car.charge_total, format: "%n"), at: [410, 406]
-  pdf.draw_text number_to_currency(@car.charge_towing, format: "%n"), at: [410, 377]
-  pdf.draw_text number_to_currency(@car.charge_storage, format: "%n"), at: [410, 360]
-  pdf.draw_text number_to_currency(@car.charge_admin, format: "%n"), at: [410, 343]
+  if @car.charges.count <= 4
+    i = 0
+    @car.charges.each do |name, amount|
+      pdf.draw_text name, at: [100, 377 - i]
+      pdf.draw_text number_to_currency(amount, format: "%n"), at: [410, 377 - i]
+      i += 17
+    end
+  else
+    pdf.font_size 16
+    pdf.draw_text "See attached page", at: [200, 377]
+    pdf.font_size 12
+  end
+  
   pdf.draw_text number_to_currency(@car.storage_rate, format: "%n"), at: [35, 298]
   
   pdf.font_size 10
@@ -40,4 +50,24 @@ prawn_document() do |pdf|
   pdf.draw_text @car.preparers_name, at: [130, 80]
   pdf.font_size 12
   pdf.draw_text Date.today.to_s(:long), at: [440, 30]
+  
+  if @car.charges.count > 4
+    pdf.start_new_page()
+    
+    pdf.font_size 18
+    pdf.text "Charges"
+    pdf.font_size 14
+    
+    charges = @car.charges
+    charges.delete("Tax")
+    
+    charges.each do |name, amount|
+      pdf.text "#{name}: #{number_to_currency(amount)}"
+    end
+    pdf.text "---------"
+    pdf.text "Subtotal: #{number_to_currency(@car.charge_subtotal)}"
+    pdf.text "Tax: #{number_to_currency(@car.tax_amount)}"
+    pdf.text "---------"
+    pdf.text "Total: #{number_to_currency(@car.charge_total)}"
+  end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302204357) do
+ActiveRecord::Schema.define(:version => 20120303011647) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(:version => 20120302204357) do
     t.string   "owner_address"
     t.string   "lien_holder_name"
     t.string   "lien_holder_address"
-    t.decimal  "charge_towing",            :precision => 8, :scale => 2
+    t.decimal  "charge_mileage",           :precision => 8, :scale => 2
     t.decimal  "charge_storage",           :precision => 8, :scale => 2
     t.decimal  "charge_admin",             :precision => 8, :scale => 2
     t.float    "tax"
@@ -38,9 +38,6 @@ ActiveRecord::Schema.define(:version => 20120302204357) do
     t.string   "preparers_name"
     t.datetime "created_at",                                             :null => false
     t.datetime "updated_at",                                             :null => false
-    t.boolean  "has_registered_owner"
-    t.boolean  "has_lien_holder"
-    t.boolean  "has_charges"
     t.string   "color"
     t.integer  "user_id"
     t.string   "owner_city"
@@ -54,6 +51,8 @@ ActiveRecord::Schema.define(:version => 20120302204357) do
     t.string   "driver_city"
     t.string   "driver_state"
     t.string   "driver_zip"
+    t.decimal  "charge_hook_up",           :precision => 8, :scale => 2
+    t.decimal  "charge_other",             :precision => 8, :scale => 2
   end
 
   create_table "users", :force => true do |t|

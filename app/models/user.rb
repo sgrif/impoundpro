@@ -3,19 +3,24 @@ require 'digest/sha2'
 class User < ActiveRecord::Base
   
   validates :email, :presence => true, :uniqueness => true
+  attr_protected :email
+  
   validates :name, :presence => true
   validates :address, :presence => true
   validates :city, :presence => true
-  validates :state, :presence => true
+  validates :state, :presence => true, inclusion: {in: States.keys, message: "%{value} is not a valid state"}
   validates :zip, :presence => true
+  
+  validate :password_must_be_present
   
   validates :password, :confirmation => true
   attr_accessor :password_confirmation
   attr_reader :password
+  attr_accessor :current_password
   
-  validate :password_must_be_present
+  validate :authenticate_if_changing_password
   
-  has_many :cars
+  has_many :cars, dependent: :destroy
   
   def User.authenticate(email, password)
     if user = find_by_email(email)
@@ -42,6 +47,10 @@ class User < ActiveRecord::Base
   
   def password_must_be_present
     errors.add(:password, "Missing password") unless hashed_password.present?
+  end
+  
+  def authenticate_if_changing_password
+    errors.add(:current_password, "is incorrect") unless (User.authenticate(self.email, current_password) || !password.present?)
   end
   
   def generate_salt

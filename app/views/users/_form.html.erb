@@ -1,4 +1,4 @@
-<%= form_for(@user) do |f| %>
+<%= form_for(@user, url: user_path) do |f| %>
   <% if @user.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
@@ -11,39 +11,46 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :hashed_password %><br />
-    <%= f.text_field :hashed_password %>
-  </div>
-  <div class="field">
-    <%= f.label :salt %><br />
-    <%= f.text_field :salt %>
-  </div>
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :address %><br />
-    <%= f.text_field :address %>
-  </div>
-  <div class="field">
-    <%= f.label :city %><br />
-    <%= f.text_field :city%>
-  </div>
-  <div class="field">
-    <%= f.label :state %><br />
-    <%= f.text_field :state %>
-  </div>
-  <div class="field">
-    <%= f.label :zip %><br />
-    <%= f.text_field :zip %>
-  </div>
+  <fieldset>
+  	<legend>User Details</legend>
+  	
+  	<div class="field">
+  		<%= f.label :email %><br />
+  		<%= f.text_field :email %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :password %><br />
+  		<%= f.password_field :password %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :password_confirmation, "Confirm Password" %><br />
+  		<%= f.password_field :password_confirmation %>
+  	</div>
+  </fieldset>
+  <fieldset>
+  	<legend>Company Details</legend>
+  	<div class="field">
+  		<%= f.label :name %><br />
+  		<%= f.text_field :name %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :address %><br />
+  		<%= f.text_field :address %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :city %><br />
+  		<%= f.text_field :city %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :state %><br />
+  		<%= f.select :state, States.invert, {prompt: true} %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :zip %><br />
+  		<%= f.text_field :zip %>
+  	</div>
+  </fieldset>
   <div class="actions">
-    <%= f.submit %>
+  	<%= f.submit %>
   </div>
 <% end %>

@@ -1,7 +1,5 @@
 Tyler::Application.routes.draw do
   
-  get "admin" => 'admin#index'
-  
   controller :sessions do
     get 'login' => :new
   
@@ -12,9 +10,11 @@ Tyler::Application.routes.draw do
     get 'logout' => :destroy
   end
 
-  resources :users do
-    resources :cars
-  end
+  get 'forgot_password' => 'users#forgot_password'
+  post 'forgot_password' => 'users#send_reset_link'
+  get 'reset_password' => 'users#reset_password'
+
+  resource :user
   
   match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
   

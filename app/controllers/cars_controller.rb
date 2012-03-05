@@ -1,6 +1,7 @@
 class CarsController < ApplicationController
   
-  before_filter :authorize, :except => [:index, :unclaimed_vehicles_report, :new, :create]
+  before_filter :authorize_cars, except: [:index, :unclaimed_vehicles_report, :new, :create]
+  before_filter :has_cars, except: [:index, :new, :create]
   
   # GET /cars
   # GET /cars.json
@@ -29,7 +30,7 @@ class CarsController < ApplicationController
   # GET /cars/new.json
   def new
     @car = Car.new
-    @car.user_id = params[:user_id]
+    @car.user_id = session[:user_id]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -195,9 +196,14 @@ class CarsController < ApplicationController
   
   protected
   
-  def authorize
+  def authorize_cars
     unless Car.find(params[:id]).user == User.find_by_id(session[:user_id])
-      redirect_to user_cars_url(session[:user_id])
+      redirect_to cars_url
+      logger.error "Attempt to access unowned car userid: #{session[:user_id]} carid: #{params[:id]}"
     end
+  end
+  
+  def has_cars
+    redirect_to cars_url, notice: "No cars to display" unless User.find(session[:user_id]).cars.count > 0
   end
 end

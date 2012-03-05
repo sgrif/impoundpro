@@ -1,3 +1,10 @@
+<% if flash[:notice] %>
+  <p id="notice"><%= flash[:notice] %></p>
+<% end %>
+<% if flash[:error] %>
+  <p id="error"><%= flash[:error] %></p>
+<% end %>
+
 <h1>Active Lien Procedure Vehicles</h1>
 
 <table>
@@ -96,6 +103,6 @@
 
 <br />
 
-<%= link_to 'New Car', new_user_car_path(session[:user_id]) %> | 
+<%= link_to 'New Car', new_car_path %> | 
 <%= link_to '30 Day Unclaimed Vehicle Report', controller: :cars, action: :unclaimed_vehicles_report, format: :pdf %> | 
 <%= link_to 'Logout', logout_url, method: :delete %>

@@ -2,7 +2,7 @@ prawn_document(margin: [15,15,15,15]) do |pdf|
   pdf.image "#{Rails.root}/app/assets/images/06-50-State-Check-1.jpg", width: 570, height: 743
   
   pdf.font_size 16
-  pdf.draw_text state_abbr_to_full(@car.state), at: [210, 655]
+  pdf.draw_text States[@car.state], at: [210, 655]
   
   pdf.font_size 14
   pdf.draw_text @car.year, at: [20, 590]

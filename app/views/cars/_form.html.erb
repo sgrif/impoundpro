@@ -10,125 +10,167 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :year %><br />
-    <%= f.number_field :year %>
-  </div>
-  <div class="field">
-    <%= f.label :make %><br />
-    <%= f.text_field :make %>
-  </div>
-  <div class="field">
-    <%= f.label :model %><br />
-    <%= f.text_field :model %>
-  </div>
-  <div class="field">
-    <%= f.label :size %><br />
-    <%= f.text_field :size %>
-  </div>
-  <div>
-  	<%= f.label :color %><br />
-  	<%= f.text_field :color %>
-  </div>
-  <div class="field">
-    <%= f.label :state %><br />
-    <%= f.text_field :state %>
-  </div>
-  <div class="field">
-    <%= f.label :vin %><br />
-    <%= f.text_field :vin %>
-  </div>
-  <div class="field">
-    <%= f.label :license_plate_number %><br />
-    <%= f.text_field :license_plate_number %>
-  </div>
-  <div class="field">
-    <%= f.label :date_towed %><br />
-    <%= f.datetime_select :date_towed %>
-  </div>
-  <div class="field">
-    <%= f.label :tow_requested_by %><br />
-    <%= f.text_field :tow_requested_by %>
-  </div>
-  <div class="field">
-    <%= f.label :tow_reason %><br />
-    <%= f.text_field :tow_reason %>
-  </div>
-  <div class="field">
-    <%= f.label :mail_notice_of_lien_date %><br />
-    <%= f.datetime_select :mail_notice_of_lien_date %>
-  </div>
-  <div class="field">
-    <%= f.label :owner_name %><br />
-    <%= f.text_field :owner_name %>
-  </div>
-  <div class="field">
-    <%= f.label :owner_address %><br />
-    <%= f.text_field :owner_address %>
-  </div>
-  <div class="field">
-    <%= f.label :owner_city %><br />
-    <%= f.text_field :owner_city %>
-  </div>
-  <div class="field">
-    <%= f.label :owner_state %><br />
-    <%= f.text_field :owner_state %>
-  </div>
-  <div class="field">
-    <%= f.label :owner_zip %><br />
-    <%= f.text_field :owner_zip %>
-  </div>
-  <div class="field">
-    <%= f.label :lien_holder_name %><br />
-    <%= f.text_field :lien_holder_name %>
-  </div>
-  <div class="field">
-    <%= f.label :lien_holder_address %><br />
-    <%= f.text_field :lien_holder_address %>
-  </div>
-  <div class="field">
-    <%= f.label :lien_holder_city %><br />
-    <%= f.text_field :lien_holder_city %>
-  </div>
-  <div class="field">
-    <%= f.label :lien_holder_state %><br />
-    <%= f.text_field :lien_holder_state %>
-  </div>
-  <div class="field">
-    <%= f.label :lien_holder_zip %><br />
-    <%= f.text_field :lien_holder_zip %>
-  </div>
-  <div class="field">
-    <%= f.label :charge_towing %><br />
-    <%= f.text_field :charge_towing %>
-  </div>
-  <div class="field">
-    <%= f.label :charge_storage %><br />
-    <%= f.text_field :charge_storage %>
-  </div>
-  <div class="field">
-    <%= f.label :charge_admin %><br />
-    <%= f.text_field :charge_admin %>
-  </div>
-  <div class="field">
-    <%= f.label :tax %><br />
-    <%= f.text_field :tax %>
-  </div>
-  <div class="field">
-    <%= f.label :storage_rate %><br />
-    <%= f.text_field :storage_rate %>
-  </div>
-  <div class="field">
-    <%= f.label :mvd_inquiry_made %><br />
-    <%= f.check_box :mvd_inquiry_made %>
-  </div>
-  <div class="field">
-    <%= f.label :preparers_name %><br />
-    <%= f.text_field :preparers_name %>
-  </div>
-  <%= f.hidden_field :user_id, :value => params[:user_id] %>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  
+  <fieldset>
+  	<legend>Vehicle Data Entry</legend>
+  	
+  	<div>
+  		<%= f.label :year %>
+  		<%= f.number_field :year %>
+  	</div>
+  	<div>
+  		<%= f.label :make %>
+  		<%= f.text_field :make %>
+  	</div>
+  	<div>
+  		<%= f.label :model %>
+  		<%= f.text_field :model %>
+  	</div>
+  	<div>
+  		<%= f.label :size %>
+  		<%= f.text_field :size %>
+  	</div>
+  	<div>
+  		<%= f.label :color %>
+  		<%= f.text_field :color %>
+  	</div>
+  	<div>
+  		<%= f.label :state %>
+  		<%= select :car, :state, States.invert, {prompt: true}%>
+  	</div>
+  	<div>
+  		<%= f.label :vin %>
+  		<%= f.text_field :vin %>
+  	</div>
+  	<div>
+  		<%= f.label :license_plate_number %>
+  		<%= f.text_field :license_plate_number %>
+  	</div>
+  	<fieldset>
+  		<legend>Owner Information</legend>
+  		
+  		<div>
+	  		<%= f.label :owner_name, 'Name' %>
+	  		<%= f.text_field :owner_name %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :owner_address, 'Address' %>
+	  		<%= f.text_field :owner_address %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :owner_city, 'City' %>
+	  		<%= f.text_field :owner_city %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :owner_state, 'State' %>
+	  		<%= select :car, :owner_state, States.invert, {prompt: true}%>
+	  	</div>
+	  	<div>
+	  		<%= f.label :owner_zip, 'Zip' %>
+	  		<%= f.text_field :owner_zip %>
+	  	</div>
+  	</fieldset>
+  	<fieldset>
+  		<legend>Lien Holder Information</legend>
+  		
+  		<div>
+	  		<%= f.label :lien_holder_name, 'Name' %>
+	  		<%= f.text_field :lien_holder_name %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :lien_holder_address, 'Address' %>
+	  		<%= f.text_field :lien_holder_address %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :lien_holder_city, 'City' %>
+	  		<%= f.text_field :lien_holder_city %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :lien_holder_state, 'State' %>
+	  		<%= select :car, :lien_holder_state, States.invert, {prompt: true}%>
+	  	</div>
+	  	<div>
+	  		<%= f.label :lien_holder_zip, 'Zip' %>
+	  		<%= f.text_field :lien_holder_zip %>
+	  	</div>
+  	</fieldset>
+  	<fieldset>
+  		<legend>Driver Information (If different than owner)</legend>
+  		
+  		<div>
+	  		<%= f.label :driver_name, 'Name' %>
+	  		<%= f.text_field :driver_name %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :driver_address, 'Address' %>
+	  		<%= f.text_field :driver_address %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :driver_city, 'City' %>
+	  		<%= f.text_field :driver_city %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :driver_state, 'State' %>
+	  		<%= select :car, :driver_state, States.invert, {prompt: true}%>
+	  	</div>
+	  	<div>
+	  		<%= f.label :driver_zip, 'Zip' %>
+	  		<%= f.text_field :driver_zip %>
+	  	</div>
+  	</fieldset>
+  	<div>
+  		<%= f.label :date_towed %>
+  		<%= f.datetime_select :date_towed %>
+  	</div>
+  	<div>
+  		<%= f.label :tow_requested_by %>
+  		<%= f.text_field :tow_requested_by %>
+  	</div>
+  	<div>
+  		<%= f.label :tow_reason %>
+  		<%= f.text_field :tow_reason %>
+  	</div>
+  	<fieldset>
+  		<legend>Charges</legend>
+  		<div>
+	  		<%= f.label :charge_hook_up %>
+	  		<%= f.text_field :charge_hook_up %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :charge_mileage %>
+	  		<%= f.text_field :charge_mileage %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :charge_storage %>
+	  		<%= f.text_field :charge_storage %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :charge_admin %>
+	  		<%= f.text_field :charge_admin %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :charge_other %>
+	  		<%= f.text_field :charge_other %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :charge_subtotal %>
+	  		<%= f.text_field :charge_subtotal, {readonly: true} %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :tax, 'Tax (%)' %>
+	  		<%= f.text_field :tax %>
+	  	</div>
+	  	<div>
+	  		<%= f.label :charge_total %>
+	  		<%= f.text_field :charge_total, {readonly: true}%>
+	  	</div>
+  	</fieldset>
+  	
+  	<% #TODO What to do for :preparers_name, :mvd_inquiry_made, and :mail_notice_of_lien_date %>
+  	<%= f.hidden_field :user_id %>
+  	
+  	<div>
+  		<%= f.submit %>
+  	</div>
+  </fieldset>
 <% end %>

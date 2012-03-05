@@ -1,6 +1,6 @@
 class CarsController < ApplicationController
   
-  before_filter :authorize, :except => [:index, :unclaimed_vehicles_report]
+  before_filter :authorize, :except => [:index, :unclaimed_vehicles_report, :new, :create]
   
   # GET /cars
   # GET /cars.json
@@ -29,6 +29,7 @@ class CarsController < ApplicationController
   # GET /cars/new.json
   def new
     @car = Car.new
+    @car.user_id = params[:user_id]
 
     respond_to do |format|
       format.html # new.html.erb
@@ -84,6 +85,8 @@ class CarsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  #TODO Should I pop up asking if they want to change the mail_notice_of_lien_date to today when they select lien notice?
   
   # GET /cars/1/owner_lien_notice.pdf
   def owner_lien_notice

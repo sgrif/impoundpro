@@ -13,7 +13,7 @@ prawn_document() do |pdf|
   pdf.move_down 35
   pdf.font_size 10
   pdf.text 'Notice of Public Sale', align: :center, style: :bold, leading: 2
-  pdf.text "State of #{state_abbr_to_full(@car.user.state)}", align: :center, style: :bold, leading: 2
+  pdf.text "State of #{States[@car.user.state]}", align: :center, style: :bold, leading: 2
   pdf.text "County of #{@car.user.county}", align: :center, style: :bold
   
   pdf.move_down 20

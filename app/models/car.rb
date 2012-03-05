@@ -31,7 +31,7 @@ class Car < ActiveRecord::Base
   validates :charge_other, numericality: {greater_than_or_equal_to: 0}
   validates :tax, numericality: {greater_than_or_equal_to: 0}
   
-  before_save :ensure_tax_is_decimal
+  before_validation :ensure_tax_is_decimal
   
   attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount
   

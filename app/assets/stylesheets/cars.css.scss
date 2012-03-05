@@ -41,13 +41,24 @@
   
   fieldset {
     margin: 10px 5px;
+    clear: both;
+  }
+    
+  div.field {
+    clear: both;
+    
+    label {
+      width: 5em;
+      float: left;
+      text-align: right;
+      padding-top: 0.2em;
+      margin-right: 0.1em;
+      display: block;
+    }
+    
+    select, textarea, input {
+      margin-left: 0.5em;
+    }
   }
 
-  fieldset div.field {
-    margin-left: 15px;
-  }
-  
-  div.field_group {
-    margin: 10px 0 30px 0;
-  }
 }

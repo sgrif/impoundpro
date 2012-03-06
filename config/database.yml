@@ -22,7 +22,8 @@ production:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: impoundpro_production
+  database: impoundpromain
+  host: mysql.impoundpro.com
   pool: 5
-  username: Sean
-  password: Sea%472
+  username: griffinassoc
+  password: Griffin1

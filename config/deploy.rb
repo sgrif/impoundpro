@@ -9,6 +9,7 @@ set :scm, 'git'
 set :branch, 'master'
 set :scm_verbose, true
 set :use_sudo, false
+set :rails_env, :production
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
 default_run_options[:pty] = true
@@ -25,7 +26,7 @@ namespace :deploy do
   
   desc "reload the database with seed data"
   task :seed do
-    run "cd #{current_path}; rake db:seed RAILS_ENV=production"
+    run "cd #{current_path}; rake db:seed RAILS_ENV=#{rails_env}"
   end
 end
 

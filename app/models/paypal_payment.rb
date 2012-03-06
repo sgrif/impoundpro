@@ -22,7 +22,7 @@ class PaypalPayment
     options = options.reverse_merge(
       token: @user.paypal_payment_token,
       payer_id: @user.paypal_customer_token,
-      description: "Desc", # TODO Description & Price
+      descripti:on => "Desc", # TODO Description & Price
       amount: 5,
       currency: "USD"
     )

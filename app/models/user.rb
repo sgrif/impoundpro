@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   validates :name, :presence => true
   validates :address, :presence => true
   validates :city, :presence => true
-  validates :state, :presence => true, inclusion: {in: States.keys, message: "%{value} is not a valid state"}
+  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state"}
   validates :zip, :presence => true
   
   validate :password_must_be_present
@@ -16,11 +16,11 @@ class User < ActiveRecord::Base
   attr_reader :password
   attr_accessor :current_password, :password_confirmation # Current password is used when changing passwords
   
-  validate :authenticate_if_changing_password, on: :update
+  validate :authenticate_if_changing_password, :on => :update
   
   attr_accessor :paypal_payment_token
   
-  has_many :cars, dependent: :destroy
+  has_many :cars, :dependent => :destroy
   
   def User.authenticate(email, password)
     if user = find_by_email(email)

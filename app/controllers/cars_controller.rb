@@ -1,7 +1,7 @@
 class CarsController < ApplicationController
   
-  before_filter :authorize_cars, except: [:index, :unclaimed_vehicles_report, :new, :create]
-  before_filter :has_cars, except: [:index, :new, :create]
+  before_filter :authorize_cars, :except => [:index, :unclaimed_vehicles_report, :new, :create]
+  before_filter :has_cars, :except => [:index, :new, :create]
   
   # GET /cars
   # GET /cars.json
@@ -11,7 +11,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @cars }
+      format.json { render :json => @cars }
     end
   end
 
@@ -22,7 +22,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @car }
+      format.json { render :json => @car }
     end
   end
 
@@ -34,7 +34,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @car }
+      format.json { render :json => @car }
     end
   end
 
@@ -50,11 +50,11 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       if @car.save
-        format.html { redirect_to @car, notice: 'Car was successfully created.' }
-        format.json { render json: @car, status: :created, location: @car }
+        format.html { redirect_to @car, :notice => 'Car was successfully created.' }
+        format.json { render :json => @car, :status => :created, :location => @car }
       else
-        format.html { render action: "new" }
-        format.json { render json: @car.errors, status: :unprocessable_entity }
+        format.html { render :action => "new" }
+        format.json { render :json => @car.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -66,11 +66,11 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       if @car.update_attributes(params[:car])
-        format.html { redirect_to @car, notice: 'Car was successfully updated.' }
+        format.html { redirect_to @car, :notice => 'Car was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @car.errors, status: :unprocessable_entity }
+        format.html { render :action => "edit" }
+        format.json { render :json => @car.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -94,7 +94,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #owner_lien_notice.pdf.prawn
+      format.pdf {render :layout => false} #owner_lien_notice.pdf.prawn
     end
   end
   
@@ -103,7 +103,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #lien_holder_lien_notice.pdf.prawn
+      format.pdf {render :layout => false} #lien_holder_lien_notice.pdf.prawn
     end
   end
   
@@ -112,7 +112,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #driver_lien_notice.pdf.prawn
+      format.pdf {render :layout => false} #driver_lien_notice.pdf.prawn
     end
   end
   
@@ -121,7 +121,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #owner_mail_labels.pdf.prawn
+      format.pdf {render :layout => false} #owner_mail_labels.pdf.prawn
     end
   end
   
@@ -131,7 +131,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #lien_holder_mail_labels.pdf.prawn
+      format.pdf {render :layout => false} #lien_holder_mail_labels.pdf.prawn
     end
   end
   
@@ -141,7 +141,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #driver_mail_labels.pdf.prawn
+      format.pdf {render :layout => false} #driver_mail_labels.pdf.prawn
     end
   end
   
@@ -150,7 +150,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #notice_of_public_sale.pdf.prawn
+      format.pdf {render :layout => false} #notice_of_public_sale.pdf.prawn
     end
   end
   
@@ -159,7 +159,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #affidavit_of_resale.pdf.prawn
+      format.pdf {render :layout => false} #affidavit_of_resale.pdf.prawn
     end
   end
   
@@ -168,7 +168,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #title_application.pdf.prawn
+      format.pdf {render :layout => false} #title_application.pdf.prawn
     end
   end
   
@@ -177,7 +177,7 @@ class CarsController < ApplicationController
     @car = Car.find(params[:id])
     
     respond_to do |format|
-      format.pdf {render layout: false} #fifty_state_check.pdf.prawn
+      format.pdf {render :layout => false} #fifty_state_check.pdf.prawn
     end
   end
   
@@ -188,7 +188,7 @@ class CarsController < ApplicationController
     
     
     respond_to do |format|
-      format.pdf {render layout: false} #unclaimed_vehicles_report.pdf.prawn
+      format.pdf {render :layout => false} #unclaimed_vehicles_report.pdf.prawn
     end
   end
   
@@ -204,6 +204,6 @@ class CarsController < ApplicationController
   end
   
   def has_cars
-    redirect_to cars_url, notice: "No cars to display" unless User.find(session[:user_id]).cars.count > 0
+    redirect_to cars_url, :notice => "No cars to display" unless User.find(session[:user_id]).cars.count > 0
   end
 end

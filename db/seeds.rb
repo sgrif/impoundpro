@@ -7,8 +7,6 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.delete_all
 Car.delete_all
-ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name = 'users'") 
-ActiveRecord::Base.connection.execute("DELETE FROM sqlite_sequence WHERE name = 'cars'") 
 
 @one = User.create(email: 'sgriffin@griffinassoc.com', password: 'password', name: 'Griffin & Associates', address: '119 Dartmouth SE', city: 'Albuquerque', state: 'NM', zip: '87106', county: 'Bernalillo', phone_number: '(505) 764-4444')
 User.create(email: 'ferret4prez@gmail.com', password: 'password', name: 'Griffin & Associates', address: '119 Dartmouth SE', city: 'Albuquerque', state: 'NM', zip: '87106', county: 'Bernalillo', phone_number: '(505) 764-4444')

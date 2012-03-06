@@ -22,6 +22,11 @@ end
 
 gem 'jquery-rails'
 gem 'paypal-recurring'
+gem 'prawn_rails'
+
+group :production do
+  gem 'mysql'
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -37,5 +42,3 @@ gem 'paypal-recurring'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
-
-gem 'prawn_rails'

@@ -13,11 +13,12 @@ class User < ActiveRecord::Base
   validate :password_must_be_present
   
   validates :password, :confirmation => true
-  attr_accessor :password_confirmation
   attr_reader :password
-  attr_accessor :current_password
+  attr_accessor :current_password, :password_confirmation # Current password is used when changing passwords
   
   validate :authenticate_if_changing_password, on: :update
+  
+  attr_accessor :paypal_payment_token
   
   has_many :cars, dependent: :destroy
   
@@ -40,6 +41,22 @@ class User < ActiveRecord::Base
       generate_salt
       self.hashed_password = self.class.encrypt_password(password, salt)
     end
+  end
+  
+  def paypal
+    PaypalPayment.new(self)
+  end
+  
+  def save_with_payment
+    if valid?
+      response = paypal.make_recurring
+      self.paypal_recurring_profile_token = response.profile_id
+      save!
+    end
+  end
+  
+  def payment_provided? 
+    paypal_payment_token.present?
   end
   
   private

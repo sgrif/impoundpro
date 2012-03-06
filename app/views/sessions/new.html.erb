@@ -1,5 +1,8 @@
 <% if flash[:alert] %>
-	<p id="notice"><%= flash[:alert] %></p>
+	<p id="alert"><%= flash[:alert] %></p>
+<% end %>
+<% if flash[:notice] %>
+	<p id="notice"><%= flash[:notice] %></p>
 <% end %>
 
 <%= form_tag do %>
@@ -22,4 +25,4 @@
 	</fieldset>
 <% end %>
 <%= link_to "Register", new_user_path %> | 
-<%= link_to "Forgot Password", forgot_password_path %>
+<%= link_to "Forgot Password", password_forgot_path %>

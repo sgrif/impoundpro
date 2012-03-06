@@ -1,5 +1,71 @@
 <h1>New user</h1>
 
-<%= render 'form' %>
+<%= form_for(@user, url: user_path) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= f.hidden_field :paypal_customer_token %>
+  <%= f.hidden_field :paypal_payment_token %>
+  
+  <% unless @user.payment_provided? %>
+  <fieldset>
+  	<legend>Step 1: Payment</legend>
+  	<%= link_to image_tag('https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'), paypal_checkout_path%>
+  </fieldset>
+  <% else %>
+  <fieldset>
+  	<legend>Step 2: User Details</legend>
+  	
+  	<div class="field">
+  		<%= f.label :email %><br />
+  		<%= f.text_field :email %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :password %><br />
+  		<%= f.password_field :password %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :password_confirmation, "Confirm Password" %><br />
+  		<%= f.password_field :password_confirmation %>
+  	</div>
+  </fieldset>
+  <fieldset>
+  	<legend>Step 3: Company Details</legend>
+  	<div class="field">
+  		<%= f.label :name %><br />
+  		<%= f.text_field :name %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :address %><br />
+  		<%= f.text_field :address %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :city %><br />
+  		<%= f.text_field :city %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :state %><br />
+  		<%= f.select :state, States.invert, {prompt: true} %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :zip %><br />
+  		<%= f.text_field :zip %>
+  	</div>
+  </fieldset>
+  <div class="actions">
+  	<%= f.submit %>
+  </div>
+  <% end %>
+<% end %>
+
 
 <%= link_to 'Back', user_path %>

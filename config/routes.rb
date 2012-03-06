@@ -10,9 +10,12 @@ Tyler::Application.routes.draw do
     get 'logout' => :destroy
   end
 
-  get 'forgot_password' => 'users#forgot_password'
-  post 'forgot_password' => 'users#send_reset_link'
-  get 'reset_password' => 'users#reset_password'
+  get 'password/forgot' => 'users#forgot_password'
+  post 'password/forgot' => 'users#send_reset_link'
+  get 'password/reset' => 'users#reset_password'
+  post 'password/reset' => 'users#change_password'
+  get 'paypal/checkout' => 'users#paypal_checkout'
+  post 'paypal/ipn' => 'users#ipn'
 
   resource :user
   

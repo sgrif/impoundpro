@@ -16,3 +16,6 @@
 
 # Ignore sensitive paypal information
 /config/initializers/paypal.rb
+
+# Ignore precompiled assets
+/public/assets

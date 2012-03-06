@@ -3,7 +3,6 @@ require 'digest/sha2'
 class User < ActiveRecord::Base
   
   validates :email, :presence => true, :uniqueness => true
-  attr_protected :email
   
   validates :name, :presence => true
   validates :address, :presence => true
@@ -18,7 +17,7 @@ class User < ActiveRecord::Base
   attr_reader :password
   attr_accessor :current_password
   
-  validate :authenticate_if_changing_password
+  validate :authenticate_if_changing_password, on: :update
   
   has_many :cars, dependent: :destroy
   
@@ -50,7 +49,7 @@ class User < ActiveRecord::Base
   end
   
   def authenticate_if_changing_password
-    errors.add(:current_password, "is incorrect") unless (User.authenticate(self.email, current_password) || !password.present?)
+    errors.add(:current_password, "is incorrect") unless (User.authenticate(self.email, current_password) || password.empty?)
   end
   
   def generate_salt

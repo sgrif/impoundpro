@@ -23,6 +23,7 @@ end
 gem 'jquery-rails'
 gem 'paypal-recurring'
 gem 'prawn_rails'
+gem 'capistrano'
 
 group :production do
   gem 'mysql'

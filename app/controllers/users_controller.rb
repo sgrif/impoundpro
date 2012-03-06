@@ -76,8 +76,8 @@ class UsersController < ApplicationController
   def paypal_checkout
     user = User.new
     redirect_to user.paypal.checkout_url(
-      return_url: new_user_url,
-      cancel_url: root_url
+      :return_url => new_user_url,
+      :cancel_url => root_url
     )
   end
   

@@ -86,7 +86,10 @@ class UsersController < ApplicationController
   # POST /paypal/ipn
   def ipn
     notification = PayPal::Recurring::Notification.new(params)
-    Rails.logger.info(notification.valid?)
+    Rails.logger.info "Valid: #{notification.valid?}"
+    Rails.logger.info "Completed: #{notification.completed?}"
+    Rails.logger.info "Verified: #{notifaction.verified?}"
+    Rails.logger.info PayPal::Recurring.email
     render :nothing => true
   end
 

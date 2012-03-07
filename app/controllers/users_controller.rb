@@ -85,11 +85,9 @@ class UsersController < ApplicationController
   
   # POST /paypal/ipn
   def ipn
-    notification = PayPal::Recurring::Notification.new(params)
-    Rails.logger.info "Valid: #{notification.valid?}"
-    Rails.logger.info "Completed: #{notification.completed?}"
-    Rails.logger.info "Verified: #{notification.verified?}"
-    Rails.logger.info PayPal::Recurring.email
+    if user = User.find_by_paypal_recurring_profile_token(params[:recurring_payment_id])
+      PaypalNotification.new(user, params)
+    end
     render :nothing => true
   end
 

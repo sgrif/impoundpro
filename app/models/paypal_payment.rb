@@ -27,6 +27,7 @@ class PaypalPayment
       :currency => "USD"
     )
     response = PayPal::Recurring.new(options).send(action)
+    puts response.errors if response.errors.present?
     raise response.errors.inspect if response.errors.present?
     response
   end

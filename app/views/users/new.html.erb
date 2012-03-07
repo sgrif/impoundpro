@@ -54,7 +54,7 @@
   	</div>
   	<div class="field">
   		<%= f.label :state %><br />
-  		<%= f.select :state, States.invert, { :prompt => true} %>
+  		<%= f.select :state, States.invert.sort, { :prompt => true} %>
   	</div>
   	<div class="field">
   		<%= f.label :zip %><br />

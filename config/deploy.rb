@@ -41,6 +41,8 @@ task :copy_sensitive_files, :roles => :app do
   run "cp #{shared_path}/database.yml #{release_path}/config/database.yml; cp #{shared_path}/paypal.rb #{release_path}/config/initializers/paypal.rb"
 end
 
+after "deploy:restart", "deploy:cleanup"
+
 # if you're still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
 

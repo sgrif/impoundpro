@@ -83,7 +83,7 @@ class UsersController < ApplicationController
   
   # POST /paypal/ipn
   def ipn
-    ipn_log = Logger.new(File.open("#{Rails.root}/log/ipn.log"))
+    ipn_log = Logger.new(File.open("#{Rails.root}/log/ipn.log", "a"))
     ipn_log.info params
   end
 

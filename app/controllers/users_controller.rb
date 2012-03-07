@@ -34,7 +34,7 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     respond_to do |format|
-      if @user.save
+      if @user.save_with_payment
         format.html { redirect_to login_path, :notice => 'Account was successfully created. Please log in to continue.' }
         format.json { render :json => @user, :status => :created, :location => @user }
       else
@@ -77,16 +77,14 @@ class UsersController < ApplicationController
     user = User.new
     redirect_to user.paypal.checkout_url(
       :return_url => new_user_url,
-      :cancel_url => root_url
+      :cancel_url => root_url,
+      :ipn_url => paypal_ipn_url
     )
   end
   
   # POST /paypal/ipn
   def ipn
-    ipn_log = Logger.new(File.open("#{Rails.root}/log/ipn.log", "a"))
-    params.each do |key, value|
-      ipn_log.info "#{key}: #{value}"
-    end
+    #TODO Respond to notifications - look into delayed_job and disabling users
     render :nothing => true
   end
 

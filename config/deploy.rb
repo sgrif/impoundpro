@@ -36,7 +36,7 @@ task :bundle_install, :roles => :app do
   run "cd #{release_path} && bundle install"
 end
 
-after "deploy:symlink", :copy_sensitive_files
+before "deploy:restart", :copy_sensitive_files
 desc "copy config files containing sensitive information"
 task :copy_sensitive_files, :roles => :app do
   run "cp #{shared_path}/database.yml #{current_path}/config/database.yml; cp #{shared_path}/paypal.rb #{current_path}/config/initializers/paypal.rb"

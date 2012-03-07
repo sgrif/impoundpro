@@ -85,8 +85,8 @@ class UsersController < ApplicationController
   
   # POST /paypal/ipn
   def ipn
-    ipn = Paypal::Recurring::Notification.new(params)
-    Rails.logger.info(ipn.valid?)
+    notification = PayPal::Recurring::Notification.new(params)
+    Rails.logger.info(notification.valid?)
     render :nothing => true
   end
 

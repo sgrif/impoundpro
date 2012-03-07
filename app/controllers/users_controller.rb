@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authorize, :except => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :paypal_checkout]
+  before_filter :authorize, :except => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :paypal_checkout, :ipn]
   
   # GET /user
   def show

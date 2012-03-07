@@ -85,7 +85,8 @@ class UsersController < ApplicationController
   
   # POST /paypal/ipn
   def ipn
-    #TODO Respond to notifications - look into delayed_job and disabling users
+    ipn = Paypal::Recurring::Notification.new(params)
+    Rails.logger.info(ipn.valid?)
     render :nothing => true
   end
 

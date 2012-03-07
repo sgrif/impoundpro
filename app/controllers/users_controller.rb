@@ -65,6 +65,7 @@ class UsersController < ApplicationController
   # DELETE /user.json
   def destroy
     @user = current_user
+    @user.paypal.cancel
     @user.destroy
 
     respond_to do |format|

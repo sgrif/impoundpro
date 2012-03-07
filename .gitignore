@@ -14,8 +14,9 @@
 /log/*.log
 /tmp
 
-# Ignore sensitive paypal information
+# Ignore sensitive information
 /config/initializers/paypal.rb
+/config/database.yml
 
 # Ignore precompiled assets
 /public/assets

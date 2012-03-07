@@ -35,6 +35,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save_with_payment
+        UserMailer.welcome(@user, login_url)
         format.html { redirect_to login_path, :notice => 'Account was successfully created. Please log in to continue.' }
         format.json { render :json => @user, :status => :created, :location => @user }
       else

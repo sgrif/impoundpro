@@ -1,5 +1,7 @@
 Tyler::Application.routes.draw do
   
+  get "password_resets/new"
+
   controller :sessions do
     get 'login' => :new
   

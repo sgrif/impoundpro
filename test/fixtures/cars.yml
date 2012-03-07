@@ -1,7 +1,6 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  uid: 1
   year: 1
   make: MyString
   model: MyString
@@ -15,20 +14,20 @@ one:
   mail_notice_of_lien_date: 2012-01-26 13:49:06
   owner_name: MyString
   owner_address: MyString
-  owner_city_state_zip: MyString
+  #owner_city_state_zip: MyString
   lien_holder_name: MyString
   lien_holder_address: MyString
-  lien_holder_city_state_zip: MyString
-  charge_towing: 9.99
+  #lien_holder_city_state_zip: MyString
+  charge_mileage: 9.99
   charge_storage: 9.99
   charge_admin: 9.99
   tax: 1.5
   storage_rate: 
   mvd_inquiry_made: false
   preparers_name: MyString
+  user_id: sean
 
 two:
-  uid: 1
   year: 1
   make: MyString
   model: MyString
@@ -42,11 +41,11 @@ two:
   mail_notice_of_lien_date: 2012-01-26 13:49:06
   owner_name: MyString
   owner_address: MyString
-  owner_city_state_zip: MyString
+  #owner_city_state_zip: MyString
   lien_holder_name: MyString
   lien_holder_address: MyString
-  lien_holder_city_state_zip: MyString
-  charge_towing: 9.99
+  #lien_holder_city_state_zip: MyString
+  charge_mileage: 9.99
   charge_storage: 9.99
   charge_admin: 9.99
   tax: 1.5

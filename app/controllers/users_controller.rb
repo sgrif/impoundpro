@@ -85,8 +85,9 @@ class UsersController < ApplicationController
   
   # POST /paypal/ipn
   def ipn
-    if user = User.find_by_paypal_recurring_profile_token(params[:recurring_payment_id])
-      PaypalNotification.new(user, params)
+    note = PayPal::Recurring::Notification.new(params)
+    if @user = User.find_by_paypal_recurring_profile_token(note.payment_id)
+      @user.paypal_recurring_profile_token = nil
     end
     render :nothing => true
   end

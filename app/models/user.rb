@@ -14,11 +14,11 @@ class User < ActiveRecord::Base
   
   validates :password, :confirmation => true
   attr_reader :password
-  attr_accessor :current_password, :password_confirmation # Current password is used when changing passwords
-  
-  validate :authenticate_if_changing_password, :on => :update
-  
+  attr_accessor :password_confirmation
+    
   attr_accessor :paypal_payment_token
+  
+  before_create { generate_token(:auth_token) }
   
   has_many :cars, :dependent => :destroy
   
@@ -36,11 +36,25 @@ class User < ActiveRecord::Base
   
   def password=(password)
     @password = password
+    if hashed_password.present?
+      UserMailer.password_changed(self).deliver
+    end
     
     if password.present?
       generate_salt
       self.hashed_password = self.class.encrypt_password(password, salt)
     end
+  end
+  
+  def send_password_reset
+    generate_token(:password_reset_token)
+    self.password_reset_sent_at = Time.zone.now
+    save!
+    UserMailer.password_reset(self).deliver
+  end
+  
+  def send_password_changed_notice
+    UserMailer.password_changed(self).deliver
   end
   
   def paypal
@@ -65,12 +79,14 @@ class User < ActiveRecord::Base
     errors.add(:password, "Missing password") unless hashed_password.present?
   end
   
-  def authenticate_if_changing_password
-    errors.add(:current_password, "is incorrect") unless (User.authenticate(self.email, current_password) || password.empty?)
-  end
-  
   def generate_salt
     self.salt = self.object_id.to_s + rand.to_s
+  end
+  
+  def generate_token(column)
+    begin 
+      self[column] = SecureRandom.hex(10)
+    end while User.exists?(column => self[column])
   end
   
 end

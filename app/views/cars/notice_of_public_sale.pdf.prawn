@@ -1,7 +1,7 @@
 prawn_document() do |pdf|
   
   pdf.move_up 15
-  pdf.text 'Notice of Public Sale', :align => :center, style: :bold, size: 16
+  pdf.text 'Notice of Public Sale', :align => :center, :style => :bold, size: 16
   
   pdf.move_down 30
   pdf.text "<u>Location of Sale:</u>   #{@car.user.name}", inline_:format => true
@@ -12,9 +12,9 @@ prawn_document() do |pdf|
   
   pdf.move_down 35
   pdf.font_size 10
-  pdf.text 'Notice of Public Sale', :align => :center, style: :bold, leading: 2
-  pdf.text "State of #{States[@car.user.state]}", :align => :center, style: :bold, leading: 2
-  pdf.text "County of #{@car.user.county}", :align => :center, style: :bold
+  pdf.text 'Notice of Public Sale', :align => :center, :style => :bold, leading: 2
+  pdf.text "State of #{States[@car.user.state]}", :align => :center, :style => :bold, leading: 2
+  pdf.text "County of #{@car.user.county}", :align => :center, :style => :bold
   
   pdf.move_down 20
   pdf.font_size 12
@@ -36,7 +36,7 @@ prawn_document() do |pdf|
   
   pdf.move_down 30
   pdf.font_size 12
-  pdf.text '<font size="16">Terms:</font> CASH IN HAND ON DAY OF SALE', style: :bold, inline_:format => true
+  pdf.text '<font size="16">Terms:</font> CASH IN HAND ON DAY OF SALE', :style => :bold, inline_:format => true
   
   pdf.move_down 35
   pdf.text "Date of receipt of return of lien notice: <u>   #{@car.mail_notice_of_lien_date.to_s(:short_date)}</u>", inline_:format => true, leading: 30

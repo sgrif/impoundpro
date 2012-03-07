@@ -6,16 +6,20 @@ class SessionsController < ApplicationController
 
   def create
     if user = User.authenticate(params[:email], params[:password])
-      session[:user_id] = user.id
+      if params[:remember_me]
+        cookies.permanent[:auth_token] = user.auth_token
+      else
+        cookies[:auth_token] = user.auth_token
+      end
       
-      redirect_to cars_url
+      redirect_to root_url
     else
       redirect_to login_url, :alert => "Invalid user/password combination"
     end
   end
 
   def destroy
-    session[:user_id] = nil
+    cookies.delete(:auth_token)
     
     redirect_to login_url, :alert => (flash[:alert] || "Logged Out")
   end

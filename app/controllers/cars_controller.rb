@@ -7,7 +7,7 @@ class CarsController < ApplicationController
   # GET /cars.json
   def index
     
-    @cars = User.find(session[:user_id]).cars
+    @cars = current_user.cars
 
     respond_to do |format|
       format.html # index.html.erb
@@ -30,7 +30,7 @@ class CarsController < ApplicationController
   # GET /cars/new.json
   def new
     @car = Car.new
-    @car.user_id = session[:user_id]
+    @car.user = current_user
 
     respond_to do |format|
       format.html # new.html.erb
@@ -183,7 +183,7 @@ class CarsController < ApplicationController
   
   # GET /cars/1/unclaimed_vehicles_report.pdf
   def unclaimed_vehicles_report
-    @user = User.find(session[:user_id])
+    @user = current_user
     @cars = @user.cars.where("created_at >= '#{30.days.ago}'") #TODO Is this the correct criteria for the cars?
     
     
@@ -197,13 +197,13 @@ class CarsController < ApplicationController
   protected
   
   def authorize_cars
-    unless Car.find(params[:id]).user == User.find_by_id(session[:user_id])
+    unless Car.find(params[:id]).user == current_user
       redirect_to cars_url
-      logger.error "Attempt to access unowned car userid: #{session[:user_id]} carid: #{params[:id]}"
+      logger.error "Attempt to access unowned car userid: #{current_user} carid: #{params[:id]}"
     end
   end
   
   def has_cars
-    redirect_to cars_url, :notice => "No cars to display" unless User.find(session[:user_id]).cars.count > 0
+    redirect_to cars_url, :notice => "No cars to display" unless current_user.cars.count > 0
   end
 end

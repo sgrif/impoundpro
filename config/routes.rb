@@ -1,6 +1,6 @@
 Tyler::Application.routes.draw do
   
-  get "password_resets/new"
+  resources :password_resets
 
   controller :sessions do
     get 'login' => :new
@@ -12,10 +12,6 @@ Tyler::Application.routes.draw do
     get 'logout' => :destroy
   end
 
-  get 'password/forgot' => 'users#forgot_password'
-  post 'password/forgot' => 'users#send_reset_link'
-  get 'password/reset' => 'users#reset_password'
-  post 'password/reset' => 'users#change_password'
   get 'paypal/checkout' => 'users#paypal_checkout'
   post 'paypal/ipn' => 'users#ipn'
 

@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
-  before_filter :authorize, :except => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :paypal_checkout, :ipn]
+  skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :paypal_checkout, :ipn]
   
   # GET /user
   def show
     #TODO Find a use for this page
-    @user = User.find(session[:user_id])
+    @user = current_user
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
 
   # GET /user/edit
   def edit
-    @user = User.find(session[:user_id])
+    @user = current_user
   end
 
   # POST /user
@@ -48,7 +48,7 @@ class UsersController < ApplicationController
   # PUT /user
   # PUT /user.json
   def update
-    @user = User.find(session[:user_id])
+    @user = current_user
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -64,7 +64,7 @@ class UsersController < ApplicationController
   # DELETE /user
   # DELETE /user.json
   def destroy
-    @user = User.find(session[:user_id])
+    @user = current_user
     @user.destroy
 
     respond_to do |format|

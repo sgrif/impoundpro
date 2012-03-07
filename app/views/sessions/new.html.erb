@@ -9,20 +9,22 @@
 	<fieldset>
 		<legend>Please Log In</legend>
 		
-		<div>
+		<div class="field">
 			<label for="email">Email:</label>
 			<%= text_field_tag :email, params[:email] %>
 		</div>
 		
-		<div>
+		<div class="field">
 			<label for="password">Password:</label>
 			<%= password_field_tag :password, params[:password] %>
 		</div>
 		
-		<div>
+		<div class="actions">
 			<%= submit_tag "Login" %>
+			<%= check_box_tag :remember_me, 1, params[:email] %>
+			<%= label_tag :remember_me %>
 		</div>
 	</fieldset>
 <% end %>
 <%= link_to "Register", new_user_path %> | 
-<%= link_to "Forgot Password", password_forgot_path %>
+<%= link_to "Forgot Password", new_password_reset_path %>

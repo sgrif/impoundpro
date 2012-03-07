@@ -38,10 +38,6 @@
 	<fieldset>
 		<legend>Change Password</legend>
 		
-		<div class="field">
-	  		<%= f.label :current_password %><br />
-	  		<%= f.password_field :current_password %>
-	  	</div>
 	  	<div class="field">
 	  		<%= f.label :password %><br />
 	  		<%= f.password_field :password %>
@@ -56,5 +52,5 @@
 	</div>
 <% end %>
 
-<%= link_to 'Cancel Account', user_path, :confirm => "Are you sure? This will delete your account and any data attached to it.", :method => :delete, style: 'color: red' %> |
+<%= link_to 'Cancel Account', user_path, :confirm => "Are you sure? This will delete your account and any data attached to it.", :method => :delete, :style => 'color: red' %> |
 <%= link_to 'Back', user_path %>

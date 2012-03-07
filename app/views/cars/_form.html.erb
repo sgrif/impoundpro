@@ -36,7 +36,7 @@
   	</div>
   	<div class="field">
   		<%= f.label :state %>
-  		<%= select :car, :state, States.invert, {prompt: true}%>
+  		<%= select :car, :state, States.invert, { :prompt => true}%>
   	</div>
   	<div class="field">
   		<%= f.label :vin %>
@@ -88,7 +88,7 @@
   	</div>
   	<div class="field">
   		<%= f.label :lien_holder_state, 'State' %>
-  		<%= select :car, :lien_holder_state, States.invert, {prompt: true}%>
+  		<%= select :car, :lien_holder_state, States.invert, { :prompt => true}%>
   	</div>
   	<div class="field">
   		<%= f.label :lien_holder_zip, 'Zip' %>
@@ -112,7 +112,7 @@
   	</div>
   	<div class="field">
   		<%= f.label :driver_state, 'State' %>
-  		<%= select :car, :driver_state, States.invert, {prompt: true}%>
+  		<%= select :car, :driver_state, States.invert, { :prompt => true}%>
   	</div>
   	<div class="field">
   		<%= f.label :driver_zip, 'Zip' %>

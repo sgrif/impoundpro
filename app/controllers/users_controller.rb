@@ -84,7 +84,9 @@ class UsersController < ApplicationController
   # POST /paypal/ipn
   def ipn
     ipn_log = Logger.new(File.open("#{Rails.root}/log/ipn.log", "a"))
-    ipn_log.info params
+    params.each do |key, value|
+      ipn_log.info "#{key}: #{value}"
+    end
     render :nothing => true
   end
 

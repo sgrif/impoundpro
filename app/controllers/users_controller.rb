@@ -85,6 +85,7 @@ class UsersController < ApplicationController
   def ipn
     ipn_log = Logger.new(File.open("#{Rails.root}/log/ipn.log", "a"))
     ipn_log.info params
+    render :nothing
   end
 
 end

@@ -41,6 +41,12 @@ task :copy_sensitive_files, :roles => :app do
   run "cp #{shared_path}/database.yml #{release_path}/config/database.yml; cp #{shared_path}/paypal.rb #{release_path}/config/initializers/paypal.rb"
 end
 
+before "deploy:restart", :mod_cgi
+desc "make dispatch.fcgi executable"
+task :mod_cgi, :roles => :app do
+  run "chmod +x #{release_path}/public/dispatch.fcgi"
+end
+
 after "deploy:restart", "deploy:cleanup"
 
 # if you're still using the script/reaper helper you will need

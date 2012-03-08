@@ -19,10 +19,10 @@ role :app, domain # This may be the same as your `Web` server
 role :db,  domain, :primary => true # This is where Rails migrations will run
 
 namespace :deploy do
-  desc "cause Passenger to initate a restart"
-  task :restart do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
+#  desc "cause Passenger to initate a restart"
+#  task :restart do
+#    run "touch #{current_path}/tmp/restart.txt"
+#  end
   
   desc "reload the database with seed data"
   task :seed do

@@ -87,7 +87,8 @@ class CarsController < ApplicationController
     end
   end
   
-  #TODO Should I pop up asking if they want to change the mail_notice_of_lien_date to today when they select lien notice?
+  #TODO Should I pop up asking if they want to change the mail_notice_of_lien_date to today when they select lien notice? - YES
+  #TODO Make other dates changeable
   
   # GET /cars/1/owner_lien_notice.pdf
   def owner_lien_notice
@@ -126,7 +127,6 @@ class CarsController < ApplicationController
   end
   
   # GET /cars/1/lien_holder_mail_labels.pdf
-  #TODO Not in menus
   def lien_holder_mail_labels
     @car = Car.find(params[:id])
     
@@ -136,7 +136,6 @@ class CarsController < ApplicationController
   end
   
   # GET /cars/1/driver_mail_labels.pdf
-  #TODO Not in menus
   def driver_mail_labels
     @car = Car.find(params[:id])
     

@@ -10,12 +10,12 @@ prawn_document(:margin => [15,15,15,15]) do |pdf|
   pdf.draw_text @car.vin, :at => [310, 590]
   
   #TODO Do I fill in title number or the check boxes or the agency info?
+  #TODO Check 3rd box
   
-  pdf.draw_text @car.user.name, :at => [60, 131] #TODO Do I need the NM - PRC number?
+  pdf.draw_text @car.user.name, :at => [60, 131] #TODO Do I need the NM - PRC number? - Add to user form
   pdf.draw_text @car.user.address, :at => [80, 105]
   pdf.draw_text @car.user.phone_number, :at => [460, 105]
   pdf.draw_text "#{@car.user.city}, #{@car.user.state} #{@car.user.zip}", :at => [140, 80]
   pdf.draw_text Time.now.to_s(:short_date), :at => [465, 50]
   
-  pdf.image "#{Rails.root}/app/assets/images/06-50-State-Check-2.jpg", :width => 570, :height => 752
 end

@@ -145,8 +145,8 @@
   		<%= f.text_field :charge_mileage, :class => 'charge' %>
   	</div>
   	<div class="field">
-  		<%= f.label :charge_storage, 'Storage' %>
-  		<%= f.text_field :charge_storage, :class => 'charge' %>
+  		<%= f.label :storage_rate, 'Storage' %>
+  		<%= f.text_field :storage_rate, :class => 'charge' %>/day
   	</div>
   	<div class="field">
   		<%= f.label :charge_admin, 'Admin' %>
@@ -170,7 +170,8 @@
   	</div>
 </fieldset>
   	
-  	<% #TODO What to do for :preparers_name, :mvd_inquiry_made, and :mail_notice_of_lien_date %>
+  	<% #TODO What to do for :mvd_inquiry_made - default to yes, and :mail_notice_of_lien_date - update when forms are loaded %>
+  	<% #TODO Set preparers name to user field %>
   	<%= f.hidden_field :user_id %>
   	
   	<div class="field">

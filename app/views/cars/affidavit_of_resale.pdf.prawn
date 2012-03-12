@@ -19,10 +19,10 @@ prawn_document(:margin => [20, 20, 20, 20]) do |pdf|
   #TODO Do I leave the "vehicle was advertised" section blank?
   
   pdf.font_size 12
-  pdf.draw_text (@car.mail_notice_of_lien_date + 44.days).to_s(:month_and_day), :at => [225, 222]
-  pdf.draw_text (@car.mail_notice_of_lien_date + 44.days).to_s(:short_year), :at => [425, 222]
+  pdf.draw_text((@car.mail_notice_of_lien_date + 44.days).to_s(:month_and_day), :at => [225, 222])
+  pdf.draw_text((@car.mail_notice_of_lien_date + 44.days).to_s(:short_year), :at => [425, 222])
   
-  #TODO Is this date always 44 days after lien notice mail date and is it always at 5 PM?
+  #TODO Is this date always 44 days after lien notice mail date - cahngeable and is it always at 5 PM - changeable?
   
   pdf.draw_text @car.user.county, :at => [100, 202]
   pdf.draw_text @car.user.address, :at => [20, 183]
@@ -30,12 +30,11 @@ prawn_document(:margin => [20, 20, 20, 20]) do |pdf|
   pdf.draw_text @car.user.state, :at => [425, 183]
   pdf.draw_text @car.user.zip, :at => [490, 183]
   
-  #TODO Is this always the address given during registration?
-
   form_path = "#{Rails.root}/app/assets/images/04-Affidavit-of-Resale-2.jpg"
   pdf.image form_path, :width => 556, :height => 747
   
   #TODO What do I do with the "Public Auction Information Continued" and "Odometer Milage Statements"?
+  #TODO Add charge total - leave other fields blank
   
   pdf.font_size 14
   pdf.draw_text @car.user.name, :at => [90, 403]
@@ -44,5 +43,5 @@ prawn_document(:margin => [20, 20, 20, 20]) do |pdf|
   pdf.draw_text Time.now.to_s(:short_date), :at =>[475, 308]
   pdf.draw_text Time.now.to_s(:short_date), :at =>[475, 207]
   
-  #TODO Do I leave "Lien Claimant printed name" blank?
+  #TODO Do I leave "Lien Claimant printed name" blank? - Preparer's name or company name
 end

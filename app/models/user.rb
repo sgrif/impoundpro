@@ -1,7 +1,7 @@
 require 'digest/sha2'
 
 class User < ActiveRecord::Base
-  
+  #Allow changeable in state and out of state time limits for date of posting and date of auction
   validates :email, :presence => true, :uniqueness => true
   
   validates :name, :presence => true

@@ -25,6 +25,17 @@ gem 'stripe'
 gem 'prawn_rails'
 gem 'capistrano'
 
+group :development, :test do
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem "factory_girl_rails"
+  gem "capybara"
+  gem "guard-rspec"
+  gem "growl"
+end
+
 group :production do
   gem 'mysql'
 end

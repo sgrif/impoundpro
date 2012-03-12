@@ -1,19 +1,30 @@
 class PasswordResetsController < ApplicationController
   skip_before_filter :authorize
   
+  #GET /password_resets/new
   def new
   end
   
+  #POST /password_resets/new
   def create
     user = User.find_by_email(params[:email])
-    user.send_password_reset if user
-    redirect_to login_url, :notice => "Email sent with password reset instructions"
+    if user
+      user.send_password_reset
+      redirect_to login_url, :notice => "Email sent with password reset instructions"
+    else
+      redirect_to new_password_reset_path, :alert => "No account found for that email"
+    end
   end
   
+  #GET /password_resets/1/edit
   def edit
-    @user = User.find_by_password_reset_token!(params[:id])
+    @user = User.find_by_password_reset_token(params[:id])
+    unless @user
+      redirect_to new_password_reset_path, :alert => "Invalid reset token"
+    end
   end
   
+  #PUT /password_resets/1
   def update
     @user = User.find_by_password_reset_token!(params[:id])
     if @user.password_reset_sent_at < 2.hours.ago

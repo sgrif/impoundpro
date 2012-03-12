@@ -12,9 +12,6 @@ Tyler::Application.routes.draw do
     get 'logout' => :destroy
   end
 
-  get 'paypal/checkout' => 'users#paypal_checkout'
-  post 'paypal/ipn' => 'users#ipn'
-
   resource :user
   
   match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'

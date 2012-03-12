@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :paypal_checkout, :ipn]
+  skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password]
   
   # GET /user
   def show
@@ -15,12 +15,6 @@ class UsersController < ApplicationController
   # GET /user/new
   def new
     @user = User.new
-
-    if params[:PayerID]
-      @user.paypal_customer_token = params[:PayerID]
-      @user.paypal_payment_token = params[:token]
-      @user.email = @user.paypal.checkout_details.email
-    end
   end
 
   # GET /user/edit
@@ -65,32 +59,12 @@ class UsersController < ApplicationController
   # DELETE /user.json
   def destroy
     @user = current_user
-    @user.paypal.cancel
     @user.destroy
 
     respond_to do |format|
       format.html { redirect_to logout_url, :alert => 'Your account has been cancelled' }
       format.json { head :no_content }
     end
-  end
-  
-  # GET /paypal/checkout
-  def paypal_checkout
-    user = User.new
-    redirect_to user.paypal.checkout_url(
-      :return_url => new_user_url,
-      :cancel_url => root_url,
-      :ipn_url => paypal_ipn_url
-    )
-  end
-  
-  # POST /paypal/ipn
-  def ipn
-    note = PayPal::Recurring::Notification.new(params)
-    if @user = User.find_by_paypal_recurring_profile_token(note.payment_id)
-      @user.paypal_recurring_profile_token = nil
-    end
-    render :nothing => true
   end
 
 end

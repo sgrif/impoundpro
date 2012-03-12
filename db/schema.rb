@@ -60,15 +60,13 @@ ActiveRecord::Schema.define(:version => 20120307152319) do
     t.string   "salt"
     t.string   "name"
     t.string   "address"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
     t.string   "city"
     t.string   "state"
     t.string   "zip"
     t.string   "county"
     t.string   "phone_number"
-    t.string   "paypal_customer_token"
-    t.string   "paypal_recurring_profile_token"
     t.string   "auth_token"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"

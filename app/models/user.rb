@@ -15,9 +15,7 @@ class User < ActiveRecord::Base
   validates :password, :confirmation => true
   attr_reader :password
   attr_accessor :password_confirmation
-    
-  attr_accessor :paypal_payment_token
-  
+      
   before_create { generate_token(:auth_token) }
   
   has_many :cars, :dependent => :destroy
@@ -57,20 +55,10 @@ class User < ActiveRecord::Base
     UserMailer.password_changed(self).deliver
   end
   
-  def paypal
-    PaypalPayment.new(self)
-  end
-  
   def save_with_payment
     if valid?
-      response = paypal.make_recurring
-      self.paypal_recurring_profile_token = response.profile_id
       save!
     end
-  end
-  
-  def payment_provided? 
-    paypal_payment_token.present?
   end
   
   private

@@ -12,10 +12,6 @@ class ApplicationController < ActionController::Base
   def authorize
     unless current_user
       redirect_to login_url, :notice => "Please log in"
-    else
-      unless current_user.paypal_recurring_profile_token
-        redirect_to logout_url, :alert => "There's been an issue with your subscription, please contact support@impoundpro.com"
-      end
     end
   end
 end

@@ -1,8 +1,8 @@
 class UserMailer < ActionMailer::Base
   
-  def welcome(user, login_url)
+  def welcome(user)
     @user = user
-    @login_url = login_url
+
     mail(:to => @user.email, :subject => "Welcome to impoundpro.com")
   end
   

@@ -2,7 +2,7 @@ require 'digest/sha2'
 
 class User < ActiveRecord::Base
   #Allow changeable in state and out of state time limits for date of posting and date of auction
-  validates :email, :presence => true, :uniqueness => true
+  validates :email, :presence => true, :uniqueness => {:scope => :email, :message => "There is already an account for email %{value}"}
   
   validates :name, :presence => true
   validates :address, :presence => true
@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   private
   
   def password_must_be_present
-    errors.add(:password, "Missing password") unless hashed_password.present?
+    errors.add(:password, "is missing") unless hashed_password.present?
   end
   
   def generate_salt

@@ -31,7 +31,7 @@
   	</div>
   </fieldset>
   <fieldset>
-  	<legend>Step 3: Company Details</legend>
+  	<legend>Company Details</legend>
   	<div class="field">
   		<%= f.label :name %><br />
   		<%= f.text_field :name %>
@@ -49,12 +49,20 @@
   		<%= f.select :state, States.invert.sort, { :prompt => true} %>
   	</div>
   	<div class="field">
-  		<%= f.label :zip %><br />
-  		<%= f.text_field :zip %>
-  	</div>
+      <%= f.label :zip %><br />
+      <%= f.text_field :zip %>
+    </div>
+    <div class="field">
+      <%= f.label :county %><br />
+      <%= f.text_field :county %>
+    </div>
+    <div class="field">
+      <%= f.label :phone_number %><br />
+      <%= f.text_field :phone_number %>
+    </div>
   </fieldset>
   <div class="actions">
-  	<%= f.submit %>
+  	<%= f.submit "Register" %>
   </div>
 <% end %>
 

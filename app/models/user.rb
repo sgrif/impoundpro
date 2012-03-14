@@ -7,42 +7,21 @@ class User < ActiveRecord::Base
   validates :name, :presence => true
   validates :address, :presence => true
   validates :city, :presence => true
-  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state"}
+  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
   validates :zip, :presence => true
+  validates :phone_number, :presence => true
+  validates :county, :presence => true
   
-  validate :password_must_be_present
+  validate :phone_number_is_ten_digits
   
-  validates :password, :confirmation => true
-  attr_reader :password
-  attr_accessor :password_confirmation
+  attr_protected :password_digest
+  
+  has_secure_password
       
   before_create { generate_token(:auth_token) }
+  after_update :send_password_changed_notice
   
   has_many :cars, :dependent => :destroy
-  
-  def User.authenticate(email, password)
-    if user = find_by_email(email)
-      if user.hashed_password == encrypt_password(password, user.salt)
-        user
-      end
-    end
-  end
-  
-  def User.encrypt_password(password, salt)
-    Digest::SHA2.hexdigest(password + "wibble" + salt)
-  end
-  
-  def password=(password)
-    @password = password
-    if hashed_password.present?
-      UserMailer.password_changed(self).deliver
-    end
-    
-    if password.present?
-      generate_salt
-      self.hashed_password = self.class.encrypt_password(password, salt)
-    end
-  end
   
   def send_password_reset
     generate_token(:password_reset_token)
@@ -52,7 +31,11 @@ class User < ActiveRecord::Base
   end
   
   def send_password_changed_notice
-    UserMailer.password_changed(self).deliver
+    UserMailer.password_changed(self).deliver if self.password_digest_changed?
+  end
+  
+  def welcome
+    UserMailer.welcome(self).deliver
   end
   
   def save_with_payment
@@ -63,12 +46,8 @@ class User < ActiveRecord::Base
   
   private
   
-  def password_must_be_present
-    errors.add(:password, "is missing") unless hashed_password.present?
-  end
-  
-  def generate_salt
-    self.salt = self.object_id.to_s + rand.to_s
+  def phone_number_is_ten_digits
+    errors.add(:phone_number, "must be 10 digits") unless phone_number.gsub(/[^0-9]/, "").length == 10 || !phone_number.present?
   end
   
   def generate_token(column)
@@ -76,5 +55,4 @@ class User < ActiveRecord::Base
       self[column] = SecureRandom.hex(10)
     end while User.exists?(column => self[column])
   end
-  
 end

@@ -31,9 +31,17 @@
 	  		<%= f.select :state, States.invert.sort, { :prompt => true} %>
 	  	</div>
 	  	<div class="field">
-	  		<%= f.label :zip %><br />
-	  		<%= f.text_field :zip %>
-	  	</div>
+        <%= f.label :zip %><br />
+        <%= f.text_field :zip %>
+      </div>
+      <div class="field">
+        <%= f.label :county %><br />
+        <%= f.text_field :county %>
+      </div>
+      <div class="field">
+        <%= f.label :phone_number %><br />
+        <%= f.text_field :phone_number %>
+      </div>
 	</fieldset>
 	<fieldset>
 		<legend>Change Password</legend>
@@ -53,4 +61,4 @@
 <% end %>
 
 <%= link_to 'Cancel Account', user_path, :confirm => "Are you sure? This will delete your account and any data attached to it.", :method => :delete, :style => 'color: red' %> |
-<%= link_to 'Back', user_path %>
+<%= link_to 'Back', root_path %>

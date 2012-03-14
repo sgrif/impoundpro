@@ -1,9 +1,23 @@
 require 'spec_helper'
 
 describe User do
-  describe '#send_password_reset' do
-    let(:user) { Factory(:user) }
+  let(:user) { Factory(:user) }
+  
+  describe '#authenticate_password' do
+    context 'with valid credentials' do
+      it 'authenticates successfully' do
+        user.authenticate(user.password).should be_true
+      end
+    end
     
+    context 'with invalid password' do
+      it 'does not authenticate' do
+        user.authenticate("madeuppassword").should_not be_true
+      end
+    end
+  end
+  
+  describe '#send_password_reset' do
     it "generates a unique password_reset_token each time" do
       user.send_password_reset
       last_token = user.password_reset_token

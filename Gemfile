@@ -24,6 +24,7 @@ gem 'jquery-rails'
 gem 'stripe'
 gem 'prawn_rails'
 gem 'capistrano'
+gem 'bcrypt-ruby'
 
 group :development, :test do
   gem 'rspec-rails'
@@ -32,8 +33,10 @@ end
 group :test do
   gem "factory_girl_rails"
   gem "capybara"
+  gem "capybara-webkit"
   gem "guard-rspec"
   gem "growl"
+  gem "launchy"
 end
 
 group :production do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307152319) do
+ActiveRecord::Schema.define(:version => 20120313213524) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(:version => 20120307152319) do
 
   create_table "users", :force => true do |t|
     t.string   "email"
-    t.string   "hashed_password"
+    t.string   "password_digest"
     t.string   "salt"
     t.string   "name"
     t.string   "address"

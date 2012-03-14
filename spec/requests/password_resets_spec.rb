@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe "PasswordResets" do
-  let(:user) { Factory(:user) }
+  before { @user = create(:user) }
+  subject {@user}
   
-  context "requesting password reset" do
-    before(:each) do
+  context "when requesting password reset" do
+    def request(email)
       visit login_path
       click_link "Password"
       fill_in "Email", :with => email
@@ -12,91 +13,92 @@ describe "PasswordResets" do
     end
     
     context "with valid email" do
-      let(:email) { user.email }
-      
-      it "sends email to user" do
-        last_email.to.should include(user.email)
+      before { request(@user.email) }
+            
+      it "should send email" do
+        last_email.to.should include(@user.email)
       end
       
-      it "redirects to login" do
-        current_path.should eq(login_path)
-        page.should have_content("Email sent")
+      describe "redirected page" do
+        specify {current_path.should eq(login_path)}
+        specify {page.should have_content("Email sent")}
       end
     end
     
     context "with invalid email" do
-      let(:email) { "madeupemail@example.com" }
+      before { request("madeupemail@example.com") }
       
-      it "does not send email" do
+      it "should not send email" do
         last_email.should be_nil
       end
       
-      it "redirects to new password reset" do
-        current_path.should eq(new_password_reset_path)
-        page.should have_content("No account found")
+      describe "redirected page" do
+        specify {current_path.should eq(new_password_reset_path)}
+        specify {page.should have_content("No account found")}
       end
     end
   end
   
-  context "submitting new password" do
-    let(:user) { Factory(:user, :password_reset_token => "anything") }
+  context "when submitting new password" do
+    before { @params ||= {} }
+    
+    def request(params = {})
+      @user.update_attributes(params)
+      visit edit_password_reset_path(params[:password_reset_token])
+      fill_in "Password", :with => "newpassword"
+      fill_in "Password confirmation", :with => "newpassword"
+      click_button "Change Password"
+    end
     
     context "with valid password_reset_token" do
-      before(:each) do
-        visit edit_password_reset_path(user.password_reset_token)
-        fill_in "Password", :with => "password"
-        fill_in "Password confirmation", :with => "password"
-        click_button "Change Password"
-      end
+      before { @params[:password_reset_token] = "anything" }
       
       context "with token sent less than 2 hours ago" do
-        let(:user) { Factory(:user, :password_reset_token => "anything", :password_reset_sent_at => 1.hour.ago) }
-        
-        it "changes password" do
-          user.should eq(User.authenticate(user.email, "password"))
+        before do
+          @params[:password_reset_sent_at] = 1.hour.ago
+          request(@params)
         end
         
-        it "redirects to login" do
-          current_path.should eq(login_path)
-          page.should have_content("Password has been reset")
+        its(:password_digest) { should_not eql User.find_by_email(@user.email).password_digest }
+        
+        describe "redirected page" do
+          specify {current_path.should eq(login_path)}
+          specify {page.should have_content("Password has been reset")}
         end
         
-        it "emails user" do
-          last_email.to.should include(user.email)
+        it "should email user" do
+          last_email.to.should include(@user.email)
         end
       end
       
       context "with token sent more than 2 hours ago" do
-        let(:user) { Factory(:user, :password_reset_token => "anything", :password_reset_sent_at => 3.hours.ago) }
-        
-        it "does not change password" do
-          user.should_not eq(User.authenticate(user.email, "password"))
+        before do
+          @params[:password_reset_sent_at] = 3.hours.ago
+          request(@params)
         end
         
-        it "redirects to new password reset" do
-          current_path.should eq(new_password_reset_path)
-          page.should have_content("Password reset has expired")
+        its(:password_digest) { should eql User.find_by_email(@user.email).password_digest }
+        
+        describe "redirected page" do
+          specify {current_path.should eq(new_password_reset_path)}
+          specify {page.should have_content("Password reset has expired")}
         end
         
-        it "does not email user" do
+        it "should not email user" do
           last_email.should be_nil
         end
       end
     end
+  end
+  
+  context "when accessing invalid token " do
+    before { visit edit_password_reset_path "nothing" }
     
-    context "with unkown password_reset_token" do
-      before(:each) do
-        visit edit_password_reset_path("nothing")
-      end
-      
-      it "should not change password" do
-        user.should_not eq(User.authenticate(user.email, "password"))
-      end
-      
-      it "redirects to new password reset" do
-        current_path.should eq(new_password_reset_path)
-        page.should have_content("Invalid reset token")
-      end
+    its(:password_digest) { should eql User.find_by_email(@user.email).password_digest }
+    
+    describe "redirected page" do
+      specify {current_path.should eq(new_password_reset_path)}
+      specify {page.should have_content("Invalid reset token")}
     end
   end
 end

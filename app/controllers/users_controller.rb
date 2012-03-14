@@ -3,13 +3,8 @@ class UsersController < ApplicationController
   
   # GET /user
   def show
-    #TODO Find a use for this page
     @user = current_user
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @user }
-    end
+    render :edit
   end
 
   # GET /user/new
@@ -28,8 +23,8 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
 
     respond_to do |format|
-      if @user.save_with_payment
-        UserMailer.welcome(@user)
+      if @user.save
+        @user.welcome
         format.html { redirect_to login_path, :notice => 'Account was successfully created. Please log in to continue.' }
         format.json { render :json => @user, :status => :created, :location => @user }
       else
@@ -46,6 +41,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
+        @user.send_password_changed_notice
         format.html { redirect_to user_path, :notice => 'Account details successfully updated.' }
         format.json { head :no_content }
       else

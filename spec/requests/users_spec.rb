@@ -24,7 +24,12 @@ describe "Users" do
       click_button "Register"
     end
     
-    shared_examples "with invalid field" do |error|
+    context "with invalid fields" do
+      before(:each) do
+        @params[:email] = @user.email
+        @params[:phone_number] = '764-4444'
+      end
+      
       describe "user count" do
         specify { lambda{request}.should_not change{User.count} }
       end
@@ -36,8 +41,7 @@ describe "Users" do
         end
         
         specify {current_path.should eq(user_path)}
-        specify {all("#error_explanation li").should have(1).items}
-        specify {page.should have_content(error)}
+        describe "errors" do it{all("#error_explanation li").should have_at_least(1).items} end
       end
     end
     
@@ -57,28 +61,6 @@ describe "Users" do
         specify {page.should have_content("successfully created")}
       end
     end
-    
-    context "with email that isn't unique" do
-      before(:each) { @params[:email] = @user.email }
-      include_examples "with invalid field", "already an account"
-    end
-    
-    context "with unconfirmed password" do
-      before(:each) { @params[:password_confirmation] = "doesntmatch" }
-      include_examples "with invalid field", "Password doesn't match confirmation" 
-    end
-    
-    context "with invalid phone number" do
-      before(:each) { @params[:phone_number] = '764-4444' }
-      include_examples "with invalid field", "must be 10 digits"
-    end
-    
-    Factory.attributes_for(:user).each do |key, value|
-      context "with blank #{key}" do
-        before(:each) { @params[key] = nil }
-        include_examples "with invalid field", "#{key.to_s.gsub(/_/, " ").capitalize} can't be blank"
-      end
-    end
   end
   
   describe "control panel" do
@@ -95,6 +77,8 @@ describe "Users" do
     context "when #update" do
       before(:each) do
         @params = attributes_for :user
+        @params[:name] = "newname"
+        @params[:address] = "newaddress"
       end
       
       def request
@@ -112,41 +96,19 @@ describe "Users" do
         before(:each) do
           @params[:password] = ""
           @params[:password_confirmation] = ""
+          request
         end
-          
-        context "with no other changes" do
-          before(:each) { request }
-          
-          it "should not email user" do
-            last_email.should be_nil
-          end
-          
-          its(:password_digest) { should eql user.password_digest }
-          
-          describe "resulting page" do
-            specify {current_path.should eq user_path}
-            specify {page.should have_content "successfully updated"}
-          end
+                  
+        it "should not email user" do
+          last_email.should be_nil
         end
         
-        context "with other changes" do
-          before(:each) do
-            @params[:name] = "newname"
-            @params[:address] = "newaddress"
-            request
-          end
-                    
-          it "should not email user" do
-            last_email.should be_nil
-          end
-          
-          its(:password_digest) { should eql user.password_digest }
-          its(:name) { should_not eql user.name }
-          
-          describe "resulting page" do
-            specify {current_path.should eq user_path}
-            specify {page.should have_content "successfully updated"}
-          end
+        its(:password_digest) { should eql user.password_digest }
+        its(:name) { should_not eql user.name }
+        
+        describe "resulting page" do
+          specify {current_path.should eq user_path}
+          specify {page.should have_content "successfully updated"}
         end
       end
       

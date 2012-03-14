@@ -29,6 +29,7 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
   
   config.include(MailerMacros)
+  config.include(CapybaraFormMacros)
   config.include Factory::Syntax::Methods
   config.before(:each) {reset_email}
 end

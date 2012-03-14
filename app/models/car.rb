@@ -73,6 +73,7 @@ class Car < ActiveRecord::Base
     self.charge_admin   ||= 0.0
     self.charge_other   ||= 0.0
     self.tax            ||= 0
+    self.preparers_name ||= self.user.preparers_name if self.user
   end
   
   def ensure_tax_is_decimal

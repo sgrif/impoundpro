@@ -56,5 +56,9 @@ States = {
       'WA' => 'Washington',
       'WV' => 'West Virginia',
       'WI' => 'Wisconsin',
-      'WY' => 'Wyoming'
+      'WY' => 'Wyoming',
+      'AA' => 'Armed Forces (AA)',
+      'AE' => 'Armed Forces (AE)',
+      'AP' => 'Armed Forces (AP)',
+      'MP' => 'Northern Mariana Islands'
     }

@@ -29,8 +29,7 @@ class CarsController < ApplicationController
   # GET /cars/new
   # GET /cars/new.json
   def new
-    @car = Car.new
-    @car.user = current_user
+    @car = current_user.cars.build
 
     respond_to do |format|
       format.html # new.html.erb

@@ -64,7 +64,7 @@
   	</div>
   	<div class="field">
   		<%= f.label :owner_state, 'State' %>
-  		<%= select :car, :owner_state, States.invert.sort, {:include_blank => true}%>
+  		<%= select :car, :owner_state, States.invert.sort, {:prompt => true}%>
   	</div>
   	<div class="field">
   		<%= f.label :owner_zip, 'Zip' %>
@@ -123,7 +123,7 @@
 	<legend>Tow Information</legend>
 	<div class="field">
 		<%= f.label :date_towed, 'Tow Date' %>
-		<%= f.datetime_select :date_towed %>
+		<%= f.date_select :date_towed %>
 	</div>
 	<div class="field">
 		<%= f.label :tow_requested_by, 'Requester' %>
@@ -145,8 +145,8 @@
   		<%= f.text_field :charge_mileage, :class => 'charge' %>
   	</div>
   	<div class="field">
-  		<%= f.label :storage_rate, 'Storage' %>
-  		<%= f.text_field :storage_rate, :class => 'charge' %>/day
+  		<%= f.label :charge_storage, 'Storage (Per Day)' %>
+  		<%= f.text_field :charge_storage, :class => 'charge' %>
   	</div>
   	<div class="field">
   		<%= f.label :charge_admin, 'Admin' %>
@@ -168,6 +168,14 @@
   		<%= f.label :charge_total, 'Total' %>
   		<%= f.text_field :charge_total, {:readonly => true}%>
   	</div>
+</fieldset>
+<fieldset>
+  <legend>Entry Information</legend>
+  
+  <div class="field">
+    <%= f.label :preparers_name %>
+    <%= f.text_field :preparers_name %>
+  </div>
 </fieldset>
   	
   	<% #TODO What to do for :mvd_inquiry_made - default to yes, and :mail_notice_of_lien_date - update when forms are loaded %>

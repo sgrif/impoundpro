@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120313213524) do
+ActiveRecord::Schema.define(:version => 20120314182047) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20120313213524) do
     t.string   "auth_token"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.string   "preparers_name"
   end
 
 end

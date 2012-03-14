@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   private
   
   def phone_number_is_ten_digits
-    errors.add(:phone_number, "must be 10 digits") unless phone_number.gsub(/[^0-9]/, "").length == 10 || !phone_number.present?
+    errors.add(:phone_number, "must be 10 digits") unless phone_number.gsub(/[^0-9]/, "").length >= 10 || !phone_number.present?
   end
   
   def generate_token(column)

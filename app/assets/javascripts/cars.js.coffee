@@ -9,8 +9,8 @@ update_totals = () ->
   charges = ((Number) elem.value for elem in $('.charge'))
   subtotal = charges.reduce (x, y) -> x + y
   total = subtotal * true_tax (Number) $('#car_tax').val()
-  $('#car_charge_subtotal').val(subtotal)
-  $('#car_charge_total').val(Math.round(total * 100)/100)
+  $('#car_charge_subtotal').val(subtotal.toFixed(2))
+  $('#car_charge_total').val(total.toFixed(2))
 
 jQuery ->
   $('input.charge').change ->

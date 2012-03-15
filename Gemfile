@@ -39,6 +39,8 @@ group :test do
   gem "growl"
   gem "launchy"
   gem 'pdf-inspector', :require => "pdf/inspector"
+  gem 'database_cleaner'
+  gem 'shoulda-matchers'
 end
 
 group :production do

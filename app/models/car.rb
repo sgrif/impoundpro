@@ -48,6 +48,14 @@ class Car < ActiveRecord::Base
     self.charge_subtotal * (self.tax + 1)
   end
   
+  def tax_amount
+    if self.tax > 0
+      self.charge_total - self.charge_subtotal
+    else
+      0
+    end
+  end
+  
   def charges
     vals = {
       "Hookup" => self.charge_hook_up,
@@ -55,15 +63,12 @@ class Car < ActiveRecord::Base
       "Storage" => self.charge_storage,
       "Admininistration" => self.charge_admin,
       "Other" => self.charge_other,
-      "Tax" => self.tax_amount}
+      "Tax" => self.tax_amount
+    }
     vals.delete_if{|key, value| value <= 0.0}
     vals
   end
-  
-  def tax_amount
-    self.charge_total - self.charge_subtotal if self.tax > 0
-  end
-  
+
   protected
   
   def init
@@ -72,8 +77,9 @@ class Car < ActiveRecord::Base
     self.charge_storage ||= 0.0
     self.charge_admin   ||= 0.0
     self.charge_other   ||= 0.0
-    self.tax            ||= 0
+    self.tax            ||= 0.0
     self.preparers_name ||= self.user.preparers_name if self.user
+    self.mail_notice_of_lien_date ||= Date.today
   end
   
   def ensure_tax_is_decimal

@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
   after_update :send_password_changed_notice
   
-  has_many :cars, :dependent => :destroy
+  has_many :cars, :dependent => :destroy, :order => "created_at DESC"
   
   def send_password_reset
     generate_token(:password_reset_token)

@@ -22,7 +22,7 @@ FactoryGirl.define do
   end
   
   Car.blueprint do
-    year {rand_in_range(1990, Time.now.year + 1)}
+    year {rand_in_range(1990, Time.now.year + 1).to_i}
     make {Faker::Name.last_name}
     model {Faker::Company.catch_phrase.split(' ')[0]}
     size {"#{[2,4].sample}-Door"}
@@ -49,9 +49,9 @@ FactoryGirl.define do
     driver_state {Faker::Address.us_state_abbr}
     driver_zip {Faker::Address.zip_code}
     
-    date_towed {rand_time(3.days.ago, Time.now)}
+    date_towed {rand_time(60.days.ago, Time.now)}
     tow_requested_by {Faker::Company.name}
-    tow_reason {Faker::Lorem.words}
+    tow_reason {Faker::Lorem.words.join(' ')}
     
     preparers_name {Faker::Name.name}
     
@@ -60,10 +60,8 @@ FactoryGirl.define do
     charge_storage{rand_in_range(0,2).to_i * rand_in_range(0.0,100.00).round(2)}
     charge_admin{rand_in_range(0,2).to_i * rand_in_range(0.0,100.00).round(2)}
     charge_other{rand_in_range(0,2).to_i * rand_in_range(0.0,100.00).round(2)}
-    tax = 0.074375
-    
-    created_at{rand_time(60.days.ago, Time.now)}
-    
+    tax {0.074375}
+     
     user
   end
 end

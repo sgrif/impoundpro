@@ -49,7 +49,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       if @car.save
-        format.html { redirect_to @car, :notice => 'Car was successfully created.' }
+        format.html { redirect_to cars_path, :notice => 'Car was successfully created.' }
         format.json { render :json => @car, :status => :created, :location => @car }
       else
         format.html { render :action => "new" }
@@ -81,7 +81,7 @@ class CarsController < ApplicationController
     @car.destroy
 
     respond_to do |format|
-      format.html { redirect_to cars_url }
+      format.html { redirect_to cars_url, :notice => 'Car was successfully deleted.' }
       format.json { head :no_content }
     end
   end
@@ -182,7 +182,7 @@ class CarsController < ApplicationController
   # GET /cars/1/unclaimed_vehicles_report.pdf
   def unclaimed_vehicles_report
     @user = current_user
-    @cars = @user.cars.where("created_at >= '#{30.days.ago}'") #TODO Is this the correct criteria for the cars?
+    @cars = @user.cars.where("date_towed >= '#{30.days.ago}'") #TODO Is this the correct criteria for the cars?
     
     
     respond_to do |format|

@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   validates :phone_number, :presence => true
   validates :county, :presence => true
     
-  attr_protected :password_digest
+  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :email, :preparers_name
   
   has_secure_password
       

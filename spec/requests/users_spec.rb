@@ -83,11 +83,7 @@ describe "Users" do
       
       def request
         @params.each do |key, value|
-          fill_in "user_#{key}", :with => value rescue {}
-        end
-        select States[@params[:state]], :from => "user_state" if @params[:state]
-        if @stop
-          save_and_open_page
+          fill_field "user_#{key}", value, page
         end
         click_button "Update"
       end
@@ -103,7 +99,7 @@ describe "Users" do
           last_email.should be_nil
         end
         
-        its(:password_digest) { should eql user.password_digest }
+        its(:password_digest) { should eql(user.password_digest) }
         its(:name) { should_not eql user.name }
         
         describe "resulting page" do

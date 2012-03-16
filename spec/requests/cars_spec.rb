@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pdf/inspector'
 
 describe "Cars" do
   before(:each) { car }
@@ -162,6 +163,18 @@ describe "Cars" do
     
     its("current_path") { should eq(owner_lien_notice_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+    
+    context "file" do
+      subject { PDF::Inspector::Page.analyze(pdf.source) }
+      
+      it "should have correct number of pages" do
+        if car.charges.count <= 4
+          subject.pages.count.should eq(1)
+        else
+          subject.pages.count.should eq(2)
+        end
+      end
+    end
   end
   
   describe "#lien_holder_lien_notice.pdf" do
@@ -283,6 +296,7 @@ describe "Cars" do
   
   describe "#unclaimed_vehicles_report.pdf" do
     let(:pdf) do
+      rand(20).times {create(:car, :user => user)}
       index
       find(:xpath, "//a[@href='#{cars_unclaimed_vehicles_report_path(:format => :pdf)}']").click
       page
@@ -292,5 +306,11 @@ describe "Cars" do
     
     its("current_path") { should eq(cars_unclaimed_vehicles_report_path(:format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+    
+    describe "file" do
+      subject { PDF::Inspector::Page.analyze(pdf.source) }
+      
+      its("pages.count") { should eq((user.reload.cars.count/10.0).ceil), "Expected #{(user.cars.count/10.0).ceil} pages, got #{subject} (#{user.cars.count} cars)" }
+    end
   end
 end

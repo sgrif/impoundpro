@@ -17,7 +17,7 @@ FactoryGirl.define do
     state {Faker::Address.us_state_abbr}
     zip {Faker::Address.zip_code}
     phone_number {Faker::PhoneNumber.phone_number}
-    county {Faker::Lorem.words(1)}
+    county {Faker::Lorem.words.first}
     preparers_name {Faker::Name.name}
   end
   

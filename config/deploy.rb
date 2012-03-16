@@ -38,7 +38,7 @@ end
 
 desc "copy config files containing sensitive information"
 task :copy_sensitive_files, :roles => :app do
-  run "cp #{shared_path}/database.yml #{release_path}/config/database.yml; cp #{shared_path}/paypal.rb #{release_path}/config/initializers/paypal.rb"
+  run "cp #{shared_path}/database.yml #{release_path}/config/database.yml;"
 end
 
 before "deploy:restart", :mod_cgi

@@ -7,3 +7,7 @@ en:
     attributes:
       user:
         password_digest: 'Password'
+  helpers:
+    submit:
+      user:
+        create: "Register"

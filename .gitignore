@@ -15,7 +15,7 @@
 /tmp
 
 # Ignore sensitive information
-/config/initializers/paypal.rb
+/config/initializers/stripe.rb
 /config/database.yml
 
 # Ignore precompiled assets

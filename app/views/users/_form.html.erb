@@ -16,7 +16,7 @@
   	
   	<div class="field">
   		<%= f.label :email %><br />
-  		<%= f.text_field :email %>
+  		<%= f.email_field :email %>
   	</div>
   	<div class="field">
   		<%= f.label :password %><br />
@@ -50,8 +50,15 @@
   		<%= f.text_field :zip %>
   	</div>
   	<div class="field">
+  	  <%= f.label :county %><br />
+  	  <%= f.text_field :county %>
+  	<div class="field">
       <%= f.label :phone_number %><br />
-      <%= f.text_field :phone_number %>
+      <%= f.phone_field :phone_number %>
+    </div>
+    <div class="field">
+      <%= f.label :preparers_name, "Form preparers name" %>
+      <%= f.text_field :preparers_name %>
     </div>
   </fieldset>
   <div class="actions">

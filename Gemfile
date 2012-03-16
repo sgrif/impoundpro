@@ -38,7 +38,6 @@ group :test do
   gem "guard-rspec"
   gem "growl"
   gem "launchy"
-  gem 'pdf-inspector', :require => "pdf/inspector"
   gem 'database_cleaner'
   gem 'shoulda-matchers'
 end

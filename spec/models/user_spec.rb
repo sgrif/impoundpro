@@ -1,19 +1,20 @@
 require 'spec_helper'
 
 describe User do
-  let(:user) { Factory(:user) }
+  let(:user) { create(:user) }
   
-  describe '#authenticate_password' do
+  subject { user }
+  
+  it{ should validate_uniqueness_of(:email).with_message("There is already an account for email #{user.email}") }
+  [:email, :name, :address, :city, :state, :zip, :phone_number, :county].each { |field| it{ should validate_presence_of(field) } }
+  
+  describe '#authenticate' do
     context 'with valid credentials' do
-      it 'authenticates successfully' do
-        user.authenticate(user.password).should be_true
-      end
+      it { subject.authenticate(subject.password).should be }
     end
     
     context 'with invalid password' do
-      it 'does not authenticate' do
-        user.authenticate("madeuppassword").should_not be_true
-      end
+      it { subject.authenticate("madeuppassword").should_not be }
     end
   end
   

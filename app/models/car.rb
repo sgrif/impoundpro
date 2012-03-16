@@ -7,19 +7,19 @@ class Car < ActiveRecord::Base
   validates :model, :presence => true
   validates :size, :presence => true
   validates :color, :presence => true
-  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "State %{value} is not a valid state"}
-  validates :vin, :presence => true, :uniqueness => {:scope => :user_id, :message => "Car already exists with this VIN"}
-  validates :license_plate_number, :presence => true, :uniqueness => {:scope => :user_id, :message => "Car already exists with this License Plate Number"}
+  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state"}
+  validates :vin, :presence => true, :uniqueness => {:scope => :user_id, :message => "There is already an active car on your account with this vin"}
+  validates :license_plate_number, :presence => true, :uniqueness => {:scope => :user_id, :message => "There is already an active car on your account with this LP#"}
   
   validates :owner_name, :presence => true
   validates :owner_address, :presence => true
   validates :owner_city, :presence => true
-  validates :owner_state, :presence => true, :inclusion => {:in => States.keys, :message => "Owner State %{value} is not a valid state"}
+  validates :owner_state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state"}
   validates :owner_zip, :presence => true
   
-  validates :lien_holder_state, :inclusion => {:in => States.keys, :message => "Lien Holder State %{value} is not a valid state", :allow_blank => true}
+  validates :lien_holder_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
   
-  validates :driver_state, :inclusion => {:in => States.keys, :message => "Lien Holder State %{value} is not a valid state", :allow_blank => true}
+  validates :driver_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
   
   validates :date_towed, :presence => true
   validates :tow_requested_by, :presence => true

@@ -11,9 +11,7 @@ class User < ActiveRecord::Base
   validates :zip, :presence => true
   validates :phone_number, :presence => true
   validates :county, :presence => true
-  
-  validate :phone_number_is_ten_digits
-  
+    
   attr_protected :password_digest
   
   has_secure_password
@@ -45,10 +43,6 @@ class User < ActiveRecord::Base
   end
   
   private
-  
-  def phone_number_is_ten_digits
-    errors.add(:phone_number, "must be 10 digits") unless phone_number.gsub(/[^0-9]/, "").length >= 10 || !phone_number.present?
-  end
   
   def generate_token(column)
     begin 

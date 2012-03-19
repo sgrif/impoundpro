@@ -1,7 +1,7 @@
 prawn_document(:margin => [15,15,15,15], :page_layout => :landscape) do |pdf|
-  x = 0
-  while x < @cars.count
-    cars = @cars.slice(x, 10)
+  pages = (@cars.count/10.0).ceil
+  (0..pages-1).each do |x|
+    cars = @cars.slice(x*10, 10)
     
     pdf.image "#{Rails.root}/app/assets/images/03-30-Day-Unclaimed-Vehicles-Report.jpg", :width => 757, :height => 532
     
@@ -27,6 +27,5 @@ prawn_document(:margin => [15,15,15,15], :page_layout => :landscape) do |pdf|
       pdf.draw_text car.tow_reason, :at => [651, 360 - i * row_height]
     end
     
-    x += 10
   end
 end

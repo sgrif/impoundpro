@@ -10,7 +10,8 @@ end
 FactoryGirl.define do
   User.blueprint do 
     email {Faker::Internet.email}
-    password {Faker::Lorem.words(1)}
+    password {Faker::Lorem.words.first}
+    password_confirmation {password}
     name {Faker::Company.name}
     address {Faker::Address.street_address}
     city {Faker::Address.city}

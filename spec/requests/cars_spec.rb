@@ -296,7 +296,7 @@ describe "Cars" do
   
   describe "#unclaimed_vehicles_report.pdf" do
     let(:pdf) do
-      rand(20).times {create(:car, :user => user)}
+      create_list :car, 25, :user => user
       index
       find(:xpath, "//a[@href='#{cars_unclaimed_vehicles_report_path(:format => :pdf)}']").click
       page
@@ -309,8 +309,8 @@ describe "Cars" do
     
     describe "file" do
       subject { PDF::Inspector::Page.analyze(pdf.source) }
-      
-      its("pages.count") { should eq((user.reload.cars.count/10.0).ceil), "Expected #{(user.cars.count/10.0).ceil} pages, got #{subject} (#{user.cars.count} cars)" }
+            
+      its("pages.count") { pdf; should eq((user.cars.where("date_towed >= '#{30.days.ago}'").count/10.0).ceil) }
     end
   end
 end

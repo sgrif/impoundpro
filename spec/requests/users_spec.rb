@@ -1,154 +1,133 @@
 require 'spec_helper'
 
 describe "Users" do
-  before(:each) {@user = create(:user)}
+  before(:each) { user }
   
-  let(:user) {User.find_by_email(@user.email)}
+  let(:user) { create :user }
+  let(:user_attributes) { attributes_for :user }
+  let(:credit_card_info) do
+    {
+      :card_number => card_number,
+      :card_code => card_code,
+      :card_month => card_month,
+      :card_year => card_year
+    }
+  end
+  let(:card_number) { "4242424242424242" }
+  let(:card_code) { "123" }
+  let(:card_month) { 3.months.since }
+  let(:card_year) { 1.year.since }
   
-  describe "registering" do   
-    before(:each) do
-      @params = attributes_for :user
+  let(:login) do
+    visit login_path
+    fill_in "email", :with => user.email
+    fill_in "password", :with => user.password
+    click_button "Login"
+    page
+  end
+  
+  subject { login_page }
+  
+  describe "#create" do   
+    let(:create_request) do
       visit login_path
       click_link "Register"
-    end
-    
-    let(:user) {User.find_by_email(@params[:email])}
-    
-    def request
-      @params.each do |key, value|
-        fill_in "user_#{key}", :with => value rescue {}
+      fill_cc(credit_card_info, page)
+      user_attributes.each do |key, value|
+        fill_field "user_#{key}", value, page
       end
-      fill_in "user_password_confirmation", :with => @params[:password] if @params[:password] && !@params[:password_confirmation]
-      select States[@params[:state]], :from => "user_state" if @params[:state]
-      save_and_open_page if @stop
       click_button "Register"
+      page
     end
+    
+    subject { create_request }
     
     context "with invalid fields" do
-      before(:each) do
-        @params[:email] = @user.email
-        @params[:phone_number] = '764-4444'
+      let(:user_attributes) { attributes_for :user, :email => user.email, :password_confirmation => "" }
+      
+      it { lambda{ create_request }.should_not change(User, :count) }
+      its("current_path") { should eq(user_path) }
+      it { subject.all("#error_explanation li").should have_at_least(1).errors }
+      it { should_not have_sent_email }
+    end
+    
+    context "with valid fields" do 
+      it { lambda { create_request }.should change(User, :count) }
+      its("current_path") { should eq(login_path) }
+      it { should have_content("successfully created") }
+      it { should have_sent_email.to(user_attributes[:email]) }
+    end
+  end
+  
+  describe "#update" do
+    let(:update_request) do
+      login
+      click_link "User"
+      user_attributes.each do |key, value|
+        fill_field "user_#{key}", value, page
+      end
+      click_button "Update"
+      page
+    end
+    
+    subject { update_request }
+    
+    context "with new password" do
+      context "with valid fields" do
+        its("current_path") { should eq user_path }
+        it { should have_content "successfully updated" }
+        it { lambda { update_request }.should change(user, :attributes){user.reload.attributes} }
+        it { lambda { update_request }.should change(user.reload, :password_digest){user.reload.password_digest} }
+        it { should have_sent_email.to(user_attributes[:email]) }
       end
       
-      describe "user count" do
-        specify { lambda{request}.should_not change{User.count} }
-      end
-      
-      describe "resulting page" do
-        before { request }
-        it "should not have emailed the user" do
-          last_email.should be_nil
-        end
+      context "with invalid fields" do
+        let(:user_attributes) { attributes_for :user, :password_confirmation => '', :email => '' }
         
-        specify {current_path.should eq(user_path)}
-        describe "errors" do it{all("#error_explanation li").should have_at_least(1).items} end
+        its("current_path") { should eq user_path }
+        it { subject.all("#error_explanation li").should have_at_least(1).errors }
+        it { lambda { update_request }.should_not change(user, :attributes){user.reload.attributes} }
+        it { lambda { update_request }.should_not change(user.reload, :password_digest) }
+        it { should_not have_sent_email }
       end
     end
     
-    context "with valid credentials" do  
-      it "adds a new user" do
-        expect { request }.to change{User.count}.by(1)
-        user.should be
+    context "without new password" do
+      let(:user_attributes) { attributes_for :user, :password => '', :password_confirmation => '' }
+      
+      context "with valid fields" do
+        its("current_path") { should eq user_path }
+        it { should have_content "successfully updated" }
+        it { lambda { update_request }.should change(user, :attributes){user.reload.attributes} }
+        it { lambda { update_request }.should_not change(user.reload, :password_digest) }
+        it { should_not have_sent_email }
       end
       
-      describe "resulting page" do
-        before(:each) { request }
-        it "should have emailed the user" do
-          last_email.to.should include(@params[:email])
-        end
+      context "with invalid fields" do 
+        let(:user_attributes) { attributes_for :user, :password => '', :password_confirmation => '', :email => '' }
         
-        specify {current_path.should eq(login_path)}
-        specify {page.should have_content("successfully created")}
+        its("current_path") { should eq user_path }
+        it { subject.all("#error_explanation li").should have_at_least(1).errors }
+        it { lambda { update_request }.should_not change(user, :attributes){user.reload.attributes} }
+        it { lambda { update_request }.should_not change(user.reload, :password_digest) }
+        it { should_not have_sent_email }
       end
     end
   end
   
-  describe "control panel" do
-    subject { @user }
-        
-    before(:each) do 
-      visit login_path
-      fill_in "email", :with => @user.email
-      fill_in "password", :with => @user.password
-      click_button "Login"
+  describe "#destroy" do
+    let(:destroy_request) do
+      login
       click_link "User"
+      click_link "Cancel Account"
+      page
     end
     
-    context "when #update" do
-      before(:each) do
-        @params = attributes_for :user
-        @params[:name] = "newname"
-        @params[:address] = "newaddress"
-      end
-      
-      def request
-        @params.each do |key, value|
-          fill_field "user_#{key}", value, page
-        end
-        click_button "Update"
-      end
-            
-      context "without changed password" do
-        before(:each) do
-          @params[:password] = ""
-          @params[:password_confirmation] = ""
-          request
-        end
-                  
-        it "should not email user" do
-          last_email.should be_nil
-        end
-        
-        its(:password_digest) { should eql(user.password_digest) }
-        its(:name) { should_not eql user.name }
-        
-        describe "resulting page" do
-          specify {current_path.should eq user_path}
-          specify {page.should have_content "successfully updated"}
-        end
-      end
-      
-      context "with changed password" do
-        before(:each) do
-          @params[:password] = "newpass"
-          @params[:password_confirmation] = "newpass"
-          request
-        end
-        
-        it "should email user" do
-          last_email.to.should include(@user.email)
-          last_email.subject.should eq 'impoundpro.com password changed'
-        end
-        
-        its(:password_digest) { should_not eql user.password_digest }
-                
-        describe "resulting page" do
-          specify {current_path.should eq user_path}
-          specify {page.should have_content "successfully updated"}
-        end
-      end
-    end
+    subject { destroy_request }
     
-    context "when #destroy" do
-      def request
-        click_link "Cancel Account"
-      end
-      
-      it "should delete user" do
-        expect{request}.to change{User.count}.by(-1)
-        user.should_not be
-      end
-      
-      it "should delete auth cookie" do
-        expect{request}.to change{Capybara.current_session.driver.request.cookies['auth_token']}.to(nil)
-      end
-      
-      describe "resulting page" do
-        before { request }
-        
-        specify { current_path.should eq login_path }
-        specify { page.should have_content "account has been cancelled"}
-      end
-    end
+    it { expect { destroy_request }.to change(User, :count).by(-1) }
+    it { login; expect { destroy_request }.to change(nil, :auth_token){page.driver.request.cookies['auth_token']}.to(nil) }
+    its("current_path") { should eq login_path }
+    it { should have_content "account has been cancelled" }
   end
 end

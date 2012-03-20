@@ -10,26 +10,33 @@
       </ul>
     </div>
   <% end %>
+  <%= f.hidden_field :stripe_card_token %>
 
+  
   <fieldset id="credit_card_info">
     <legend>Credit Card Info</legend>
-    <div id="stripe_error">
-      <noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
-    </div>
-    <div class="field">
-      <%= label_tag :card_number, "Credit Card Nubmer" %><br/>
-      <%= text_field_tag :card_number, nil, :name => nil %>
-    </div>
-    <div class="field">
-      <%= label_tag :card_code, "Security Code" %><br/>
-      <%= text_field_tag :card_code, nil, :name => nil %>
-    </div>
-    <div class="field">
-      <%= label_tag :card_month, "Card Expiration" %><br />
-      <%= select_month nil, {:add_month_numbers => true, :prompt => true}, {:name => nil, :id => "card_month"}%>
-      <%= select_year nil, {:start_year => Date.today.year, :end_year => Date.today.year+15, :prompt => true}, {:name => nil, :id => "card_year"}%>
-    </div>
+    <% if @user.stripe_card_token %>
+      Payment info provided.
+    <% else %>
+      <div id="stripe_error">
+        <noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+      </div>
+      <div class="field">
+        <%= label_tag :card_number, "Credit Card Number" %><br/>
+        <span><%= text_field_tag :card_number, nil, :name => nil, :size => 30 %></span>
+      </div>
+      <div class="field">
+        <%= label_tag :card_code, "Security Code" %><br/>
+        <span><%= text_field_tag :card_code, nil, :name => nil, :size => 30  %></span>
+      </div>
+      <div class="field">
+        <%= label_tag :card_month, "Card Expiration" %><br />
+        <span><%= select_month nil, {:add_month_numbers => true, :prompt => true}, {:name => nil, :id => "card_month"}%>
+        <%= select_year nil, {:start_year => Date.today.year, :end_year => Date.today.year+15, :prompt => true}, {:name => nil, :id => "card_year"}%></span>
+      </div>
+    <% end %>
   </fieldset>
+  
 
   <fieldset>
   	<legend>User Details</legend>
@@ -78,7 +85,7 @@
       <%= f.phone_field :phone_number %>
     </div>
     <div class="field">
-      <%= f.label :preparers_name, "Form preparers name" %>
+      <%= f.label :preparers_name, "Form preparers name" %><br />
       <%= f.text_field :preparers_name %>
     </div>
   </fieldset>

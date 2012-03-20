@@ -1,3 +1,12 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.valid {
+  padding-right: 18px;
+  background: white image-url("icons/accept.png") right center no-repeat;
+}
+
+.invalid {
+  padding-right: 18px;
+  background: white image-url("icons/delete.png") right center no-repeat;
+}

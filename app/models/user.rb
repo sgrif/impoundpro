@@ -12,7 +12,8 @@ class User < ActiveRecord::Base
   validates :phone_number, :presence => true
   validates :county, :presence => true
     
-  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :email, :preparers_name 
+  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :email, :preparers_name, :stripe_card_token
+  attr_accessor :stripe_card_token 
   
   has_secure_password
       
@@ -38,8 +39,14 @@ class User < ActiveRecord::Base
   
   def save_with_payment
     if valid?
+      self.add_subscription(stripe_card_token)
       save!
     end
+  end
+  
+  def add_subscription(token)
+    customer = Stripe::Customer.create(:email => self.email, :plan => 'basic', :card => token)
+    self.stripe_customer_token = customer.id
   end
   
   private

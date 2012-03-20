@@ -23,7 +23,7 @@ module CapybaraFormMacros
   
   def fill_cc (cc_info, page)
     page.fill_in('card_number', :with => cc_info[:card_number].to_s)
-    page.fill_in('card_code', :with => cc_info[:card_number].to_s)
+    page.fill_in('card_code', :with => cc_info[:card_code].to_s)
     page.select(cc_info[:card_month].strftime("%-m - %B"), :from => 'card_month')
     page.select(cc_info[:card_year].year.to_s, :from => 'card_year')
   end

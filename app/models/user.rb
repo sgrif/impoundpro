@@ -39,9 +39,14 @@ class User < ActiveRecord::Base
   
   def save_with_payment
     if valid?
-      self.add_subscription(stripe_card_token)
+      if stripe_card_token.present?
+        self.add_subscription(stripe_card_token)
+      end
       save!
     end
+  rescue Stripe::InvalidRequestError => e
+    logger.error "Stripe error while creating customer: #{e.message}"
+    errors.add :base, "#{e.message}"
   end
   
   def add_subscription(token)

@@ -130,21 +130,34 @@ describe "Users" do
     end
     
     context "with valid fields" do
-      it { lambda { create_request }.should change(User, :count) }
+      it { lambda { create_request }.should change(User, :count).by(1) }
       its("current_path") { should eq(login_path) }
       it { should have_content("successfully created") }
       it { should have_sent_email.to(user_attributes[:email]) }
       
       context "with valid cc info", :js => true do
         subject { create_request_js }
-        
-        let(:ajax_result) { "Please Log In." }
-        
+
+        let(:create_request_js) do
+          visit login_path
+          click_link "Register"
+          fill_cc(credit_card_info, page)
+          user_attributes.each do |key, value|
+            fill_field "user_#{key}", value, page
+          end
+          click_button "Register"
+          wait_until { page.current_path == login_path }
+          page
+        end
+
         it { lambda { create_request_js }.should change(User, :count) }
         its("current_path") { should eq(login_path) }
         it { should have_content("successfully created") }
         it { should have_sent_email.to(user_attributes[:email]) }
-        it { lambda { create_request_js }.should change(user, :stripe_customer_token){user.reload.stripe_customer_token} }
+        it "should save user token" do
+          subject
+          User.find_by_email(user_attributes[:email]).stripe_customer_token.should be
+        end
       end
       
       context "with invalid cc info", :js => true do
@@ -165,7 +178,7 @@ describe "Users" do
           let(:card_number) { "4000000000000002" }
           let(:ajax_result) { "Your card was declined." }
           
-          its("current_path") { should eq(new_user_path) }
+          its("current_path") { should eq(user_path) }
           it { should have_no_xpath("//input[@type='submit' and @disabled='disabled']") }
           it { should have_no_css("#credit_card_info .invalid") }
           it { should have_content "Your card was declined." }

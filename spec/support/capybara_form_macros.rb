@@ -1,13 +1,15 @@
 module CapybaraFormMacros
   def fill_field (field, value, page)
-    if (value.in? States)
-      page.select(States[value], :from => field.to_s)
-    elsif (value.is_a?(String) || value.is_a?(Integer) || value.is_a?(Float))
-      page.fill_in(field.to_s, :with => value)
-    elsif (value.is_a?(Time))
-      select_date(value.to_date, page, :label => field)
-    else
-      raise "Can't do anything with #{field}(#{value.class})"
+    unless ["user_stripe_customer_token", "user_paid"].include?(field)
+      if (value.in? States)
+        page.select(States[value], :from => field.to_s)
+      elsif (value.is_a?(String) || value.is_a?(Integer) || value.is_a?(Float))
+        page.fill_in(field.to_s, :with => value)
+      elsif (value.is_a?(Time))
+        select_date(value.to_date, page, :label => field)
+      else
+        raise "Can't do anything with #{field}(#{value.class})"
+      end
     end
   end
   

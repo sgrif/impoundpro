@@ -1,13 +1,23 @@
 require 'spec_helper'
 
 describe User do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :stripe_customer_token => nil) }
   
   subject { user }
   
   context "validations" do
     it{ should validate_uniqueness_of(:email).with_message("There is already an account for email #{user.email}") }
-    [:email, :name, :address, :city, :state, :zip, :phone_number, :county].each { |field| it{ should validate_presence_of(field) } }
+    it "should validate presence of email on create" do
+      @user = build(:user, :email => nil)
+      @user.should have(1).error_on(:email)
+      @user.should_not be_valid
+
+      @user = user
+      @user.email = nil
+      @user.should have(0).errors_on(:email)
+      @user.should be_valid
+    end
+    [:name, :address, :city, :state, :zip, :phone_number, :county].each { |field| it{ should validate_presence_of(field) } }
     [:password_digest, :created_at, :updated_at].each {|field| it{ should_not allow_mass_assignment_of(field) }}
   end
   

@@ -36,7 +36,7 @@ RSpec.configure do |config|
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.clean_with(:truncation)
     Capybara.javascript_driver = :webkit
-    Capybara.default_wait_time = 10
+    Capybara.default_wait_time = 5
   end
   
   config.before(:each) do

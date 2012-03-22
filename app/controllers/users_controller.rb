@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  skip_before_filter :has_subscription, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :edit, :update, :destroy]
   skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password]
   
   # GET /user
@@ -55,7 +56,7 @@ class UsersController < ApplicationController
   # DELETE /user.json
   def destroy
     @user = current_user
-    @user.destroy
+    @user.cancel
 
     respond_to do |format|
       format.html { redirect_to logout_url, :alert => 'Your account has been cancelled' }
@@ -63,4 +64,8 @@ class UsersController < ApplicationController
     end
   end
 
+  # POST /stripe_webhook
+  def handle_stripe_event
+    puts params.inspect
+  end
 end

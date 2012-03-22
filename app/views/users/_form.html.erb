@@ -14,7 +14,7 @@
 
   
   <fieldset id="credit_card_info">
-    <legend>Credit Card Info</legend>
+    <legend><%= "Edit" if @user.new_record? %>Credit Card Info</legend>
     <% if @user.stripe_card_token %>
       Payment info provided.
     <% else %>
@@ -37,14 +37,18 @@
     <% end %>
   </fieldset>
   
-
+<% if @user.new_record? || @user.paid %>
   <fieldset>
-  	<legend>User Details</legend>
-  	
-  	<div class="field">
-  		<%= f.label :email %><br />
-  		<%= f.email_field :email %>
-  	</div>
+    <% if @user.new_record? %>
+      <legend>User Details</legend>
+      
+      <div class="field">
+        <%= f.label :email %><br />
+        <%= f.email_field :email %>
+      </div>
+    <% else %>
+      <legend>Change Password</legend>
+    <% end %>
   	<div class="field">
   		<%= f.label :password %><br />
   		<%= f.password_field :password %>
@@ -89,6 +93,7 @@
       <%= f.text_field :preparers_name %>
     </div>
   </fieldset>
+<% end %>
   <div class="actions">
   	<%= f.submit %>
   </div>

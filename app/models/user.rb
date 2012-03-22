@@ -2,8 +2,7 @@ require 'digest/sha2'
 
 class User < ActiveRecord::Base
   #Allow changeable in state and out of state time limits for date of posting and date of auction
-  validates :email, :presence => true, :uniqueness => {:scope => :email, :message => "There is already an account for email %{value}"}
-  
+  validates :email, :presence => true, :uniqueness => {:scope => :email, :message => "There is already an account for email %{value}", :allow_nil => true, :allow_blank => true}, :on => :create
   validates :name, :presence => true
   validates :address, :presence => true
   validates :city, :presence => true
@@ -46,14 +45,29 @@ class User < ActiveRecord::Base
     end
   rescue Stripe::InvalidRequestError => e
     logger.error "Stripe error while creating customer: #{e.message}"
-    errors.add :base, "#{e.message}"
+    errors.add :base, "There was a problem with your credit card"
   end
   
-  def add_subscription(token)
-    customer = Stripe::Customer.create(:email => self.email, :plan => 'basic', :card => token)
-    self.stripe_customer_token = customer.id
+  def add_subscription(card)
+    customer = Stripe::Customer.retrieve(self.stripe_customer_token)
+    customer.update_subscription(:plan => "basic", :card => card)
   end
   
+  def stripe_customer_token
+    unless @stripe_customer_token
+      customer = Stripe::Customer.create(:email => self.email)
+      @stripe_customer_token = customer.id
+    end
+    @stripe_customer_token
+  end
+
+  def cancel
+    customer = Stripe::Customer.retrieve(self.stripe_customer_token)
+    customer.delete
+    self.email = nil
+    save!
+  end
+
   private
   
   def generate_token(column)

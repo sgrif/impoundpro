@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "Users" do
   before(:each) { user }
   
-  let(:user) { create :user }
+  let(:user) { create :user, :paid => true }
   let(:user_attributes) { attributes_for :user }
   let(:credit_card_info) do
     {
@@ -130,10 +130,28 @@ describe "Users" do
     end
     
     context "with valid fields" do
-      it { lambda { create_request }.should change(User, :count).by(1) }
-      its("current_path") { should eq(login_path) }
-      it { should have_content("successfully created") }
-      it { should have_sent_email.to(user_attributes[:email]) }
+      context "with no cc" do
+        it { lambda { create_request }.should change(User, :count).by(1) }
+        its("current_path") { should eq(login_path) }
+        it { should have_content("successfully created") }
+        it { should have_sent_email.to(user_attributes[:email]) }
+
+        context "login" do
+          let(:login) do
+            visit login_path
+            fill_in "email", :with => user_attributes[:email]
+            fill_in "password", :with => user_attributes[:password]
+            click_button "Login"
+            page
+          end
+
+          subject { create_request; login }
+
+          its("current_path") { should eq(edit_user_path) }
+          it { should have_content "update your credit card info" }
+          it { should have_no_field "#user_password" }
+        end
+      end
       
       context "with valid cc info", :js => true do
         subject { create_request_js }
@@ -193,11 +211,17 @@ describe "Users" do
     let(:update_request) do
       login
       click_link "User"
-      user_attributes.each do |key, value|
+      no_email.each do |key, value|
         fill_field "user_#{key}", value, page
       end
       click_button "Update"
       page
+    end
+
+    let(:no_email) do
+      attr = user_attributes
+      attr.delete(:email)
+      attr
     end
     
     subject { update_request }
@@ -208,11 +232,11 @@ describe "Users" do
         it { should have_content "successfully updated" }
         it { lambda { update_request }.should change(user, :attributes){user.reload.attributes} }
         it { lambda { update_request }.should change(user.reload, :password_digest){user.reload.password_digest} }
-        it { should have_sent_email.to(user_attributes[:email]) }
+        it { should have_sent_email.to(User.find_by_stripe_customer_token(user_attributes[:stripe_customer_token]).email) }
       end
       
       context "with invalid fields" do
-        let(:user_attributes) { attributes_for :user, :password_confirmation => '', :email => '' }
+        let(:user_attributes) { attr = attributes_for(:user, :password_confirmation => '') }
         
         its("current_path") { should eq user_path }
         it { subject.all("#error_explanation li").should have_at_least(1).errors }
@@ -234,7 +258,7 @@ describe "Users" do
       end
       
       context "with invalid fields" do 
-        let(:user_attributes) { attributes_for :user, :password => '', :password_confirmation => '', :email => '' }
+        let(:user_attributes) { attributes_for(:user, :password => '', :password_confirmation => '', :address => '') }
         
         its("current_path") { should eq user_path }
         it { subject.all("#error_explanation li").should have_at_least(1).errors }
@@ -253,11 +277,23 @@ describe "Users" do
       page
     end
     
+    let(:blank_user_login) do
+      visit login_path
+      fill_in "password", :with => user.password
+      click_button "Login"
+      page
+    end
+
     subject { destroy_request }
     
-    it { expect { destroy_request }.to change(User, :count).by(-1) }
+    it { expect { destroy_request }.not_to change(User, :count).by(-1) }
+    it { expect { destroy_request }.to change(user, :email){User.find_by_email(user.email)}.from(user).to(nil) }
     it { login; expect { destroy_request }.to change(nil, :auth_token){page.driver.request.cookies['auth_token']}.to(nil) }
     its("current_path") { should eq login_path }
     it { should have_content "account has been cancelled" }
+    it "should not allow blank login" do
+      blank_user_login
+      page.current_path.should eq(login_path)
+    end
   end
 end

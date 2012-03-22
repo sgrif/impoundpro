@@ -20,6 +20,9 @@ FactoryGirl.define do
     phone_number {Faker::PhoneNumber.phone_number}
     county {Faker::Lorem.words.first}
     preparers_name {Faker::Name.name}
+
+    stripe_customer_token { "cus_FpCIUZNXeExgA" }
+    paid { true }
   end
   
   Car.blueprint do

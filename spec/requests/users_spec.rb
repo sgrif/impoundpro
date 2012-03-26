@@ -176,6 +176,7 @@ describe "Users" do
           subject
           User.find_by_email(user_attributes[:email]).stripe_customer_token.should be
         end
+        it { should have_recieved_webhook(User.find_by_email(user_attributes[:email]).stripe_customer_token, "charge.succeeded") }
       end
       
       context "with invalid cc info", :js => true do
@@ -225,10 +226,27 @@ describe "Users" do
     end
     
     subject { update_request }
+
+    context "with new cc", :js => true do
+      let(:update_cc_request) do
+        login
+        fill_cc(credit_card_info, page)
+        click_button "Update"
+        page
+      end
+
+      let(:user) { create :user, :paid => false }
+
+      it { lambda { update_cc_request }.should change(user, :paid){ user.reload.paid }.from(false).to(true) }
+      its("current_path") { should eq(root_path) }
+      it { should have_content "successfully updated" }
+      it { should have_sent_email.to(user.email) }
+      it { should have_recieved_webhook(user.stripe_customer_token, "charge.succeeded") }
+    end
     
     context "with new password" do
       context "with valid fields" do
-        its("current_path") { should eq user_path }
+        its("current_path") { should eq root_path }
         it { should have_content "successfully updated" }
         it { lambda { update_request }.should change(user, :attributes){user.reload.attributes} }
         it { lambda { update_request }.should change(user.reload, :password_digest){user.reload.password_digest} }
@@ -250,7 +268,7 @@ describe "Users" do
       let(:user_attributes) { attributes_for :user, :password => '', :password_confirmation => '' }
       
       context "with valid fields" do
-        its("current_path") { should eq user_path }
+        its("current_path") { should eq root_path }
         it { should have_content "successfully updated" }
         it { lambda { update_request }.should change(user, :attributes){user.reload.attributes} }
         it { lambda { update_request }.should_not change(user.reload, :password_digest) }

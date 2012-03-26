@@ -4,7 +4,7 @@ require 'pdf/inspector'
 describe "Cars" do
   before(:each) { car }
   
-  let(:car) { create :car, :user => user }
+  let(:car) { create :car, :user => user, :paid => true }
   
   let(:user) { create :user }
   

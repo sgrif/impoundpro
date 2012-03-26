@@ -66,6 +66,6 @@ class UsersController < ApplicationController
 
   # POST /stripe_webhook
   def handle_stripe_event
-    puts params.inspect
+     logger.info params.inspect
   end
 end

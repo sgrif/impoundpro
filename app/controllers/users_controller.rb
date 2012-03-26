@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  skip_before_filter :has_subscription, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :edit, :update, :destroy]
-  skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password]
+  skip_before_filter :has_subscription, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :edit, :update, :destroy, :handle_stripe_event]
+  skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :handle_stripe_event]
   
   # GET /user
   def show

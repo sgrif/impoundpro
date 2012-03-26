@@ -67,5 +67,6 @@ class UsersController < ApplicationController
   # POST /stripe_webhook
   def handle_stripe_event
      logger.info params.inspect
+     render :nothing => true
   end
 end

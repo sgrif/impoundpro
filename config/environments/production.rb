@@ -65,4 +65,5 @@ Tyler::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   config.action_mailer.default_url_options = {:host => "http://www.impoundpro.com/"}
+  ActionMailer::Base.default :from => "info@impoundpro.com"
 end

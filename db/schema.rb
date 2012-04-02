@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120323164138) do
+ActiveRecord::Schema.define(:version => 20120326193803) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -54,6 +54,14 @@ ActiveRecord::Schema.define(:version => 20120323164138) do
     t.decimal  "charge_other",              :precision => 8, :scale => 2
     t.string   "stripe_invoice_item_token"
     t.boolean  "paid"
+  end
+
+  create_table "stripe_webhooks", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "type"
+    t.string   "event_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

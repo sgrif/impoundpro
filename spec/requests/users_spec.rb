@@ -163,6 +163,7 @@ describe "Users" do
           user_attributes.each do |key, value|
             fill_field "user_#{key}", value, page
           end
+          post stripe_webhook_path, :stripe_webhook => {"data"=>{"object"=>{"refunded"=>false, "amount_refunded"=>0, "disputed"=>false, "invoice"=>"in_00000000000000", "paid"=>true, "amount"=>1000, "id"=>"ch_00000000000000", "card"=>{"name"=>nil, "exp_month"=>1, "country"=>"US", "exp_year"=>2014, "address_zip"=>nil, "address_country"=>nil, "last4"=>"0002", "cvc_check"=>"pass", "id"=>"cc_00000000000000", "address_line1_check"=>nil, "type"=>"Visa", "fingerprint"=>"s7NV4Dl9FCMBP4xl", "address_state"=>nil, "address_line1"=>nil, "object"=>"card", "address_zip_check"=>nil, "address_line2"=>nil}, "fee"=>0, "livemode"=>false, "failure_message"=>"Your card was declined.", "currency"=>"usd", "customer"=>"#{user.reload.stripe_customer_token}", "description"=>nil, "object"=>"charge", "created"=>1333127244}}, "id"=>"evt_00000000000000", "type"=>"charge.succeeded", "livemode"=>false, "created"=>1326853478}
           click_button "Register"
           wait_until { page.current_path == login_path }
           page
@@ -176,7 +177,6 @@ describe "Users" do
           subject
           User.find_by_email(user_attributes[:email]).stripe_customer_token.should be
         end
-        it { should have_recieved_webhook(User.find_by_email(user_attributes[:email]).stripe_customer_token, "charge.succeeded") }
       end
       
       context "with invalid cc info", :js => true do
@@ -201,7 +201,7 @@ describe "Users" do
           it { should have_no_xpath("//input[@type='submit' and @disabled='disabled']") }
           it { should have_no_css("#credit_card_info .invalid") }
           it { should have_content "Your card was declined." }
-          it { lambda { create_request_js }.should_not change(User, :count) }
+          it { lambda { create_request_js }.should change(User, :count).by(1) }
           it { should_not have_sent_email }
         end
       end
@@ -231,22 +231,24 @@ describe "Users" do
       let(:update_cc_request) do
         login
         fill_cc(credit_card_info, page)
+        post stripe_webhook_path, :stripe_webhook => {"data"=>{"object"=>{"refunded"=>false, "amount_refunded"=>0, "disputed"=>false, "invoice"=>"in_00000000000000", "paid"=>true, "amount"=>1000, "id"=>"ch_00000000000000", "card"=>{"name"=>nil, "exp_month"=>1, "country"=>"US", "exp_year"=>2014, "address_zip"=>nil, "address_country"=>nil, "last4"=>"0002", "cvc_check"=>"pass", "id"=>"cc_00000000000000", "address_line1_check"=>nil, "type"=>"Visa", "fingerprint"=>"s7NV4Dl9FCMBP4xl", "address_state"=>nil, "address_line1"=>nil, "object"=>"card", "address_zip_check"=>nil, "address_line2"=>nil}, "fee"=>0, "livemode"=>false, "failure_message"=>"Your card was declined.", "currency"=>"usd", "customer"=>"#{user.reload.stripe_customer_token}", "description"=>nil, "object"=>"charge", "created"=>1333127244}}, "id"=>"evt_00000000000000", "type"=>"charge.succeeded", "livemode"=>false, "created"=>1326853478}
         click_button "Update"
+        wait_until { page.has_content?("successfully updated") }
         page
       end
 
       let(:user) { create :user, :paid => false }
 
-      it { lambda { update_cc_request }.should change(user, :paid){ user.reload.paid }.from(false).to(true) }
-      its("current_path") { should eq(root_path) }
+      subject { update_cc_request }
+
+      its("current_path") { should eq(user_path) }
       it { should have_content "successfully updated" }
       it { should have_sent_email.to(user.email) }
-      it { should have_recieved_webhook(user.stripe_customer_token, "charge.succeeded") }
     end
     
     context "with new password" do
       context "with valid fields" do
-        its("current_path") { should eq root_path }
+        its("current_path") { should eq user_path }
         it { should have_content "successfully updated" }
         it { lambda { update_request }.should change(user, :attributes){user.reload.attributes} }
         it { lambda { update_request }.should change(user.reload, :password_digest){user.reload.password_digest} }
@@ -268,7 +270,7 @@ describe "Users" do
       let(:user_attributes) { attributes_for :user, :password => '', :password_confirmation => '' }
       
       context "with valid fields" do
-        its("current_path") { should eq root_path }
+        its("current_path") { should eq user_path }
         it { should have_content "successfully updated" }
         it { lambda { update_request }.should change(user, :attributes){user.reload.attributes} }
         it { lambda { update_request }.should_not change(user.reload, :password_digest) }
@@ -301,6 +303,10 @@ describe "Users" do
       click_button "Login"
       page
     end
+
+    let (:user) { create :user, :stripe_customer_token => nil }
+
+    before { user.get_stripe_customer_token }
 
     subject { destroy_request }
     

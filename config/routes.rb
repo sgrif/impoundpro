@@ -12,10 +12,10 @@ Tyler::Application.routes.draw do
     get 'logout' => :destroy
   end
 
-  post 'stripe_webhook' => 'users#handle_stripe_event'
-  
   resource :user
   
+  post 'stripe_webhook' => 'stripe_webhooks#create'
+
   match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
   
   resources :cars do

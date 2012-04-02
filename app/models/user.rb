@@ -17,9 +17,10 @@ class User < ActiveRecord::Base
   has_secure_password
       
   before_create { generate_token(:auth_token) }
-  after_update :send_password_changed_notice
+  before_update :send_password_changed_notice
   
   has_many :cars, :dependent => :destroy, :order => "created_at DESC"
+  has_many :stripe_webhooks
   
   def send_password_reset
     generate_token(:password_reset_token)
@@ -29,7 +30,7 @@ class User < ActiveRecord::Base
   end
   
   def send_password_changed_notice
-    UserMailer.password_changed(self).deliver if self.password_digest_changed?
+    UserMailer.password_changed(self).deliver if self.password_digest_will_change!
   end
   
   def welcome
@@ -46,23 +47,33 @@ class User < ActiveRecord::Base
   rescue Stripe::InvalidRequestError => e
     logger.error "Stripe error while creating customer: #{e.message}"
     errors.add :base, "There was a problem with your credit card"
+    false
+  rescue Stripe::CardError => e
+    errors.add :base, e.message
+    false
   end
   
+  def update_with_payment(attributes)
+    if self.update_attributes(attributes)
+      self.save_with_payment
+    end
+  end
+
   def add_subscription(card)
-    customer = Stripe::Customer.retrieve(self.stripe_customer_token)
+    customer = Stripe::Customer.retrieve(get_stripe_customer_token)
     customer.update_subscription(:plan => "basic", :card => card)
   end
   
-  def stripe_customer_token
-    unless @stripe_customer_token
-      customer = Stripe::Customer.create(:email => self.email)
-      @stripe_customer_token = customer.id
-    end
-    @stripe_customer_token
+  def get_stripe_customer_token
+      unless self.stripe_customer_token
+        customer = Stripe::Customer.create(:email => self.email)
+        self.update_attribute(:stripe_customer_token, customer.id)
+      end
+      self.stripe_customer_token
   end
 
   def cancel
-    customer = Stripe::Customer.retrieve(self.stripe_customer_token)
+    customer = Stripe::Customer.retrieve(stripe_customer_token)
     customer.delete
     self.email = nil
     save!

@@ -30,6 +30,7 @@ RSpec.configure do |config|
   
   config.include(MailerMacros)
   config.include(CapybaraFormMacros)
+  config.include(StripeWebhookMacros)
   config.include Factory::Syntax::Methods
 
   config.before(:suite) do

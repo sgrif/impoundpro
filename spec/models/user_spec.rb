@@ -49,4 +49,12 @@ describe User do
       last_email.to.should include(user.email)
     end
   end
+
+  describe '#stripe_customer_token' do
+    subject { user.reload.get_stripe_customer_token }
+    it "should not change if present" do
+      should eq user.reload.get_stripe_customer_token
+    end
+    it { should_not be_nil }
+  end
 end

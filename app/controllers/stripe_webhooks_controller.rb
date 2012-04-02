@@ -88,8 +88,21 @@ class StripeWebhooksController < ApplicationController
   end
 
   def process_webhook(webhook)
-    if webhook.type == "charge.succeeded"
-      webhook.user.update_attribute(:paid, true)
+    target = webhook.type.split('.')[0]
+    action = webhook.type.split('.')[1]
+
+    if target == "charge"
+      if action == "succeeded"
+        webhook.user.update_attribute(:paid, true)
+      elsif action == "failed"
+        webhook.user.update_attribute(:paid, false)
+      end
+    elsif target == "invoice"
+      if action == "payment_succeeded"
+        webhook.user.update_attribute(:paid, true)
+      elsif action == "payment_failed"
+        webhook.user.update_attribute(:paid, false)
+      end
     end
   end
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe StripeWebhooksController do
   let(:user) { create(:user, :stripe_customer_token => nil, :paid => nil) }
-  subject { user }
+  subject { user.reload }
 
   context "invoice.payment_succeeded" do
     before :each do

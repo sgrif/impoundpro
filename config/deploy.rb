@@ -39,6 +39,7 @@ end
 desc "copy config files containing sensitive information"
 task :copy_sensitive_files, :roles => :app do
   run "cp #{shared_path}/database.yml #{release_path}/config/database.yml;"
+  run "cp #{shared_path}/stripe.rb #{release_path}/config/initializers/stripe.rb;"
 end
 
 before "deploy:restart", :mod_cgi

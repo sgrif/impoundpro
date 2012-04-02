@@ -42,10 +42,10 @@ class StripeWebhooksController < ApplicationController
   # POST /stripe_webhooks.json
   def create
 
-    if params[:stripe_webhook][:data][:object][:object] == "customer"
-      user_token = params[:stripe_webhook][:data][:object][:id]
+    if params[:data][:object][:object] == "customer"
+      user_token = params[:data][:object][:id]
     else
-      user_token = params[:stripe_webhook][:data][:object][:customer]
+      user_token = params[:data][:object][:customer]
     end
     
     user = User.find_by_stripe_customer_token user_token

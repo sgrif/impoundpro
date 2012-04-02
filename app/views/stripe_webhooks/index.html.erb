@@ -1,0 +1,27 @@
+<h1>Listing stripe_webhooks</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Type</th>
+    <th>Event</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @stripe_webhooks.each do |stripe_webhook| %>
+  <tr>
+    <td><%= stripe_webhook.user_id %></td>
+    <td><%= stripe_webhook.type %></td>
+    <td><%= stripe_webhook.event_id %></td>
+    <td><%= link_to 'Show', stripe_webhook %></td>
+    <td><%= link_to 'Edit', edit_stripe_webhook_path(stripe_webhook) %></td>
+    <td><%= link_to 'Destroy', stripe_webhook, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Stripe webhook', new_stripe_webhook_path %>

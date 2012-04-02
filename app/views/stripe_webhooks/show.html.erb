@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @stripe_webhook.user_id %>
+</p>
+
+<p>
+  <b>Type:</b>
+  <%= @stripe_webhook.type %>
+</p>
+
+<p>
+  <b>Event:</b>
+  <%= @stripe_webhook.event_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_stripe_webhook_path(@stripe_webhook) %> |
+<%= link_to 'Back', stripe_webhooks_path %>

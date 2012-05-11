@@ -96,7 +96,7 @@ class CarsController < ApplicationController
         :customer => @car.user.stripe_customer_token,
         :amount => 200,
         :currency => "usd",
-        :description => "Unlocking fee for car #{@car.id}"
+        :description => "Unlocking fee for car #{@car.license_plate_number}"
       )
       @car.update_attribute :invoice_item_id, invoice.id
     end
@@ -200,7 +200,7 @@ class CarsController < ApplicationController
   # GET /cars/1/unclaimed_vehicles_report.pdf
   def unclaimed_vehicles_report
     @user = current_user
-    @cars = @user.cars.where("date_towed >= '#{30.days.ago}'")
+    @cars = @user.cars.where("date_towed <= '#{30.days.ago}'")
 
     respond_to do |format|
       format.pdf {render :layout => false} #unclaimed_vehicles_report.pdf.prawn

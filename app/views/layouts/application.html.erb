@@ -8,7 +8,7 @@
   <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
 </head>
 <body class="<%= controller.controller_name %>">
-  
+
 <% if flash[:alert] %>
   <p id="alert"><%= flash[:alert] %></p>
 <% end %>

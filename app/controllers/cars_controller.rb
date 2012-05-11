@@ -2,6 +2,8 @@ class CarsController < ApplicationController
 
   before_filter :authorize_cars, :except => [:index, :unclaimed_vehicles_report, :new, :create]
   before_filter :has_cars, :except => [:index, :new, :create]
+  before_filter :requires_unlocked, :only => [:owner_lien_notice, :lien_holder_lien_notice, :driver_lien_notice, :owner_mail_labels, :lien_holder_mail_labels,
+                                              :driver_mail_labels, :notice_of_public_sale, :affidavit_of_resale, :title_application, :fifty_state_check]
 
   # GET /cars
   # GET /cars.json
@@ -92,7 +94,7 @@ class CarsController < ApplicationController
     unless @car.paid
       invoice = Stripe::InvoiceItem.create(
         :customer => @car.user.stripe_customer_token,
-        :amount => 2,
+        :amount => 200,
         :currency => "usd",
         :description => "Unlocking fee for car #{@car.id}"
       )
@@ -213,6 +215,13 @@ class CarsController < ApplicationController
     unless Car.find(params[:id]).user == current_user
       redirect_to cars_url
       logger.error "Attempt to access unowned car userid: #{current_user} carid: #{params[:id]}"
+    end
+  end
+
+  def requires_unlocked
+    unless Car.find(params[:id]).paid
+      flash[:error] = "You must unlock the car before you can do that"
+      redirect_to cars_path
     end
   end
 

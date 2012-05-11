@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120326193803) do
+ActiveRecord::Schema.define(:version => 20120511041054) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20120326193803) do
     t.decimal  "charge_other",              :precision => 8, :scale => 2
     t.string   "stripe_invoice_item_token"
     t.boolean  "paid"
+    t.string   "invoice_item_id"
   end
 
   create_table "stripe_webhooks", :force => true do |t|
@@ -63,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20120326193803) do
     t.string   "event_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "target_id"
   end
 
   create_table "users", :force => true do |t|

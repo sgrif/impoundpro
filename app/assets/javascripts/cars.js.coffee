@@ -4,7 +4,7 @@
 true_tax = (tax) ->
   return tax + 1 if tax < 1
   return tax/100 + 1
-  
+
 update_totals = () ->
   charges = ((Number) elem.value for elem in $('.charge'))
   subtotal = charges.reduce (x, y) -> x + y
@@ -15,6 +15,16 @@ update_totals = () ->
 jQuery ->
   $('input.charge').change ->
     update_totals()
-    
+
   $('input#car_tax').change ->
     update_totals()
+
+  $('.forms_overlay td').width ->
+      $(this).parent()
+        .next('.forms')
+        .width()
+
+  $('.forms_overlay td').height ->
+    $(this).parent()
+      .next('.forms')
+      .height()

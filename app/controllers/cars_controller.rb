@@ -1,12 +1,12 @@
 class CarsController < ApplicationController
-  
+
   before_filter :authorize_cars, :except => [:index, :unclaimed_vehicles_report, :new, :create]
   before_filter :has_cars, :except => [:index, :new, :create]
-  
+
   # GET /cars
   # GET /cars.json
   def index
-    
+
     @cars = current_user.cars
 
     respond_to do |format|
@@ -85,121 +85,137 @@ class CarsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
+  def unlock
+    @car = Car.find(params[:id])
+
+    unless @car.paid
+      invoice = Stripe::InvoiceItem.create(
+        :customer => @car.user.stripe_customer_token,
+        :amount => 2,
+        :currency => "usd",
+        :description => "Unlocking fee for car #{@car.id}"
+      )
+      @car.update_attribute :invoice_item_id, invoice.id
+    end
+
+    redirect_to cars_path
+  end
+
   #TODO Should I pop up asking if they want to change the mail_notice_of_lien_date to today when they select lien notice? - YES
   #TODO Make other dates changeable
-  
+
   # GET /cars/1/owner_lien_notice.pdf
   def owner_lien_notice
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #owner_lien_notice.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/owner_lien_notice.pdf
   def lien_holder_lien_notice
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #lien_holder_lien_notice.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/owner_lien_notice.pdf
   def driver_lien_notice
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #driver_lien_notice.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/owner_mail_labels.pdf
   def owner_mail_labels
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #owner_mail_labels.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/lien_holder_mail_labels.pdf
   def lien_holder_mail_labels
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #lien_holder_mail_labels.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/driver_mail_labels.pdf
   def driver_mail_labels
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #driver_mail_labels.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/notice_of_public_sale.pdf
   def notice_of_public_sale
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #notice_of_public_sale.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/affidavit_of_resale.pdf
   def affidavit_of_resale
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #affidavit_of_resale.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/title_application.pdf
   def title_application
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #title_application.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/fifty_state_check.pdf
   def fifty_state_check
     @car = Car.find(params[:id])
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #fifty_state_check.pdf.prawn
     end
   end
-  
+
   # GET /cars/1/unclaimed_vehicles_report.pdf
   def unclaimed_vehicles_report
     @user = current_user
     @cars = @user.cars.where("date_towed >= '#{30.days.ago}'")
-    
+
     respond_to do |format|
       format.pdf {render :layout => false} #unclaimed_vehicles_report.pdf.prawn
     end
   end
-  
-  
-  
+
+
+
   protected
-  
+
   def authorize_cars
     unless Car.find(params[:id]).user == current_user
       redirect_to cars_url
       logger.error "Attempt to access unowned car userid: #{current_user} carid: #{params[:id]}"
     end
   end
-  
+
   def has_cars
     redirect_to cars_url, :notice => "No cars to display" unless current_user.cars.count > 0
   end

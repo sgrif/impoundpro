@@ -27,7 +27,6 @@ class Car < ActiveRecord::Base
 
   validates :charge_hook_up, :numericality => {:greater_than_or_equal_to => 0}
   validates :charge_mileage, :numericality => {:greater_than_or_equal_to => 0}
-  validates :charge_storage, :numericality => {:greater_than_or_equal_to => 0}
   validates :charge_admin, :numericality => {:greater_than_or_equal_to => 0}
   validates :charge_other, :numericality => {:greater_than_or_equal_to => 0}
   validates :tax, :numericality => {:greater_than_or_equal_to => 0}
@@ -46,6 +45,10 @@ class Car < ActiveRecord::Base
 
   def charge_total
     self.charge_subtotal * (self.tax + 1)
+  end
+
+  def charge_storage
+    self.storage_rate * (Date.today - date_towed).to_i
   end
 
   def tax_amount
@@ -74,12 +77,12 @@ class Car < ActiveRecord::Base
   def init
     self.charge_hook_up ||= 0.0
     self.charge_mileage ||= 0.0
-    self.charge_storage ||= 0.0
     self.charge_admin   ||= 0.0
     self.charge_other   ||= 0.0
     self.tax            ||= 0.0
+    self.storage_rate   ||= 0.0
     self.preparers_name ||= self.user.preparers_name if self.user
-    self.mail_notice_of_lien_date ||= Date.today
+    self.date_towed     ||= Date.today
   end
   
   def ensure_tax_is_decimal

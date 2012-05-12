@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120511041054) do
+ActiveRecord::Schema.define(:version => 20120512002513) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -21,16 +21,14 @@ ActiveRecord::Schema.define(:version => 20120511041054) do
     t.string   "state"
     t.string   "vin"
     t.string   "license_plate_number"
-    t.datetime "date_towed"
+    t.date     "date_towed"
     t.string   "tow_requested_by"
     t.string   "tow_reason"
-    t.datetime "mail_notice_of_lien_date"
     t.string   "owner_name"
     t.string   "owner_address"
     t.string   "lien_holder_name"
     t.string   "lien_holder_address"
     t.decimal  "charge_mileage",            :precision => 8, :scale => 2
-    t.decimal  "charge_storage",            :precision => 8, :scale => 2
     t.decimal  "charge_admin",              :precision => 8, :scale => 2
     t.float    "tax"
     t.decimal  "storage_rate",              :precision => 8, :scale => 2

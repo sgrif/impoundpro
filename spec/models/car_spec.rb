@@ -23,7 +23,7 @@ describe Car do
     
     [:date_towed, :tow_requested_by, :tow_reason].each {|attr| it{ should validate_presence_of(attr) }}
     
-    [:charge_hook_up, :charge_mileage, :charge_storage, :charge_admin, :charge_other, :tax].each {|attr| it{ should validate_numericality_of(attr) }}
+    [:charge_hook_up, :charge_mileage, :charge_admin, :charge_other, :tax].each {|attr| it{ should validate_numericality_of(attr) }}
     
     context "#ensure_tax_is_decimal" do
       let(:new_car) { build(:car) }
@@ -58,12 +58,10 @@ describe Car do
       
       its(:charge_hook_up) { should eq(0.0) }
       its(:charge_mileage) { should eq(0.0) }
-      its(:charge_storage) { should eq(0.0) }
       its(:charge_admin) { should eq(0.0) }
       its(:charge_hook_up) { should eq(0.0) }
       its(:tax) { should eq(0.0) }
       its(:preparers_name) { should eq(new_car.user.preparers_name) }
-      its(:mail_notice_of_lien_date) { should eq(Date.today.to_time) }
     end
   end
 end

@@ -1,6 +1,6 @@
 require 'factory_girl/syntax/blueprint'
 def rand_in_range(to, from)
-  rand * (to - from) + from
+  Kernel.rand(0) * (to - from) + from
 end
 
 def rand_time(from, to)
@@ -32,8 +32,8 @@ FactoryGirl.define do
     size {"#{[2,4].sample}-Door"}
     color {['Red', 'Blue', 'Green', 'Silver', 'Black'].sample}
     state {Faker::Address.us_state_abbr}
-    vin {rand(36**24).to_s(36)}
-    license_plate_number {rand(36**6).to_s(36).upcase}
+    vin {Kernel.rand(36**24).to_s(36)}
+    license_plate_number {Kernel.rand(36**6).to_s(36).upcase}
     
     owner_name {Faker::Name.name}
     owner_address {Faker::Address.street_address}
@@ -61,7 +61,6 @@ FactoryGirl.define do
     
     charge_hook_up{rand_in_range(0,2).to_i * rand_in_range(0.0,100.00).round(2)}
     charge_mileage{rand_in_range(0,2).to_i * rand_in_range(0.0,100.00).round(2)}
-    charge_storage{rand_in_range(0,2).to_i * rand_in_range(0.0,100.00).round(2)}
     charge_admin{rand_in_range(0,2).to_i * rand_in_range(0.0,100.00).round(2)}
     charge_other{rand_in_range(0,2).to_i * rand_in_range(0.0,100.00).round(2)}
     tax {0.074375}

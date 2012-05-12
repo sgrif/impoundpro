@@ -32,6 +32,9 @@ prawn_document() do |pdf|
     pdf.draw_text "See attached page", :at => [200, 377]
     pdf.font_size 12
   end
+
+  pdf.font_size 10
+  pdf.draw_text number_to_currency(@car.storage_rate, :format => "%n"), :at => [40, 297]
   
   pdf.draw_text number_to_currency(@car.storage_rate, :format => "%n"), :at => [35, 298]
   

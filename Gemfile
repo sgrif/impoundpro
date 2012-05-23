@@ -25,6 +25,7 @@ gem 'stripe'
 gem 'prawn_rails'
 gem 'capistrano'
 gem 'bcrypt-ruby'
+gem 'haml'
 
 group :development, :test do
   gem 'rspec-rails'

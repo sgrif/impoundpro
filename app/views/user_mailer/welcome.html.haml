@@ -1,0 +1,9 @@
+!!! 5
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", 'http-equiv' => "Content-Type"}/
+  %body
+    %h1 Welcome to Impound Pro
+    %p You have successfully registered #{@user.name} at impoundpro.com
+    %p To login to the site, just follow this link: #{login_url(:email => @user.email)}
+    %p Thanks for joining and have a great day!

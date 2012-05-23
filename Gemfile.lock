@@ -77,6 +77,7 @@ GEM
       thor (~> 0.14.6)
     guard-rspec (0.6.0)
       guard (>= 0.10.0)
+    haml (3.1.6)
     highline (1.6.11)
     hike (1.2.1)
     i18n (0.6.0)
@@ -204,6 +205,7 @@ DEPENDENCIES
   faker
   growl
   guard-rspec
+  haml
   jquery-rails
   launchy
   mysql

@@ -27,7 +27,7 @@ user =
 
     $("select#card_month").change ->
       if $("select#card_year").val()
-        user.handleStripeValidation $("select#card_year"), 
+        user.handleStripeValidation $("select#card_year"),
         Stripe.validateExpiry $(this).val(), $("select#card_year").val()
 
   processCard: ->

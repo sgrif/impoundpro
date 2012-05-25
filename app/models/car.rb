@@ -8,8 +8,8 @@ class Car < ActiveRecord::Base
   validates :size, :presence => true
   validates :color, :presence => true
   validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state"}
-  validates :vin, :presence => true, :uniqueness => {:scope => :user_id, :message => "There is already an active car on your account with this vin"}
-  validates :license_plate_number, :presence => true, :uniqueness => {:scope => :user_id, :message => "There is already an active car on your account with this LP#"}
+  validates :vin, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this vin"}
+  validates :license_plate_number, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this LP#"}
 
   validates :owner_name, :presence => true
   validates :owner_address, :presence => true
@@ -34,6 +34,7 @@ class Car < ActiveRecord::Base
   before_validation :ensure_tax_is_decimal
 
   attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount
+  attr_protected :invoice_item_id, :paid
 
   belongs_to :user
 
@@ -48,7 +49,7 @@ class Car < ActiveRecord::Base
   end
 
   def charge_storage
-    self.storage_rate * (Date.today - date_towed).to_i
+    self.storage_rate * (Date.today - date_towed.to_date).to_i
   end
 
   def tax_amount
@@ -75,20 +76,21 @@ class Car < ActiveRecord::Base
   protected
 
   def init
-    self.charge_hook_up ||= 0.0
-    self.charge_mileage ||= 0.0
-    self.charge_admin   ||= 0.0
-    self.charge_other   ||= 0.0
-    self.tax            ||= 0.0
-    self.storage_rate   ||= 0.0
-    self.preparers_name ||= self.user.preparers_name if self.user
-    self.date_towed     ||= Date.today
+    self.charge_hook_up           ||= 0.0
+    self.charge_mileage           ||= 0.0
+    self.charge_admin             ||= 0.0
+    self.charge_other             ||= 0.0
+    self.tax                      ||= 0.0
+    self.storage_rate             ||= 0.0
+    self.preparers_name           ||= self.user.preparers_name if self.user
+    self.date_towed               ||= Date.today
+    self.mail_notice_of_lien_date ||= Date.today
   end
-  
+
   def ensure_tax_is_decimal
     if self.tax >= 1
       self.tax /= 100
     end
   end
-  
+
 end

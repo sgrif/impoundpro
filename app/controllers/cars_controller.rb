@@ -98,18 +98,21 @@ class CarsController < ApplicationController
         :currency => "usd",
         :description => "Unlocking fee for car #{@car.license_plate_number}"
       )
-      @car.update_attribute :invoice_item_id, invoice.id
+      redirect_to cars_path, :error => "There was an error processing your request." unless invoice
+      @car.invoice_item_id = invoice.id
+      @car.paid = true
     end
 
     redirect_to cars_path
   end
 
-  #TODO Should I pop up asking if they want to change the mail_notice_of_lien_date to today when they select lien notice? - YES
   #TODO Make other dates changeable
 
   # GET /cars/1/owner_lien_notice.pdf
   def owner_lien_notice
     @car = Car.find(params[:id])
+    @car.mail_notice_of_lien_date = Date.today
+    @car.save
 
     respond_to do |format|
       format.pdf {render :layout => false} #owner_lien_notice.pdf.prawn
@@ -119,6 +122,8 @@ class CarsController < ApplicationController
   # GET /cars/1/owner_lien_notice.pdf
   def lien_holder_lien_notice
     @car = Car.find(params[:id])
+    @car.mail_notice_of_lien_date = Date.today
+    @car.save
 
     respond_to do |format|
       format.pdf {render :layout => false} #lien_holder_lien_notice.pdf.prawn
@@ -128,6 +133,8 @@ class CarsController < ApplicationController
   # GET /cars/1/owner_lien_notice.pdf
   def driver_lien_notice
     @car = Car.find(params[:id])
+    @car.mail_notice_of_lien_date = Date.today
+    @car.save
 
     respond_to do |format|
       format.pdf {render :layout => false} #driver_lien_notice.pdf.prawn

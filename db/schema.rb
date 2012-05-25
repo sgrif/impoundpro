@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120512002513) do
+ActiveRecord::Schema.define(:version => 20120524211503) do
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(:version => 20120512002513) do
     t.string   "stripe_invoice_item_token"
     t.boolean  "paid"
     t.string   "invoice_item_id"
+    t.date     "mail_notice_of_lien_date"
   end
 
   create_table "stripe_webhooks", :force => true do |t|

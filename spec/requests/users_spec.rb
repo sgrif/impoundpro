@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Users" do
   before(:each) { user }
-  
+
   let(:user) { create :user, :paid => true }
   let(:user_attributes) { attributes_for :user }
   let(:credit_card_info) do
@@ -17,7 +17,7 @@ describe "Users" do
   let(:card_code) { "123" }
   let(:card_month) { 3.months.since }
   let(:card_year) { 1.year.since }
-  
+
   let(:login) do
     visit login_path
     fill_in "email", :with => user.email
@@ -25,9 +25,9 @@ describe "Users" do
     click_button "Login"
     page
   end
-  
+
   subject { login_page }
-  
+
   describe "#new", :js => true do
     let(:new_page) do
       visit login_path
@@ -35,37 +35,37 @@ describe "Users" do
       fill_cc(credit_card_info, page)
       page
     end
-    
+
     subject { new_page }
-    
+
     it "should change valid to invalid" do
       expect { fill_in "card_code", :with => "99" }.to change{subject.all("#credit_card_info .valid").count}.by(-1)
     end
-    
+
     it "should check expiry on month change only when year is set" do
-      expect { 
+      expect {
         select Date.today.year.to_s, :from => "card_year"
         select "1 - January", :from => "card_month"
       }.to change{subject.all("#credit_card_info .valid").count}.by(-1)
-        
+
       expect {
         select "12 - December", :from => "card_month"
       }.to change{subject.all("#credit_card_info .valid").count}.by(1)
     end
-    
+
     context "with valid cc info" do
       its("current_path") { should eq new_user_path }
       it { should_not have_xpath("//input[@type='submit' and @disabled='disabled']") }
       it { should have_css("#credit_card_info .valid", :count => 3) }
     end
-    
+
     context "with cc problems" do
       shared_examples "js tests" do 
         its("current_path") { should eq new_user_path }
         it { should have_xpath("//input[@type='submit' and @disabled='disabled']") }
         it { should have_css("#credit_card_info .invalid", :count => 1) }
       end
-      
+
       context "invalid card number" do
         let(:card_number) { "4242424242424241" }
         include_examples "js tests"
@@ -75,7 +75,7 @@ describe "Users" do
         let(:card_code) { "99" }
         include_examples "js tests"
       end
-      
+
       context "invalid expiry" do
         let(:card_month) { 1.month.ago }
         let(:card_year) { Date.today }
@@ -83,8 +83,8 @@ describe "Users" do
       end
     end
   end
-  
-  describe "#create" do   
+
+  describe "#create" do
     let(:create_request) do
       visit login_path
       click_link "Register"
@@ -94,7 +94,7 @@ describe "Users" do
       click_button "Register"
       page
     end
-    
+
     let(:create_request_js) do
       visit login_path
       click_link "Register"
@@ -106,29 +106,29 @@ describe "Users" do
       wait_until { page.has_content? ajax_result }
       page
     end
-    
+
     subject { create_request }
-    
+
     context "with invalid fields" do
       let(:user_attributes) { attributes_for :user, :email => user.email, :password_confirmation => "" }
-      
+
       it { lambda{ create_request }.should_not change(User, :count) }
       its("current_path") { should eq(user_path) }
       it { subject.all("#error_explanation li").should have_at_least(1).errors }
       it { should_not have_sent_email }
-      
+
       context "with valid cc info", :js => true do
         subject { create_request_js }
-        
-        let(:ajax_result) { "Payment info provided." }
+
+        let(:ajax_result) { "Payment info provided" }
         let(:card_number) { "4242424242424242" }
-        
+
         it { lambda{ create_request_js }.should_not change(User, :count) }
         its("current_path") { should eq(user_path); }
-        it { should have_content("Payment info provided.") }
+        it { should have_content("Payment info provided") }
       end
     end
-    
+
     context "with valid fields" do
       context "with no cc" do
         it { lambda { create_request }.should change(User, :count).by(1) }
@@ -152,7 +152,7 @@ describe "Users" do
           it { should have_no_field "#user_password" }
         end
       end
-      
+
       context "with valid cc info", :js => true do
         subject { create_request_js }
 
@@ -163,7 +163,6 @@ describe "Users" do
           user_attributes.each do |key, value|
             fill_field "user_#{key}", value, page
           end
-          post stripe_webhook_path, :stripe_webhook => {"data"=>{"object"=>{"refunded"=>false, "amount_refunded"=>0, "disputed"=>false, "invoice"=>"in_00000000000000", "paid"=>true, "amount"=>1000, "id"=>"ch_00000000000000", "card"=>{"name"=>nil, "exp_month"=>1, "country"=>"US", "exp_year"=>2014, "address_zip"=>nil, "address_country"=>nil, "last4"=>"0002", "cvc_check"=>"pass", "id"=>"cc_00000000000000", "address_line1_check"=>nil, "type"=>"Visa", "fingerprint"=>"s7NV4Dl9FCMBP4xl", "address_state"=>nil, "address_line1"=>nil, "object"=>"card", "address_zip_check"=>nil, "address_line2"=>nil}, "fee"=>0, "livemode"=>false, "failure_message"=>"Your card was declined.", "currency"=>"usd", "customer"=>"#{user.reload.stripe_customer_token}", "description"=>nil, "object"=>"charge", "created"=>1333127244}}, "id"=>"evt_00000000000000", "type"=>"charge.succeeded", "livemode"=>false, "created"=>1326853478}
           click_button "Register"
           wait_until { page.current_path == login_path }
           page
@@ -178,25 +177,25 @@ describe "Users" do
           User.find_by_email(user_attributes[:email]).stripe_customer_token.should be
         end
       end
-      
+
       context "with invalid cc info", :js => true do
         subject { create_request_js }
-        
+
         context "with invalid card number" do
           let(:card_number) { "4242424242424241" }
           let(:ajax_result) { "" }
-          
+
           its("current_path") { should eq(new_user_path) }
           it { should have_xpath("//input[@type='submit' and @disabled='disabled']") }
           it { should have_css("#credit_card_info .invalid", :count => 1) }
           it { lambda { create_request_js }.should_not change(User, :count) }
           it { should_not have_sent_email}
         end
-        
+
         context "declined card" do
           let(:card_number) { "4000000000000002" }
           let(:ajax_result) { "Your card was declined." }
-          
+
           its("current_path") { should eq(user_path) }
           it { should have_no_xpath("//input[@type='submit' and @disabled='disabled']") }
           it { should have_no_css("#credit_card_info .invalid") }
@@ -207,7 +206,7 @@ describe "Users" do
       end
     end
   end
-  
+
   describe "#update" do
     let(:update_request) do
       login
@@ -224,14 +223,13 @@ describe "Users" do
       attr.delete(:email)
       attr
     end
-    
+
     subject { update_request }
 
     context "with new cc", :js => true do
       let(:update_cc_request) do
         login
         fill_cc(credit_card_info, page)
-        post stripe_webhook_path, :stripe_webhook => {"data"=>{"object"=>{"refunded"=>false, "amount_refunded"=>0, "disputed"=>false, "invoice"=>"in_00000000000000", "paid"=>true, "amount"=>1000, "id"=>"ch_00000000000000", "card"=>{"name"=>nil, "exp_month"=>1, "country"=>"US", "exp_year"=>2014, "address_zip"=>nil, "address_country"=>nil, "last4"=>"0002", "cvc_check"=>"pass", "id"=>"cc_00000000000000", "address_line1_check"=>nil, "type"=>"Visa", "fingerprint"=>"s7NV4Dl9FCMBP4xl", "address_state"=>nil, "address_line1"=>nil, "object"=>"card", "address_zip_check"=>nil, "address_line2"=>nil}, "fee"=>0, "livemode"=>false, "failure_message"=>"Your card was declined.", "currency"=>"usd", "customer"=>"#{user.reload.stripe_customer_token}", "description"=>nil, "object"=>"charge", "created"=>1333127244}}, "id"=>"evt_00000000000000", "type"=>"charge.succeeded", "livemode"=>false, "created"=>1326853478}
         click_button "Update"
         wait_until { page.has_content?("successfully updated") }
         page
@@ -245,7 +243,7 @@ describe "Users" do
       it { should have_content "successfully updated" }
       it { should have_sent_email.to(user.email) }
     end
-    
+
     context "with new password" do
       context "with valid fields" do
         its("current_path") { should eq user_path }
@@ -254,10 +252,10 @@ describe "Users" do
         it { lambda { update_request }.should change(user.reload, :password_digest){user.reload.password_digest} }
         it { should have_sent_email.to(User.find_by_stripe_customer_token(user_attributes[:stripe_customer_token]).email) }
       end
-      
+
       context "with invalid fields" do
         let(:user_attributes) { attr = attributes_for(:user, :password_confirmation => '') }
-        
+
         its("current_path") { should eq user_path }
         it { subject.all("#error_explanation li").should have_at_least(1).errors }
         it { lambda { update_request }.should_not change(user, :attributes){user.reload.attributes} }
@@ -265,10 +263,10 @@ describe "Users" do
         it { should_not have_sent_email }
       end
     end
-    
+
     context "without new password" do
       let(:user_attributes) { attributes_for :user, :password => '', :password_confirmation => '' }
-      
+
       context "with valid fields" do
         its("current_path") { should eq user_path }
         it { should have_content "successfully updated" }
@@ -276,10 +274,10 @@ describe "Users" do
         it { lambda { update_request }.should_not change(user.reload, :password_digest) }
         it { should_not have_sent_email }
       end
-      
-      context "with invalid fields" do 
+
+      context "with invalid fields" do
         let(:user_attributes) { attributes_for(:user, :password => '', :password_confirmation => '', :address => '') }
-        
+
         its("current_path") { should eq user_path }
         it { subject.all("#error_explanation li").should have_at_least(1).errors }
         it { lambda { update_request }.should_not change(user, :attributes){user.reload.attributes} }
@@ -288,7 +286,7 @@ describe "Users" do
       end
     end
   end
-  
+
   describe "#destroy" do
     let(:destroy_request) do
       login
@@ -296,7 +294,7 @@ describe "Users" do
       click_link "Cancel Account"
       page
     end
-    
+
     let(:blank_user_login) do
       visit login_path
       fill_in "password", :with => user.password
@@ -309,7 +307,7 @@ describe "Users" do
     before { user.get_stripe_customer_token }
 
     subject { destroy_request }
-    
+
     it { expect { destroy_request }.not_to change(User, :count).by(-1) }
     it { expect { destroy_request }.to change(user, :email){User.find_by_email(user.email)}.from(user).to(nil) }
     it { login; expect { destroy_request }.to change(nil, :auth_token){page.driver.request.cookies['auth_token']}.to(nil) }

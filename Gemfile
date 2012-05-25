@@ -29,6 +29,7 @@ gem 'haml'
 
 group :development, :test do
   gem 'rspec-rails'
+  gem 'ruby-debug19'
 end
 
 group :test do
@@ -42,6 +43,8 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'pdf-inspector'
+  gem 'cover_me'
+  gem 'spork'
 end
 
 group :production do

@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   validates :county, :presence => true
 
   attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :email, :preparers_name, :stripe_card_token
-  attr_accessor :stripe_card_token 
+  attr_accessor :stripe_card_token
 
   has_secure_password
 
@@ -41,6 +41,7 @@ class User < ActiveRecord::Base
     if valid?
       if stripe_card_token.present?
         self.add_subscription(stripe_card_token)
+        self.paid = true
       end
       save!
     end
@@ -80,9 +81,9 @@ class User < ActiveRecord::Base
   end
 
   private
-  
+
   def generate_token(column)
-    begin 
+    begin
       self[column] = SecureRandom.hex(10)
     end while User.exists?(column => self[column])
   end

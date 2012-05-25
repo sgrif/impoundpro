@@ -12,21 +12,21 @@ module CapybaraFormMacros
       end
     end
   end
-  
+
   def select_date (date, page, options = {})
     # lookup id prefix by label
     id_prefix = options[:label].to_s
-  
+
     # select the appropriate date values
     page.select(date.year.to_s, :from => "#{id_prefix}_1i")
     page.select(date.strftime('%B'), :from => "#{id_prefix}_2i")
     page.select(date.day.to_s, :from => "#{id_prefix}_3i")
   end
-  
+
   def fill_cc (cc_info, page)
     page.fill_in('card_number', :with => cc_info[:card_number].to_s)
     page.fill_in('card_code', :with => cc_info[:card_code].to_s)
-    page.select(cc_info[:card_month].strftime("%-m - %B"), :from => 'card_month')
+    page.select(cc_info[:card_month].month.to_s, :from => 'card_month')
     page.select(cc_info[:card_year].year.to_s, :from => 'card_year')
   end
 end

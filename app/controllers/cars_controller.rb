@@ -98,9 +98,6 @@ class CarsController < ApplicationController
         :currency => "usd",
         :description => "Unlocking fee for car #{@car.license_plate_number}"
       )
-      if(invoice.nil?)
-        redirect_to(cars_path, :error => "There was an error processing your request.")
-      end
       @car.invoice_item_id = invoice.id
       @car.paid = true
     end

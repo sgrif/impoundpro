@@ -6,6 +6,7 @@ $.widget "ui.combobox"
         delay: 0
         minLength: 0
         source: this.element.data('auto-complete')
+        autoFocus: true
     this.toggle = $("<a>")
       .attr
         tabIndex: -1
@@ -24,3 +25,10 @@ $.widget "ui.combobox"
           $(e.currentTarget).blur()
           this.element.autocomplete("search", "")
             .focus()
+
+  destroy: ->
+    this.element
+      .removeClass("ui-combobox-input")
+      .removeData(this.widgetName)
+      .autocomplete("destroy")
+    this.toggle.remove()

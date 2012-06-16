@@ -1,6 +1,5 @@
 class Car < ActiveRecord::Base
 
-  #TODO Storage rate calculations
   #TODO Add in state boolean
   validates :year, :presence => true, :numericality => true, :inclusion => {:in => 1900..Date.current.year + 2}
   validates :make, :presence => true

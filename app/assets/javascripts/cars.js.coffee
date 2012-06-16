@@ -22,19 +22,26 @@ car =
         .next('.forms')
         .height()
 
-    $('select#car_size').change ->
-      if $(this).val() == 'Other'
-        $(this).attr('name', '')
-        $(this).after('<input type="text" name="car[size]" />')
-
     $('input.combobox').each ->
       $(this).combobox()
+
+    $('input#car_make').bind "autocompletechange autocompleteselect", (e, ui) ->
+      val = ui.item?.value || $(this).val()
+      if this.make != val
+        this.make = val
+        $('input#car_model').combobox('destroy')
+        if makes[this.make]
+          $('input#car_model')
+            .data('auto-complete', makes[this.make])
+            .combobox()
+    .change()
 
   true_tax: (tax) ->
     return tax + 1 if tax < 1
     return tax/100 + 1
 
   update_totals: () ->
+    #TODO Calculate storage correctly
     charges = ((Number) elem.value for elem in $('.charge'))
     subtotal = charges.reduce (x, y) -> x + y
     total = subtotal * car.true_tax (Number) $('#car_tax').val()

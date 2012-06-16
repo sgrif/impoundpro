@@ -1,3 +1,5 @@
+%script
+  makes = #{Makes.to_json.html_safe}
 = form_for(@car) do |f|
   - if @car.errors.any?
     #error_explanation
@@ -11,10 +13,15 @@
     .field
       =f.label :year
       =f.number_field :year
-    - [:make, :model, :color].each do |field|
-      .field
-        =f.label field
-        =f.text_field field
+    .field
+      =f.label :make
+      =f.text_field :make, 'data-auto-complete' => Makes.keys.to_s, :class => 'combobox'
+    .field
+      =f.label :model
+      =f.text_field :model
+    .field
+      =f.label :color
+      =f.text_field :color
     .field
       =f.label :size, 'Body Style'
       =f.text_field :size, 'data-auto-complete' => Sizes.sort.to_s, :class => 'combobox'

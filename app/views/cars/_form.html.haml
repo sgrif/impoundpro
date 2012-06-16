@@ -11,10 +11,13 @@
     .field
       =f.label :year
       =f.number_field :year
-    - [:make, :model, :size, :color].each do |field|
+    - [:make, :model, :color].each do |field|
       .field
         =f.label field
         =f.text_field field
+    .field
+      =f.label :size, 'Body Style'
+      =f.text_field :size, 'data-auto-complete' => Sizes.sort.to_s, :class => 'combobox'
     .field
       =f.label :state
       =f.select :state, States.invert.sort, {:prompt => true}

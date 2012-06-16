@@ -242,6 +242,27 @@ describe "Users" do
       its("current_path") { should eq(user_path) }
       it { should have_content "successfully updated" }
       it { should have_sent_email.to(user.email) }
+
+      context "with unexpected error" do
+        before(:each) do
+          user.stripe_customer_token = "something random"
+          user.save
+        end
+
+        let(:update_cc_request) do
+          login
+          fill_cc(credit_card_info, page)
+          click_button "Update"
+          wait_until { page.has_content?("unexpected error") }
+          page
+        end
+
+        its("current_path") { should eq user_path }
+        it { should have_content "unexpected error" }
+        it { subject.all("#error_explanation li").should have_at_least(1).errors }
+        it { lambda { update_cc_request }.should_not change(user.reload, :password_digest) }
+        it { should_not have_sent_email }
+      end
     end
 
     context "with new password" do

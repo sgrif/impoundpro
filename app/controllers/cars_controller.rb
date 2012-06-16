@@ -93,13 +93,13 @@ class CarsController < ApplicationController
 
     unless @car.paid
       invoice = Stripe::InvoiceItem.create(
-        :customer => @car.user.stripe_customer_token,
+        :customer => @car.user.get_stripe_customer_token,
         :amount => 200,
         :currency => "usd",
         :description => "Unlocking fee for car #{@car.license_plate_number}"
       )
       redirect_to cars_path, :error => "There was an error processing your request." unless invoice
-      @car.invoice_item_id = invoice.id
+      @car.stripe_invoice_item_token = invoice.id
       @car.paid = true
       @car.save!
     end

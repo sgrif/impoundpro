@@ -39,7 +39,7 @@ class StripeWebhooksController < ApplicationController
         webhook.user.update_attribute(:paid, false)
       end
     elsif target == "invoiceitem"
-      car = Car.find_by_invoice_item_id(webhook.target_id)
+      car = Car.find_by_stripe_invoice_item_token(webhook.target_id)
       if car
         car.update_attribute(:paid, true)
       end

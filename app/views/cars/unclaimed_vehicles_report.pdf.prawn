@@ -2,15 +2,15 @@ prawn_document(:margin => [15,15,15,15], :page_layout => :landscape) do |pdf|
   pages = (@cars.count/10.0).ceil
   (0..pages-1).each do |x|
     cars = @cars.slice(x*10, 10)
-    
+
     pdf.image "#{Rails.root}/app/assets/images/03-30-Day-Unclaimed-Vehicles-Report.jpg", :width => 757, :height => 532
-    
+
     pdf.font_size 10
     pdf.draw_text @user.name, :at => [5, 526]
     pdf.draw_text @user.address, :at => [120, 526]
     pdf.draw_text @user.zip, :at => [400, 526]
     pdf.draw_text @user.phone_number, :at => [600, 526]
-    
+
     row_height = 29
     cars.each_with_index do |car, i|
       #TODO Should I get the LP year? - add to car setup
@@ -26,6 +26,6 @@ prawn_document(:margin => [15,15,15,15], :page_layout => :landscape) do |pdf|
       pdf.draw_text car.tow_requested_by, :at => [651, 373 - i * row_height]
       pdf.draw_text car.tow_reason, :at => [651, 360 - i * row_height]
     end
-    
+
   end
 end

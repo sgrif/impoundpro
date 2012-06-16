@@ -11,11 +11,7 @@ class Car < ActiveRecord::Base
   validates :vin, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this vin"}
   validates :license_plate_number, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this LP#"}
 
-  validates :owner_name, :presence => true
-  validates :owner_address, :presence => true
-  validates :owner_city, :presence => true
-  validates :owner_state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state"}
-  validates :owner_zip, :presence => true
+  validates :owner_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
   validates :lien_holder_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
@@ -34,7 +30,7 @@ class Car < ActiveRecord::Base
   before_validation :ensure_tax_is_decimal
 
   attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount
-  attr_protected :invoice_item_id, :paid
+  attr_protected :stripe_invoice_item_token, :paid
 
   belongs_to :user
 
@@ -49,7 +45,7 @@ class Car < ActiveRecord::Base
   end
 
   def charge_storage
-    self.storage_rate * (Date.today - date_towed.to_date).to_i
+    self.storage_rate * ((Date.today - date_towed.to_date).to_i + 1)
   end
 
   def tax_amount

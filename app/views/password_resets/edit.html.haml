@@ -1,7 +1,7 @@
 =form_for @user, :url => password_reset_path(params[:id]) do |f|
   -if @user.errors.any?
-    .error_messages
-      %h2 Form is invalid
+    #error_explanation
+      %h2 #{pluralize @user.errors.count, "error"} prevented you from changing your password:
       %ul
         -@user.errors.full_messages.each do |message|
           %li= message

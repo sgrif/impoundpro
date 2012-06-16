@@ -6,7 +6,13 @@ describe "Cars" do
 
   let(:car) { create :car, :user => user, :paid => true }
 
+  let(:other_car) { create :car, :user => other_user }
+
+  let(:unpaid_car) { create :car, :user => user, :paid => false }
+
   let(:user) { create :user }
+
+  let(:other_user) { create :user }
 
   let(:car_attributes) { attributes_for(:car) }
 
@@ -150,6 +156,65 @@ describe "Cars" do
     it { expect{ destroy_request }.to change{Car.count}.by(-1) }
     its("current_path") { should eq(cars_path) }
     it { should have_content("successfully deleted") }
+
+    context "other users car" do
+      before(:each) { other_car }
+
+      let(:destroy_request) do
+        index
+        page.driver.follow :delete, car_path(other_car)
+        page
+      end
+
+      it { expect{ destroy_request }.not_to change{Car.count} }
+      its("current_path") { should eq(cars_path) }
+      it { should_not have_content("successfuly deleted") }
+    end
+  end
+
+  describe "#unlock" do
+
+    before(:each) { unpaid_car }
+
+    subject { unlock_request }
+
+    let(:unlock_request) do
+      index
+      find(:xpath, "//a[@href='#{unlock_car_path(unpaid_car)}']").click
+      page
+    end
+
+    it { expect{ unlock_request }.to change{unpaid_car.reload.paid}.to(true) }
+    it { expect{ unlock_request }.to change{unpaid_car.reload.stripe_invoice_item_token} }
+    its("current_path") { should eq(cars_path) }
+    it { should_not have_xpath "//a[@href='#{unlock_car_path(car)}']" }
+
+    context "when car is paid" do
+      let(:unlock_request) do
+        index
+        visit unlock_car_path(car)
+        page
+      end
+
+      it { expect{ unlock_request }.not_to change{car.reload.paid} }
+      it { expect{ unlock_request }.not_to change{car.reload.stripe_invoice_item_token} }
+      its("current_path") { should eq(cars_path) }
+    end
+
+    context "other users car" do
+
+      before(:each) { other_car }
+
+      let(:unlock_request) do
+        index
+        visit unlock_car_path(other_car)
+        page
+      end
+
+      it { expect{ unlock_request }.not_to change{other_car.reload.paid} }
+      it { expect{ unlock_request }.not_to change{other_car.reload.stripe_invoice_item_token} }
+      its("current_path") { should eq(cars_path) }
+    end
   end
 
   describe "#owner_lien_notice.pdf" do
@@ -163,6 +228,19 @@ describe "Cars" do
 
     its("current_path") { should eq(owner_lien_notice_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{owner_lien_notice_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
 
     context "file" do
       subject { PDF::Inspector::Page.analyze(pdf.source) }
@@ -188,6 +266,19 @@ describe "Cars" do
 
     its("current_path") { should eq(lien_holder_lien_notice_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{lien_holder_lien_notice_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#driver_lien_notice.pdf" do
@@ -201,6 +292,19 @@ describe "Cars" do
 
     its("current_path") { should eq(driver_lien_notice_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{driver_lien_notice_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#owner_mail_labels.pdf" do
@@ -214,6 +318,19 @@ describe "Cars" do
 
     its("current_path") { should eq(owner_mail_labels_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{owner_mail_labels_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#lien_holder_mail_labels.pdf" do
@@ -227,6 +344,19 @@ describe "Cars" do
 
     its("current_path") { should eq(lien_holder_mail_labels_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{lien_holder_mail_labels_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#driver_mail_labels.pdf" do
@@ -240,6 +370,19 @@ describe "Cars" do
 
     its("current_path") { should eq(driver_mail_labels_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{driver_mail_labels_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#notice_of_public_sale.pdf" do
@@ -253,6 +396,19 @@ describe "Cars" do
 
     its("current_path") { should eq(notice_of_public_sale_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{notice_of_public_sale_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#affidavit_of_resale.pdf" do
@@ -266,6 +422,19 @@ describe "Cars" do
 
     its("current_path") { should eq(affidavit_of_resale_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{affidavit_of_resale_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#title_application.pdf" do
@@ -279,6 +448,19 @@ describe "Cars" do
 
     its("current_path") { should eq(title_application_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{title_application_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#fifty_state_check.pdf" do
@@ -292,6 +474,19 @@ describe "Cars" do
 
     its("current_path") { should eq(fifty_state_check_car_path(car, :format => :pdf)) }
     it { should have_content "%PDF-1.3" }
+
+    context "unpaid car" do
+      before(:each) { unpaid_car }
+
+      let(:pdf) do
+        index
+        find(:xpath, "//a[@href='#{fifty_state_check_car_path(unpaid_car, :format => :pdf)}']").click
+        page
+      end
+
+      its("current_path") { should eq(cars_path) }
+      it { should have_content "must unlock the car" }
+    end
   end
 
   describe "#unclaimed_vehicles_report.pdf" do

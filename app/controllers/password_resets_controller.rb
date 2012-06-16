@@ -1,10 +1,10 @@
 class PasswordResetsController < ApplicationController
   skip_before_filter :authorize
-  
+
   #GET /password_resets/new
   def new
   end
-  
+
   #POST /password_resets/new
   def create
     user = User.find_by_email(params[:email])
@@ -15,7 +15,7 @@ class PasswordResetsController < ApplicationController
       redirect_to new_password_reset_path, :alert => "No account found for that email"
     end
   end
-  
+
   #GET /password_resets/1/edit
   def edit
     @user = User.find_by_password_reset_token(params[:id])
@@ -23,7 +23,7 @@ class PasswordResetsController < ApplicationController
       redirect_to new_password_reset_path, :alert => "Invalid reset token"
     end
   end
-  
+
   #PUT /password_resets/1
   def update
     @user = User.find_by_password_reset_token!(params[:id])

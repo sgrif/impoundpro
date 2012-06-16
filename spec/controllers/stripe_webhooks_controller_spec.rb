@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe StripeWebhooksController do
   let(:user) { create(:user, :stripe_customer_token => nil, :paid => true) }
-  let(:car) { create(:car, :user => user, :paid => true, :invoice_item_id => "ii_00000000000000") }
+  let(:car) { create(:car, :user => user, :paid => true, :stripe_invoice_item_token => "ii_00000000000000") }
 
   context "user" do
     subject { user.reload }
@@ -53,7 +53,7 @@ describe StripeWebhooksController do
 
     context "invoiceitem.created" do
       before :each do
-        post "create", {"data"=>{"object"=>{"invoice"=>nil, "amount"=>200, "id"=>"#{car.invoice_item_id}", "date"=>1337019474, "livemode"=>false, "description"=>"Unlocking fee for car 465KRM", "customer"=>"#{user.get_stripe_customer_token}", "currency"=>"usd", "object"=>"invoiceitem"}}, "id"=>"evt_00000000000000", "type"=>"invoiceitem.created", "livemode"=>false, "object"=>"event", "stripe_webhook"=>{"type"=>"invoiceitem.created"}, "created"=>1326853478}
+        post "create", {"data"=>{"object"=>{"invoice"=>nil, "amount"=>200, "id"=>"#{car.stripe_invoice_item_token}", "date"=>1337019474, "livemode"=>false, "description"=>"Unlocking fee for car 465KRM", "customer"=>"#{user.get_stripe_customer_token}", "currency"=>"usd", "object"=>"invoiceitem"}}, "id"=>"evt_00000000000000", "type"=>"invoiceitem.created", "livemode"=>false, "object"=>"event", "stripe_webhook"=>{"type"=>"invoiceitem.created"}, "created"=>1326853478}
       end
 
       its("paid") { should be_true }

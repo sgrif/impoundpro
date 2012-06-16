@@ -17,6 +17,8 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   gem 'therubyracer'
 
+  gem 'jquery-ui-rails'
+
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -43,7 +45,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'pdf-inspector'
   gem 'cover_me'
-  gem 'spork'
 end
 
 group :production do

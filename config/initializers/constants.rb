@@ -62,3 +62,26 @@ States = {
       'AP' => 'Armed Forces (AP)',
       'MP' => 'Northern Mariana Islands'
     }
+
+Sizes = [
+  '2-Door',
+  '4-Door',
+  'SUV',
+  'Pickup',
+  'Van',
+  'RV',
+  'Trailer',
+  'ATV',
+  'Other'
+]
+
+Models = {
+  'Model 1' => [
+    'Make 1',
+    'Make 2'
+  ],
+  'Model 2' => [
+    'Make 1',
+    'Make 2'
+  ]
+}

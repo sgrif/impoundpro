@@ -15,7 +15,6 @@ describe Car do
     [:year, :make, :model, :size, :color, :state, :vin, :license_plate_number].each {|attr| it{ should validate_presence_of(attr) }}
 
     it{ should_not allow_value("notastate").for(:owner_state).with_message('notastate is not a valid state') }
-    [:owner_name, :owner_address, :owner_city, :owner_state, :owner_zip].each {|attr| it{ should validate_presence_of(attr) }}
 
     it{ should_not allow_value("notastate").for(:lien_holder_state).with_message('notastate is not a valid state') }
 
@@ -38,7 +37,7 @@ describe Car do
         its(:tax) { should eq(0.07) }
       end
 
-      context "with tax >= 1" do
+      context "with tax <= 1" do
         subject do
           new_car.tax = 0.07
           new_car.save
@@ -46,6 +45,16 @@ describe Car do
         end
 
         its(:tax) { should eq(0.07) }
+      end
+
+      context "with tax = 0" do
+        subject do
+          new_car.tax = 0
+          new_car.save
+          new_car
+        end
+
+        its(:tax) { should eq(0) }
       end
     end
 
@@ -62,6 +71,28 @@ describe Car do
       its(:charge_hook_up) { should eq(0.0) }
       its(:tax) { should eq(0.0) }
       its(:preparers_name) { should eq(new_car.user.preparers_name) }
+    end
+  end
+
+  context "#charge_storage" do
+    context "date towed is today" do
+      subject do
+        car.date_towed = Date.today
+        car.save
+        car
+      end
+
+      its(:charge_storage) { should eq(car.storage_rate) }
+    end
+
+    context "date towed is not today" do
+      subject do
+        car.date_towed = 2.days.ago
+        car.save
+        car
+      end
+
+      its(:charge_storage) { should eq(car.storage_rate * 3) }
     end
   end
 end

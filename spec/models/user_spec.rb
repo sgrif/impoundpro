@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe User do
   let(:user) { create(:user, :stripe_customer_token => nil) }
-  
+
   subject { user }
-  
+
   context "validations" do
     it{ should validate_uniqueness_of(:email).with_message("There is already an account for email #{user.email}") }
     it "should validate presence of email on create" do
@@ -20,17 +20,17 @@ describe User do
     [:name, :address, :city, :state, :zip, :phone_number, :county].each { |field| it{ should validate_presence_of(field) } }
     [:password_digest, :created_at, :updated_at].each {|field| it{ should_not allow_mass_assignment_of(field) }}
   end
-  
+
   describe '#authenticate' do
     context 'with valid credentials' do
       it { subject.authenticate(subject.password).should be }
     end
-    
+
     context 'with invalid password' do
       it { subject.authenticate("madeuppassword").should_not be }
     end
   end
-  
+
   describe '#send_password_reset' do
     it "generates a unique password_reset_token each time" do
       user.send_password_reset
@@ -38,12 +38,12 @@ describe User do
       user.send_password_reset
       user.password_reset_token.should_not eq(last_token)
     end
-    
+
     it "saves the time the password reset was sent" do
       user.send_password_reset
       user.reload.password_reset_sent_at.should be_present
     end
-    
+
     it "delivers email to user" do
       user.send_password_reset
       last_email.to.should include(user.email)

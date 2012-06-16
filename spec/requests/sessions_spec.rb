@@ -50,6 +50,20 @@ describe "Sessions" do
       its("current_path") {should eq(login_path) }
       it{ should have_content("Invalid user/password combination") }
     end
+
+    context "with remember me checked" do
+      let(:login) do
+        visit login_path
+        fill_in 'email', :with => user.email
+        fill_in 'password', :with => user.password
+        check 'remember_me'
+        click_button 'Login'
+        page
+      end
+
+      its("current_path") { should eq(root_path) }
+      pending "How to test cookie expiry?"
+    end
   end
 
   describe "#destroy" do

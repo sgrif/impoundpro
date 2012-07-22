@@ -1,0 +1,23 @@
+// Place all the styles related to the sessions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bootstrap/variables";
+@import "mixins";
+
+$padding-horiz: 20px;
+
+fieldset {
+  background-color: $white;
+  border: 1px solid $grayLighter;
+  @include border-radius(5px);
+  padding: $padding-horiz;
+}
+
+legend {
+  background-color: lighten($grayLighter, 2%);
+  border: 1px solid $grayLighter;
+  @include border-radius(5px, 5px, 0, 0);
+  text-shadow: 1px 1px 0 $white;
+  margin-left: -#{$padding-horiz};
+  padding: 0.8em $padding-horiz;
+}

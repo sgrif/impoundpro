@@ -1,5 +1,11 @@
 Tyler::Application.routes.draw do
 
+  controller :landing do
+    get 'home' => :home
+    get 'tour' => :tour
+    get 'pricing' => :pricing
+  end
+
   resources :password_resets
 
   controller :sessions do
@@ -91,6 +97,6 @@ Tyler::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
 
-  root :to => 'cars#index'
+  root :to => 'landing#home'
 
 end

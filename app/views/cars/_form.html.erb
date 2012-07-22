@@ -1,0 +1,242 @@
+<%= form_for @car, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= f.label :year, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.number_field :year, :class => 'number_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :make, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :make, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :model, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :model, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :size, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :size, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :state, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :state, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :vin, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :vin, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :license_plate_number, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :license_plate_number, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :date_towed, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.date_select :date_towed, :class => 'date_select' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :tow_requested_by, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tow_requested_by, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :tow_reason, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tow_reason, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :owner_name, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :owner_name, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :owner_address, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :owner_address, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :lien_holder_name, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lien_holder_name, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :lien_holder_address, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lien_holder_address, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :charge_mileage, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :charge_mileage, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :charge_admin, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :charge_admin, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :tax, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :tax, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :storage_rate, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :storage_rate, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :mvd_inquiry_made, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.check_box :mvd_inquiry_made, :class => 'check_box' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :preparers_name, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :preparers_name, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :color, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :color, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :user_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.number_field :user_id, :class => 'number_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :owner_city, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :owner_city, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :owner_state, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :owner_state, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :owner_zip, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :owner_zip, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :lien_holder_city, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lien_holder_city, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :lien_holder_state, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lien_holder_state, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :lien_holder_zip, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :lien_holder_zip, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :driver_name, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :driver_name, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :driver_address, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :driver_address, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :driver_city, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :driver_city, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :driver_state, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :driver_state, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :driver_zip, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :driver_zip, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :charge_hook_up, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :charge_hook_up, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :charge_other, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :charge_other, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :stripe_invoice_item_token, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :stripe_invoice_item_token, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :paid, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.check_box :paid, :class => 'check_box' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :invoice_item_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :invoice_item_id, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :mail_notice_of_lien_date, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.date_select :mail_notice_of_lien_date, :class => 'date_select' %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                cars_path, :class => 'btn' %>
+  </div>
+<% end %>

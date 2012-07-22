@@ -1,0 +1,171 @@
+<%- model_class = @car.class -%>
+<h1><%=t '.title', :default => model_class.model_name.human %></h1>
+
+<p>
+  <strong><%= model_class.human_attribute_name(:year) %>:</strong><br>
+  <%= @car.year %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:make) %>:</strong><br>
+  <%= @car.make %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:model) %>:</strong><br>
+  <%= @car.model %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:size) %>:</strong><br>
+  <%= @car.size %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:state) %>:</strong><br>
+  <%= @car.state %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:vin) %>:</strong><br>
+  <%= @car.vin %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:license_plate_number) %>:</strong><br>
+  <%= @car.license_plate_number %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:date_towed) %>:</strong><br>
+  <%= @car.date_towed %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:tow_requested_by) %>:</strong><br>
+  <%= @car.tow_requested_by %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:tow_reason) %>:</strong><br>
+  <%= @car.tow_reason %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:owner_name) %>:</strong><br>
+  <%= @car.owner_name %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:owner_address) %>:</strong><br>
+  <%= @car.owner_address %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:lien_holder_name) %>:</strong><br>
+  <%= @car.lien_holder_name %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:lien_holder_address) %>:</strong><br>
+  <%= @car.lien_holder_address %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:charge_mileage) %>:</strong><br>
+  <%= @car.charge_mileage %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:charge_admin) %>:</strong><br>
+  <%= @car.charge_admin %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:tax) %>:</strong><br>
+  <%= @car.tax %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:storage_rate) %>:</strong><br>
+  <%= @car.storage_rate %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:mvd_inquiry_made) %>:</strong><br>
+  <%= @car.mvd_inquiry_made %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:preparers_name) %>:</strong><br>
+  <%= @car.preparers_name %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:color) %>:</strong><br>
+  <%= @car.color %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:user_id) %>:</strong><br>
+  <%= @car.user_id %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:owner_city) %>:</strong><br>
+  <%= @car.owner_city %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:owner_state) %>:</strong><br>
+  <%= @car.owner_state %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:owner_zip) %>:</strong><br>
+  <%= @car.owner_zip %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:lien_holder_city) %>:</strong><br>
+  <%= @car.lien_holder_city %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:lien_holder_state) %>:</strong><br>
+  <%= @car.lien_holder_state %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:lien_holder_zip) %>:</strong><br>
+  <%= @car.lien_holder_zip %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:driver_name) %>:</strong><br>
+  <%= @car.driver_name %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:driver_address) %>:</strong><br>
+  <%= @car.driver_address %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:driver_city) %>:</strong><br>
+  <%= @car.driver_city %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:driver_state) %>:</strong><br>
+  <%= @car.driver_state %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:driver_zip) %>:</strong><br>
+  <%= @car.driver_zip %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:charge_hook_up) %>:</strong><br>
+  <%= @car.charge_hook_up %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:charge_other) %>:</strong><br>
+  <%= @car.charge_other %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:stripe_invoice_item_token) %>:</strong><br>
+  <%= @car.stripe_invoice_item_token %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:paid) %>:</strong><br>
+  <%= @car.paid %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:invoice_item_id) %>:</strong><br>
+  <%= @car.invoice_item_id %>
+</p>
+<p>
+  <strong><%= model_class.human_attribute_name(:mail_notice_of_lien_date) %>:</strong><br>
+  <%= @car.mail_notice_of_lien_date %>
+</p>
+
+<div class="form-actions">
+  <%= link_to t('.back', :default => t("helpers.links.back")),
+              cars_path, :class => 'btn'  %>
+  <%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_car_path(@car), :class => 'btn' %>
+  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              car_path(@car),
+              :method => 'delete',
+              :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')),
+              :class => 'btn btn-danger' %>
+</div>

@@ -1,0 +1,4 @@
+@import "bootstrap/variables";
+
+$grayLightest: lighten($grayLighter, 2%);
+$grayLightish: mix($grayLight, $grayLighter);

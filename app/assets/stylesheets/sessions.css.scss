@@ -29,21 +29,12 @@
       margin: $spacing;
     }
 
-    div.control-group {
-      margin-bottom: $spacing;
-    }
+    div.form-actions {
+      margin-bottom: 0;
+      @include border-radius(0 0 5px 5px);
 
-    div.actions {
-      border-top: 1px solid $grayLightish;
-      background-color: $grayLightest;
-      padding: $spacing;
-
-      #remember_me {
-        margin-left: $spacing;
-      }
-
-      label {
-        display: inline;
+      .btn {
+        margin-right: $spacing/2;
       }
     }
   }

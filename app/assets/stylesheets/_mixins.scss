@@ -1,5 +1,7 @@
-@mixin border-radius($top-left, $top-right:"", $bottom-right:"", $bottom-left:"") {
-  border-radius: $top-left #{$top-right} #{$bottom-right} #{$bottom-left};
-  -webkit-border-radius: $top-left #{$top-right} #{$bottom-right} #{$bottom-left};
-  -moz-border-radius: $top-left #{$top-right} #{$bottom-right} #{$bottom-left};
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
 }

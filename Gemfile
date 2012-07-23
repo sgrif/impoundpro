@@ -29,12 +29,10 @@ gem 'prawn_rails'
 gem 'capistrano'
 gem 'bcrypt-ruby'
 gem 'haml'
-
-group :development, :test do
-  gem 'rspec-rails'
-end
+gem 'simple_form'
 
 group :test do
+  gem 'rspec-rails'
   gem "factory_girl_rails"
   gem "faker"
   gem "capybara"

@@ -13,3 +13,6 @@
  *= require jquery.ui.autocomplete
  *= require jquery.ui.button
 */
+.ac {
+  text-align: center;
+}

@@ -7,33 +7,52 @@
 .sessions
 {
   $background-img: image-url('noise.png');
-  $padding: 20px;
+  $spacing: 20px;
 
   background-image: $background-img;
+  padding-top: $spacing*2;
 
   fieldset {
     background-color: $white;
     border: 1px solid $grayLightish;
     @include border-radius(5px);
-    padding: $padding;
 
-    legend {
+    h3 {
       background-color: $grayLightest;
-      border: 1px solid $grayLightish;
-      @include border-radius(5px, 5px, 0, 0);
+      border-bottom: 1px solid $grayLightish;
+      @include border-radius(5px 5px 0 0);
       text-shadow: 1px 1px 0 $white;
-      padding: $padding;
-      margin: 0 -#{$padding+1};
+      padding: $spacing;
     }
 
-    .field {
-      margin-bottom: 10px;
+    div.form-content {
+      margin: $spacing;
     }
 
-    .actions {
+    div.control-group {
+      margin-bottom: $spacing;
+    }
+
+    div.actions {
       border-top: 1px solid $grayLightish;
       background-color: $grayLightest;
-      padding: $padding;
+      padding: $spacing;
+
+      #remember_me {
+        margin-left: $spacing;
+      }
+
+      label {
+        display: inline;
+      }
     }
+  }
+
+  .brand {
+    margin-bottom: $spacing*2;
+  }
+
+  .inline {
+    display: inline;
   }
 }

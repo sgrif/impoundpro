@@ -1,3 +1,4 @@
+#TODO Prompt user to finish user setup
 class UsersController < ApplicationController
   skip_before_filter :has_subscription, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :edit, :update, :destroy]
   skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :handle_stripe_event]

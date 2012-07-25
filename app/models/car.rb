@@ -1,12 +1,8 @@
 class Car < ActiveRecord::Base
 
   #TODO Add in state boolean
-  validates :year, :presence => true, :numericality => true, :inclusion => {:in => 1900..Date.current.year + 2}
-  validates :make, :presence => true
-  validates :model, :presence => true
-  validates :size, :presence => true
-  validates :color, :presence => true
-  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state"}
+  validates :year, :numericality => true, :inclusion => {:in => 1900..Date.current.year + 2}
+  validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
   validates :vin, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this vin"}
   validates :license_plate_number, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this LP#"}
 
@@ -17,8 +13,6 @@ class Car < ActiveRecord::Base
   validates :driver_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
   validates :date_towed, :presence => true
-  validates :tow_requested_by, :presence => true
-  validates :tow_reason, :presence => true
 
   validates :charge_hook_up, :numericality => {:greater_than_or_equal_to => 0}
   validates :charge_mileage, :numericality => {:greater_than_or_equal_to => 0}

@@ -1,9 +1,5 @@
 class CarsController < ApplicationController
 
-  before_filter :authorize_cars, :except => [:index, :unclaimed_vehicles_report, :new, :create]
-  before_filter :has_cars, :except => [:index, :new, :create]
-  before_filter :requires_unlocked, :only => [:owner_lien_notice, :lien_holder_lien_notice, :driver_lien_notice, :owner_mail_labels, :lien_holder_mail_labels,
-                                              :driver_mail_labels, :notice_of_public_sale, :affidavit_of_resale, :title_application, :fifty_state_check]
 
   # GET /cars
   # GET /cars.json

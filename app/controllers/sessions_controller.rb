@@ -3,19 +3,16 @@ class SessionsController < ApplicationController
   skip_before_filter :has_subscription
 
   def new
+    @body_class = :gatekeeper
   end
 
   def create
     user = User.find_by_email(params[:login][:email])
     if user && user.authenticate(params[:login][:password])
-      if params[:remember_me]
-        cookies.permanent[:auth_token] = user.auth_token
-      else
-        cookies[:auth_token] = user.auth_token
-      end
-
-      redirect_to root_url
+      login(user, params[:remember_me])
+      redirect_to cars_url
     else
+      @body_class = :gatekeeper
       redirect_to login_url, :flash => { :error => "Invalid user/password combination" }
     end
   end

@@ -16,10 +16,18 @@ class ApplicationController < ActionController::Base
   end
 
   def has_subscription
-    if current_user
+    if current_user and false
       unless current_user.paid == true
         redirect_to edit_user_path, :alert => "There was a problem with your subscription, please update your credit card information."
       end
+    end
+  end
+
+  def login(user, remember_me=false)
+    if remember_me
+      cookies.permanent[:auth_token] = user.auth_token
+    else
+      cookies[:auth_token] = user.auth_token
     end
   end
 end

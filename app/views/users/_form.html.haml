@@ -1,9 +1,15 @@
-=simple_form_for @user, :url => user_path, :html => { :class => 'form-vertical' } do |f|
+=simple_form_for @user, :url => user_path, :html => { :class => 'form-horizontal' } do |f|
 
   =f.input :stripe_card_token, :as => :hidden
 
-  -unless @user.stripe_card_token
-    =render :partial => "stripe_form"
+  -unless @user.stripe_card_token and @user.stripe_card_token != ''
+    %fieldset
+      %legend Credit Card Details
+      =f.error :stripe_card_token
+      =simple_fields_for @user.credit_card do |c|
+        =c.input :number
+        =c.input :expiry, :as => :date, :order => [:month, :year], :add_month_numbers => true
+        =c.input :cvc, :label => "CVC"
   %fieldset
     %legend Login Details
     =f.input :email
@@ -21,4 +27,4 @@
     =f.input :preparers_name, :label => "Form preparers name"
   .form-actions
     =f.submit nil, :class => 'btn btn-primary'
-    =link_to t(".cancel"), root_path, :class => 'btn'
+    =link_to "Cancel", root_path, :class => 'btn'

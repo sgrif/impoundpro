@@ -30,6 +30,7 @@ gem 'capistrano'
 gem 'bcrypt-ruby'
 gem 'haml'
 gem 'simple_form'
+gem 'active_attr'
 
 group :test do
   gem 'rspec-rails'

@@ -11,6 +11,7 @@ class UsersController < ApplicationController
   # GET /user/new
   def new
     @user = User.new
+    @body_class = :gatekeeper
   end
 
   # GET /user/edit
@@ -26,10 +27,12 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save_with_payment
         @user.welcome
-        format.html { redirect_to login_path, :notice => 'Account was successfully created. Please log in to continue.' }
+        login(@user)
+        format.html { redirect_to cars_path, :notice => 'Account was successfully created. Please log in to continue.' }
         format.json { render :json => @user, :status => :created, :location => @user }
       else
         @user.stripe_card_token = nil if @user.errors[:base].count > 0
+        @body_class = :gatekeeper
         format.html { render :action => "new" }
         format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end

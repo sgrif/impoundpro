@@ -4,23 +4,24 @@ class User < ActiveRecord::Base
   #Allow changeable in state and out of state time limits for date of posting and date of auction
   validates :email, :presence => true, :uniqueness => {:scope => :email, :message => "There is already an account for email %{value}", :allow_nil => true, :allow_blank => true}, :on => :create
   validates :name, :presence => true
-  validates :address, :presence => true
-  validates :city, :presence => true
-  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
-  validates :zip, :presence => true
-  validates :phone_number, :presence => true
-  validates :county, :presence => true
+  validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
-  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :email, :preparers_name, :stripe_card_token
-  attr_accessor :stripe_card_token
+  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :email, :preparers_name, :stripe_card_token, :credit_card
+  attr_accessor :stripe_card_token, :credit_card
 
   has_secure_password
 
   before_create { generate_token(:auth_token) }
   before_update :send_password_changed_notice
 
-  has_many :cars, :dependent => :destroy, :order => "created_at DESC"
+  has_many :cars, :order => "created_at DESC"
   has_many :stripe_webhooks
+
+  after_initialize {@credit_card = CreditCard.new}
+
+  def credit_card_attributes=(attributes)
+    @credit_card = CreditCard.new(attributes)
+  end
 
   def send_password_reset
     generate_token(:password_reset_token)
@@ -87,4 +88,11 @@ class User < ActiveRecord::Base
       self[column] = SecureRandom.hex(10)
     end while User.exists?(column => self[column])
   end
+end
+
+class CreditCard
+  include ActiveAttr::Model
+  attribute :number
+  attribute :expiry, :type => Date
+  attribute :cvc
 end

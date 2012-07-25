@@ -1,0 +1,50 @@
+@import "variables";
+@import "mixins";
+
+.gatekeeper
+{
+  $background-img: image-url('noise.png');
+  $spacing: 20px;
+
+  background-image: $background-img;
+  padding-top: $spacing*2;
+
+  fieldset {
+    background-color: $white;
+    border: 1px solid $grayLightish;
+    @include border-radius(5px);
+
+    h3.form-header {
+      background-color: $grayLightest;
+      border-bottom: 1px solid $grayLightish;
+      @include border-radius(5px 5px 0 0);
+      text-shadow: 1px 1px 0 $white;
+      padding: $spacing;
+    }
+
+    div.form-content {
+      margin: $spacing;
+    }
+
+    div.form-actions {
+      margin-bottom: 0;
+      @include border-radius(0 0 5px 5px);
+
+      .btn {
+        margin-right: $spacing/2;
+      }
+
+      p.helper {
+        margin-top: $spacing/2;
+      }
+    }
+  }
+
+  .brand {
+    margin-bottom: $spacing*2;
+  }
+
+  .inline {
+    display: inline;
+  }
+}

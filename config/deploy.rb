@@ -6,7 +6,7 @@ set :repository,  "#{user}@#{domain}:git/impoundpro.git"
 set :deploy_to, "/home/#{user}/#{domain}"
 set :deploy_via, :remote_cache
 set :scm, 'git'
-set :branch, 'master'
+set :branch, 'feature/bootstrap'
 set :scm_verbose, true
 set :use_sudo, false
 set :rails_env, :production

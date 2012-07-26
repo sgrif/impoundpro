@@ -1,6 +1,6 @@
 #TODO Prompt user to finish user setup
 class UsersController < ApplicationController
-  skip_before_filter :has_subscription, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :edit, :update, :destroy]
+  skip_before_filter :has_subscription, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :edit, :update, :destroy, :subscribe]
   skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :handle_stripe_event]
 
   # GET /user
@@ -20,13 +20,18 @@ class UsersController < ApplicationController
     @user = current_user
   end
 
+  # GET /user/subscribe
+  def subscribe
+    @user = current_user
+  end
+
   # POST /user
   # POST /user.json
   def create
     @user = User.new(params[:user])
 
     respond_to do |format|
-      if @user.save_with_payment
+      if @user.save
         @user.welcome
         login(@user)
         format.html { redirect_to cars_path, :notice => 'Account was successfully created. Please log in to continue.' }

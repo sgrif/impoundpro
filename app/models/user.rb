@@ -19,8 +19,18 @@ class User < ActiveRecord::Base
 
   after_initialize {@credit_card = CreditCard.new}
 
-  def credit_card_attributes=(attributes)
-    @credit_card = CreditCard.new(attributes)
+  def subscription
+    Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
+  end
+
+  def paid
+    if self.created_at >= 2.weeks.ago
+      sub = self.subscription
+      return sub.status == "active" unless sub.nil?
+      return false
+    else
+      return true
+    end
   end
 
   def send_password_reset
@@ -42,7 +52,6 @@ class User < ActiveRecord::Base
     if valid?
       if stripe_card_token.present?
         self.add_subscription(stripe_card_token)
-        self.paid = true
       end
       save!
     end
@@ -95,4 +104,15 @@ class CreditCard
   attribute :number
   attribute :expiry, :type => Date
   attribute :cvc
+
+  def token
+    Stripe::Token.create(
+      :card => {
+        :number => self.number,
+        :exp_month => self.expiry.month,
+        :exp_year => self.expiry.year,
+        :cvc => self.cvc
+      }
+    )
+  end
 end

@@ -16,9 +16,9 @@ class ApplicationController < ActionController::Base
   end
 
   def has_subscription
-    if current_user and false
-      unless current_user.paid == true
-        redirect_to edit_user_path, :alert => "There was a problem with your subscription, please update your credit card information."
+    if current_user
+      unless current_user.paid
+        redirect_to subscribe_user_path, :alert => "There was a problem with your subscription, please update your credit card information."
       end
     end
   end

@@ -1,15 +1,12 @@
-%fieldset#credit_card_info
-  %legend Credit Card Info
-  #stripe_error
-    %noscript JavaScript is not enabled and is required for this form. First enable it in your web browser settings.
-  .field
-    =label_tag :card_number, "Credit Card Number"
-    %span= text_field_tag :card_number, nil, :name => nil, :size => 30
-  .field
-    =label_tag :card_code, "Security Code"
-    %span= text_field_tag :card_code, nil, :name => nil, :size => 30
-  .field
-    =label_tag :card_month, "Card Expiration"
-    %span
-      =select_month nil, {:add_month_numbers => true, :prompt => true}, {:name => nil, :id => "card_month"} |
-      =select_year nil, {:start_year => Date.today.year, :end_year => Date.today.year+15, :prompt => true}, {:name => nil, :id => "card_year"}
+=simple_form_for @user, :url => user_path, :html => { :class => 'form-horizontal' } do |f|
+  %fieldset
+    %legend Update Payment Info
+    =f.error :stripe_card_token
+    =simple_fields_for @user.credit_card do |c|
+      =c.input :number
+      =c.input :expiry, :as => :date, :order => [:month, :year], :add_month_numbers => true
+      =c.input :cvc, :label => "CVC"
+
+  .form-actions
+    =f.submit nil, :class => 'btn btn-primary'
+    =link_to "Cancel", root_path, :class => 'btn'

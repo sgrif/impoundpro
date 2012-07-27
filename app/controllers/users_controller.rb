@@ -1,7 +1,7 @@
 #TODO Prompt user to finish user setup
 class UsersController < ApplicationController
-  skip_before_filter :has_subscription, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :edit, :update, :destroy, :subscribe]
-  skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password, :handle_stripe_event]
+  skip_before_filter :has_subscription
+  skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password]
 
   # GET /user
   def show
@@ -34,7 +34,7 @@ class UsersController < ApplicationController
       if @user.save
         @user.welcome
         login(@user)
-        format.html { redirect_to cars_path, :notice => 'Account was successfully created. Please log in to continue.' }
+        format.html { redirect_to root_path, :notice => 'Account was created successfully.' }
         format.json { render :json => @user, :status => :created, :location => @user }
       else
         @user.stripe_card_token = nil if @user.errors[:base].count > 0
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update_with_payment(params[:user])
         @user.send_password_changed_notice
-        format.html { redirect_to user_path, :notice => 'Account details successfully updated.' }
+        format.html { redirect_to root_path, :notice => 'Profile updated.' }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }
@@ -69,7 +69,7 @@ class UsersController < ApplicationController
     @user.cancel
 
     respond_to do |format|
-      format.html { redirect_to logout_url, :alert => 'Your account has been cancelled' }
+      format.html { redirect_to root_path, :alert => 'Your subscription has been cancelled' }
       format.json { head :no_content }
     end
   end

@@ -5,13 +5,14 @@
     /[if lt IE 9]
       = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
     = stylesheet_link_tag "application", :media => "all"
-    = javascript_include_tag "https://js.stripe.com/v1/stripe-debug.js", "application"
+    = javascript_include_tag "https://js.stripe.com/v1/", "application"
     = csrf_meta_tags
     = tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY
     = tag :meta, :name => "viewport", :content => "width=device-width, intial-scale=1.0"
   %body{:class => [controller.controller_name, @body_class]}
     = yield(:navbar) if content_for?(:navbar)
     .container
+      = render 'shared/display_flash'
       = yield
 
       %footer

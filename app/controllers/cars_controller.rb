@@ -1,10 +1,9 @@
 class CarsController < ApplicationController
-
+  skip_before_filter :has_subscription, :only => :index
 
   # GET /cars
   # GET /cars.json
   def index
-
     @cars = current_user.cars
 
     respond_to do |format|

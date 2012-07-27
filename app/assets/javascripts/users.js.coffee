@@ -13,7 +13,7 @@ user =
     @year = $("select#credit_card_expiry_1i")
     @month = $("select#credit_card_expiry_2i")
 
-    $("form#new_user, form.edit_user").submit ->
+    $("form#new_user, form[id^=edit_user]").submit ->
       $('input[type=submit]').attr('disabled', true)
       if @number.length
         user.processCard()
@@ -55,7 +55,6 @@ user =
 
   handleStripeValidation: (field, response) ->
     field.parents('.control-group').removeClass 'success error'
-    console.log response
     if response
       field.parents('.control-group').addClass "success"
       $("input[type='submit']").attr("disabled", false) unless $(".error").length

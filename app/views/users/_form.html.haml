@@ -1,30 +1,24 @@
-=simple_form_for @user, :url => user_path, :html => { :class => 'form-horizontal' } do |f|
+= simple_form_for @user, :url => user_path, :html => { :class => 'form-horizontal' } do |f|
 
-  =f.input :stripe_card_token, :as => :hidden
-
-  -unless @user.stripe_card_token and @user.stripe_card_token != ''
-    %fieldset
-      %legend Credit Card Details
-      =f.error :stripe_card_token
-      =simple_fields_for @user.credit_card do |c|
-        =c.input :number
-        =c.input :expiry, :as => :date, :order => [:month, :year], :add_month_numbers => true
-        =c.input :cvc, :label => "CVC"
-  %fieldset
-    %legend Login Details
-    =f.input :email
-    =f.input :password
-    =f.input :password_confirmation, :label => "Confirm Password"
-  %fieldset
-    %legend Company Details
-    =f.input :name
-    =f.input :address
-    =f.input :city
-    =f.input :state, :collection => States.invert.sort, :prompt => true
-    =f.input :zip
-    =f.input :county
-    =f.input :phone_number
-    =f.input :preparers_name, :label => "Form preparers name"
-  .form-actions
-    =f.submit nil, :class => 'btn btn-primary'
-    =link_to "Cancel", root_path, :class => 'btn'
+  = f.input :stripe_card_token, :as => :hidden
+  .row
+    %fieldset.span4
+      %legend Company Details
+      = f.input :name
+      = f.input :address
+      = f.input :city
+      = f.input :state, :collection => States.invert.sort, :prompt => true
+      = f.input :zip
+      = f.input :county
+      = f.input :phone_number
+      = f.input :preparers_name, :label => "Form preparers name"
+    %fieldset.span4
+      %legend Login Details
+      = f.input :email, :disabled => true, :hint => "You cannot change your email"
+      = f.input :password, :label => "Change Password"
+      = f.input :password_confirmation, :label => "Confirm Password"
+  .row
+    .form-actions
+      = f.submit "Update Profile", :class => 'btn btn-primary'
+      = link_to "Subscription", subscribe_user_path, :class => 'btn btn-info'
+      = link_to "Back", root_path, :class => 'btn'

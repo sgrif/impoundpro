@@ -1,3 +1,4 @@
+#TODO CC Broken
 require 'digest/sha2'
 
 class User < ActiveRecord::Base
@@ -19,18 +20,25 @@ class User < ActiveRecord::Base
 
   after_initialize {@credit_card = CreditCard.new}
 
-  def subscription
-    Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
+  def trial_end_date
+    2.weeks.since(self.created_at)
   end
 
-  def paid
-    if self.created_at >= 2.weeks.ago
-      sub = self.subscription
-      return sub.status == "active" unless sub.nil?
-      return false
-    else
-      return true
-    end
+  def trial_days_remaining
+    (self.trial_end_date.to_date - Date.today).to_i
+  end
+
+  def has_subscription?
+    sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
+    !sub.nil? and sub.status == "active"
+  end
+
+  def needs_subscription?
+    !self.has_subscription? && (self.trial_end_date.past? || self.cars.count > 5)
+  end
+
+  def profile_complete?
+    !(self.address.blank? || self.city.blank? || self.state.blank? || self.zip.blank?)
   end
 
   def send_password_reset
@@ -41,7 +49,7 @@ class User < ActiveRecord::Base
   end
 
   def send_password_changed_notice
-    UserMailer.password_changed(self).deliver if self.password_digest_will_change!
+    UserMailer.password_changed(self).deliver if password.present?
   end
 
   def welcome
@@ -85,9 +93,7 @@ class User < ActiveRecord::Base
 
   def cancel
     customer = Stripe::Customer.retrieve(stripe_customer_token)
-    customer.delete
-    self.email = nil
-    save!
+    customer.cancel_subscription
   end
 
   private

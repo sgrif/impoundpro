@@ -1,12 +1,6 @@
 .section
   %h1.section-header New Car
 
-  - if @car.errors.any?
-    #error_explanation
-      %h2 #{pluralize @car.errors.count, "error"} prohibited this car from being saved:
-      %ul
-        - @car.errors.full_messages.each do |msg|
-          %li= msg
   .section-body
     = simple_form_for @car, :html => { :class => "form-vertical" } do |f|
       %fieldset

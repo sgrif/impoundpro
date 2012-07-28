@@ -3,7 +3,7 @@ class Car < ActiveRecord::Base
   #TODO Add in state boolean
   validates :year, :numericality => {:allow_blank => true}, :inclusion => {:in => 1900..Date.current.year + 2, :allow_blank => true}
   validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
-  validates :vin, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this vin"}
+  validates :vin, :presence => true, :uniqueness => { :scope => 'user_id', :message => "You already have a car with this VIN" }
 
   validates :owner_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
@@ -23,7 +23,7 @@ class Car < ActiveRecord::Base
   before_create :decode_vin
 
   attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount
-  attr_protected :stripe_invoice_item_token, :paid
+  attr_protected :stripe_invoice_item_token, :paid, :vin
 
   belongs_to :user
 
@@ -71,7 +71,6 @@ class Car < ActiveRecord::Base
     self.charge_other             ||= 0.0
     self.tax                      ||= 0.0
     self.storage_rate             ||= 0.0
-    self.preparers_name           ||= self.user.preparers_name if self.user
     self.date_towed               ||= Date.today
     self.mail_notice_of_lien_date ||= Date.today
   end

@@ -42,9 +42,11 @@ class CarsController < ApplicationController
   # POST /cars
   # POST /cars.json
   def create
-    unless @car = Car.find_by_vin(params[:car][:vin])
-      @car = current_user.cars.build(params[:car])
-    end
+    vin = params[:car].delete :vin
+    @car = Car.new(params[:car])
+    @car.vin = vin
+    puts (User.find_by_auth_token(params[:car][:user].try([:auth_token])) || current_user)
+    @car.user = User.find_by_auth_token(params[:car][:user].try([:auth_token])) || current_user
 
     respond_to do |format|
       if @car.save

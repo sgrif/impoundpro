@@ -1,5 +1,18 @@
-%h1 New car
+.section
+  %h1.section-header New Car
 
-!= render 'form'
+  - if @car.errors.any?
+    #error_explanation
+      %h2 #{pluralize @car.errors.count, "error"} prohibited this car from being saved:
+      %ul
+        - @car.errors.full_messages.each do |msg|
+          %li= msg
+  .section-body
+    = simple_form_for @car, :html => { :class => "form-vertical" } do |f|
+      %fieldset
+        %legend Step 1: Enter VIN
+        = f.input :vin
 
-= link_to 'Back', cars_path
+      .form-actions
+        = f.submit "Next", :class => "btn btn-primary"
+        = link_to "Cancel", cars_path, :class => "btn"

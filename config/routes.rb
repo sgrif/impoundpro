@@ -37,6 +37,8 @@ Tyler::Application.routes.draw do
       end
     end
 
+    resources :car_steps
+
     match "/" => 'cars#index'
   end
 

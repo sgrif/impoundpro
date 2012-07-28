@@ -1,10 +1,9 @@
 class Car < ActiveRecord::Base
 
   #TODO Add in state boolean
-  validates :year, :numericality => true, :inclusion => {:in => 1900..Date.current.year + 2}
+  validates :year, :numericality => {:allow_blank => true}, :inclusion => {:in => 1900..Date.current.year + 2, :allow_blank => true}
   validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
   validates :vin, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this vin"}
-  validates :license_plate_number, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this LP#"}
 
   validates :owner_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
@@ -12,15 +11,16 @@ class Car < ActiveRecord::Base
 
   validates :driver_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
-  validates :date_towed, :presence => true
-
   validates :charge_hook_up, :numericality => {:greater_than_or_equal_to => 0}
   validates :charge_mileage, :numericality => {:greater_than_or_equal_to => 0}
   validates :charge_admin, :numericality => {:greater_than_or_equal_to => 0}
   validates :charge_other, :numericality => {:greater_than_or_equal_to => 0}
   validates :tax, :numericality => {:greater_than_or_equal_to => 0}
 
+  validate :check_vin
+
   before_validation :ensure_tax_is_decimal
+  before_create :decode_vin
 
   attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount
   attr_protected :stripe_invoice_item_token, :paid
@@ -74,6 +74,14 @@ class Car < ActiveRecord::Base
     self.preparers_name           ||= self.user.preparers_name if self.user
     self.date_towed               ||= Date.today
     self.mail_notice_of_lien_date ||= Date.today
+  end
+
+  def check_vin
+    #TODO Stub
+  end
+
+  def decode_vin
+    #TODO Stub
   end
 
   def ensure_tax_is_decimal

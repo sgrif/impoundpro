@@ -42,7 +42,9 @@ class CarsController < ApplicationController
   # POST /cars
   # POST /cars.json
   def create
-    @car = Car.new(params[:car])
+    unless @car = Car.find_by_vin(params[:car][:vin])
+      @car = current_user.cars.build(params[:car])
+    end
 
     respond_to do |format|
       if @car.save

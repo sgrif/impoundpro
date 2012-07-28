@@ -1,0 +1,10 @@
+.section
+  %h1.section-header Step 1: Enter Vin
+
+  .section-body
+    = simple_form_for @car, :url => wizard_path, :class => "form-vertical" do |f|
+      = f.input :vin
+
+    .form-actions
+      = f.submit "Next", :class => "btn btn-primary"
+      = f.link_to "Cancel", cars_path, :class => "btn"

@@ -3,10 +3,6 @@
 
 .gatekeeper
 {
-  $background-img: image-url('noise.png');
-  $spacing: 20px;
-
-  background-image: $background-img;
   padding-top: $spacing*2;
 
   fieldset {

@@ -2,6 +2,7 @@
 class UsersController < ApplicationController
   skip_before_filter :has_subscription
   skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password]
+  before_filter :redirect_if_logged_in, :only => [:new, :create]
 
   # GET /user
   def show

@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   skip_before_filter :authorize
   skip_before_filter :has_subscription
+  before_filter :redirect_if_logged_in, :only => :new
 
   def new
     @body_class = :gatekeeper

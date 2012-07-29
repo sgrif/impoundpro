@@ -8,7 +8,8 @@ class Car < ActiveRecord::Base
   validates :vin,
     :presence => true,
     :uniqueness => { :scope => 'user_id', :message => "You already have a car with this VIN" },
-    :length => { :in => 16..17 }
+    :length => { :maximum => 17 },
+    :format => { :with => /^[A-Z0-9]*$/, :message => "Only letters and number allowed" }
 
   validates :owner_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
@@ -81,6 +82,11 @@ class Car < ActiveRecord::Base
       check_digit = CheckVin[:char_trans][self.vin[8]]
       errors.add :check_vin, "VIN verification algorithm failed" if check_digit.nil? or sum % 11 != check_digit
     end
+  end
+
+  def to_s
+    [self.year, self.make, self.model].join " " unless self.year.nil? or self.make.nil? or self.model.nil?
+    self.vin
   end
 
   protected

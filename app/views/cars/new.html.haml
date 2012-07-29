@@ -15,10 +15,13 @@
               - vin_check_errors.each do |e|
                 %li= e
           %p.vin-check-actions
-            =f.submit "I'm sure. Ignore these errors.", :name => "override_check_vin", :class => "btn btn-warning"
+            %button.btn.btn-warning{:type => :submit, :name => :override_check_vin, :value => "true"}
+              %i.icon-warning-sign.icon-white
+              &nbsp;I'm sure. Ignore these errors.
       %fieldset
         %legend Step 1: Enter VIN
-        = f.input :vin
+        = f.input :vin, :input_html => { :data => { :provide => "typeahead",
+          :source => @car.user.cars.pluck(:vin).to_json }, :autocomplete => "off" }
 
       .form-actions
         = f.submit "Next", :class => "btn btn-primary", :id => "new_car_submit"

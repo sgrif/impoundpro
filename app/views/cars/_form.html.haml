@@ -1,13 +1,4 @@
-%script
-  makes = #{Makes.to_json.html_safe}
-= form_for(@car) do |f|
-  - if @car.errors.any?
-    #error_explanation
-      %h2 #{pluralize @car.errors.count, "error"} prohibited this car from being saved:
-      %ul
-        - @car.errors.full_messages.each do |msg|
-          %li= msg
-
+= simple_form_for @car, :html => { :class => "form-horizontal" } do |f|
   %fieldset
     %legend Vehicle Data Entry
     .field

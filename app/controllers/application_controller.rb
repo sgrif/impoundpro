@@ -1,10 +1,14 @@
 class ApplicationController < ActionController::Base
-  before_filter :authorize, :has_subscription
+  before_filter :authorize, :has_subscription, :init_breadcrumbs
 
   protect_from_forgery
 
   def current_user
     @current_user ||= User.find_by_auth_token!(cookies[:auth_token]) if cookies[:auth_token]
+  end
+
+  def redirect_if_logged_in
+    redirect_to root_path if current_user
   end
 
   protected
@@ -27,5 +31,14 @@ class ApplicationController < ActionController::Base
     else
       cookies[:auth_token] = user.auth_token
     end
+  end
+
+  def init_breadcrumbs
+    @breadcrumbs ||= []
+  end
+
+  def add_breadcrumb(name, url)
+    url = eval(url) if url =~ /_path|_url/
+    @breadcrumbs << {:name => name, :url => url}
   end
 end

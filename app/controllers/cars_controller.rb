@@ -1,5 +1,9 @@
 class CarsController < ApplicationController
   skip_before_filter :has_subscription, :only => :index
+  before_filter { add_breadcrumb "Cars", cars_path }
+    before_filter :only => [:new, :create] { add_breadcrumb "Add New", new_car_path }
+    before_filter :only => [:show, :edit, :update] { add_breadcrumb Car.find(params[:id]).to_s, car_path(params[:id]) }
+      before_filter :only => [:edit, :update] { add_breadcrumb "Edit", edit_car_path(params[:id]) }
 
   # GET /cars
   # GET /cars.json
@@ -43,8 +47,7 @@ class CarsController < ApplicationController
   # POST /cars.json
   def create
     vin = params[:car].delete :vin
-    @car = Car.find_or_initialize_by_vin(vin).dup
-    @car.user = current_user
+    @car = Car.find_or_initialize_by_vin_and_user_id(vin, current_user.id)
     @car.override_check_vin = params[:override_check_vin]
 
     respond_to do |format|

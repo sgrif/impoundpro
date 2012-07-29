@@ -49,7 +49,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       if @car.save
-        format.html { redirect_to edit_car_path }
+        format.html { redirect_to edit_car_path(@car) }
         format.json { render :json => @car, :status => :created, :location => @car }
       else
         format.html { render :action => "new" }

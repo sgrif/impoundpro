@@ -12,7 +12,7 @@
   %body{:class => [controller.controller_name, @body_class]}
     = yield(:navbar) if content_for?(:navbar)
     .container
-      = render 'shared/display_flash'
+      = content_for?(:flash) ? yield(:flash) : render('shared/display_flash')
       = yield
 
       %footer

@@ -1,9 +1,14 @@
+require 'decode_vin'
 class Car < ActiveRecord::Base
+  include DecodeVin
 
   #TODO Add in state boolean
   validates :year, :numericality => {:allow_blank => true}, :inclusion => {:in => 1900..Date.current.year + 2, :allow_blank => true}
   validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
-  validates :vin, :presence => true, :uniqueness => { :scope => 'user_id', :message => "You already have a car with this VIN" }
+  validates :vin,
+    :presence => true,
+    :uniqueness => { :scope => 'user_id', :message => "You already have a car with this VIN" },
+    :length => { :in => 16..17 }
 
   validates :owner_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
@@ -17,13 +22,13 @@ class Car < ActiveRecord::Base
   validates :charge_other, :numericality => {:greater_than_or_equal_to => 0}
   validates :tax, :numericality => {:greater_than_or_equal_to => 0}
 
-  validate :check_vin
+  validate :check_vin, :on => :create
 
-  before_validation :ensure_tax_is_decimal
+  before_validation :ensure_tax_is_decimal, :ensure_vin_is_upcase
   before_create :decode_vin
 
-  attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount
-  attr_protected :stripe_invoice_item_token, :paid, :vin
+  attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount, :override_check_vin
+  attr_protected :stripe_invoice_item_token, :paid, :vin, :user_id
 
   belongs_to :user
 
@@ -62,6 +67,22 @@ class Car < ActiveRecord::Base
     vals
   end
 
+  def check_vin
+    if self.new_record? and !self.override_check_vin.present? and !self.errors.has_key?(:vin)
+      sum = 0
+      self.vin.chars.each_with_index do |c, i|
+        if CheckVin[:char_trans][c].nil?
+          errors.add :check_vin, "VINs should never contain character #{c}. Did you misread a numeric #{CheckVin[:misreads][c]}?"
+          next
+        else
+          sum += (CheckVin[:char_trans][c] * CheckVin[:weights][i])
+        end
+      end
+      check_digit = CheckVin[:char_trans][self.vin[8]]
+      errors.add :check_vin, "VIN verification algorithm failed" if check_digit.nil? or sum % 11 != check_digit
+    end
+  end
+
   protected
 
   def init
@@ -75,18 +96,21 @@ class Car < ActiveRecord::Base
     self.mail_notice_of_lien_date ||= Date.today
   end
 
-  def check_vin
-    #TODO Stub
-  end
-
   def decode_vin
-    #TODO Stub
+    keep = ["year", "make", "model", "size", "state", "license_plate_number", "color"]
+    new_attrs = Car.find_by_vin(self.vin).try(:attributes) || parse_vin(self.vin)
+    new_attrs.keep_if { |k, v| keep.include?(k) }
+    self.attributes = new_attrs
   end
 
   def ensure_tax_is_decimal
     if self.tax >= 1
       self.tax /= 100
     end
+  end
+
+  def ensure_vin_is_upcase
+    self.vin = self.vin.upcase if self.new_record?
   end
 
 end

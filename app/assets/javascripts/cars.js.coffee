@@ -36,6 +36,13 @@ car =
             .combobox()
     .change()
 
+    $('form#new_car').on 'keydown', 'input', (e) ->
+      if e.keyCode is 13
+        $('input:submit#new_car_submit').click()
+        false
+      else
+        true
+
   true_tax: (tax) ->
     return tax + 1 if tax < 1
     return tax/100 + 1

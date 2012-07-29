@@ -28,13 +28,16 @@ class UsersController < ApplicationController
   # POST /user
   # POST /user.json
   def create
+    email = params[:user].delete :email
     @user = User.new(params[:user])
+    @user.email = email
 
     respond_to do |format|
       if @user.save
         @user.welcome
         login(@user)
-        format.html { redirect_to root_path, :notice => 'Account was created successfully.' }
+        format.html { redirect_to root_path,
+          :flash => { :success_title => 'Congratulations!', :success => 'You registered successfully.' } }
         format.json { render :json => @user, :status => :created, :location => @user }
       else
         @user.stripe_card_token = nil if @user.errors[:base].count > 0
@@ -53,7 +56,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.update_with_payment(params[:user])
         @user.send_password_changed_notice
-        format.html { redirect_to root_path, :notice => 'Profile updated.' }
+        format.html { redirect_to root_path, :flash => { :success => 'Profile changed successfully.' } }
         format.json { head :no_content }
       else
         format.html { render :action => "edit" }

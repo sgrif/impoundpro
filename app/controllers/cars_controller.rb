@@ -43,14 +43,13 @@ class CarsController < ApplicationController
   # POST /cars.json
   def create
     vin = params[:car].delete :vin
-    @car = Car.new(params[:car])
-    @car.vin = vin
-    puts (User.find_by_auth_token(params[:car][:user].try([:auth_token])) || current_user)
-    @car.user = User.find_by_auth_token(params[:car][:user].try([:auth_token])) || current_user
+    @car = Car.find_or_initialize_by_vin(vin).dup
+    @car.user = current_user
+    @car.override_check_vin = params[:override_check_vin]
 
     respond_to do |format|
       if @car.save
-        format.html { redirect_to cars_path, :notice => 'Car was successfully created.' }
+        format.html { redirect_to car_steps_path }
         format.json { render :json => @car, :status => :created, :location => @car }
       else
         format.html { render :action => "new" }

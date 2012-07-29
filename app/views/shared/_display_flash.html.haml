@@ -14,3 +14,9 @@
     %button.close{:data => {:dismiss => "alert"}}
       %i.icon-remove
     = flash[:alert]
+- if flash[:success]
+  .alert.alert-success.alert-block
+    %button.close{:data => {:dismiss => "alert"}}
+      %i.icon-remove
+    %h4= flash[:success_title] || "Success!"
+    = flash[:success]

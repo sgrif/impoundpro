@@ -12,30 +12,6 @@ car =
     $('input#car_tax').change ->
       car.update_totals()
 
-    $('.forms_overlay td').width ->
-        $(this).parent()
-          .next('.forms')
-          .width()
-
-    $('.forms_overlay td').height ->
-      $(this).parent()
-        .next('.forms')
-        .height()
-
-    $('input.combobox').each ->
-      $(this).combobox()
-
-    $('input#car_make').bind "autocompletechange autocompleteselect", (e, ui) ->
-      val = ui.item?.value || $(this).val()
-      if this.make != val
-        this.make = val
-        $('input#car_model').combobox('destroy')
-        if makes[this.make]
-          $('input#car_model')
-            .data('auto-complete', makes[this.make])
-            .combobox()
-    .change()
-
     $('form#new_car').on 'keydown', 'input', (e) ->
       if e.keyCode is 13
         $('input:submit#new_car_submit').click()

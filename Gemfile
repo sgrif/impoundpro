@@ -31,7 +31,6 @@ gem 'bcrypt-ruby'
 gem 'haml'
 gem 'simple_form'
 gem 'active_attr'
-gem 'wicked'
 
 group :test do
   gem 'rspec-rails'

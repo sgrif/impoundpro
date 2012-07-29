@@ -41,4 +41,8 @@ class ApplicationController < ActionController::Base
     url = eval(url) if url =~ /_path|_url/
     @breadcrumbs << {:name => name, :url => url}
   end
+
+  def only_admin
+    redirect_to root_path unless current_user.admin
+  end
 end

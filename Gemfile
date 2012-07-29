@@ -32,6 +32,10 @@ gem 'haml'
 gem 'simple_form'
 gem 'active_attr'
 
+group :development do
+  gem "nifty-generators"
+end
+
 group :test do
   gem 'rspec-rails'
   gem "factory_girl_rails"

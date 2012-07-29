@@ -1,5 +1,7 @@
 Tyler::Application.routes.draw do
 
+  resources :makes
+
   constraints(:subdomain => "secure") do
     resources :password_resets
 

@@ -1,6 +1,12 @@
 Tyler::Application.routes.draw do
 
-  resources :makes
+  resources :car_trims
+
+  resources :car_years
+
+  resources :car_models
+
+  resources :car_makes
 
   constraints(:subdomain => "secure") do
     resources :password_resets

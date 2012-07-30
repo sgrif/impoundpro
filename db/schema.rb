@@ -11,7 +11,44 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120729214528) do
+ActiveRecord::Schema.define(:version => 20120730011620) do
+
+  create_table "car_makes", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "car_models", :force => true do |t|
+    t.integer  "car_make_id"
+    t.string   "name"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "car_models_car_years", :id => false, :force => true do |t|
+    t.integer "car_model_id"
+    t.integer "car_year_id"
+  end
+
+  create_table "car_trims", :force => true do |t|
+    t.integer  "car_model_id"
+    t.string   "name"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.string   "short_name"
+  end
+
+  create_table "car_trims_car_years", :id => false, :force => true do |t|
+    t.integer "car_trim_id"
+    t.integer "car_year_id"
+  end
+
+  create_table "car_years", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "cars", :force => true do |t|
     t.integer  "year"
@@ -54,12 +91,6 @@ ActiveRecord::Schema.define(:version => 20120729214528) do
     t.string   "invoice_item_id"
     t.date     "mail_notice_of_lien_date"
     t.integer  "user_id"
-  end
-
-  create_table "makes", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
   end
 
   create_table "stripe_webhooks", :force => true do |t|

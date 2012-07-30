@@ -1,5 +1,5 @@
 class CarYear < ActiveRecord::Base
-  has_and_belongs_to_many :car_models do
+  has_and_belongs_to_many :models do
     def by_make(make)
       find_all_by_make_id(make)
     end

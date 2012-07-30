@@ -3,7 +3,6 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Kbb</th>
     <th></th>
     <th></th>
     <th></th>
@@ -12,7 +11,6 @@
 <% @makes.each do |make| %>
   <tr>
     <td><%= make.name %></td>
-    <td><%= make.kbb_id %></td>
     <td><%= link_to 'Show', make %></td>
     <td><%= link_to 'Edit', edit_make_path(make) %></td>
     <td><%= link_to 'Destroy', make, confirm: 'Are you sure?', method: :delete %></td>

@@ -1,6 +1,6 @@
 %p
   %b Year:
-  =@car.year
+  =@car.car_year
 %p
   %b Make:
   =@car.make
@@ -19,15 +19,6 @@
 %p
   %b License plate number:
   =@car.license_plate_number
-%p
-  %b Date towed:
-  =@car.date_towed
-%p
-  %b Tow requested by:
-  =@car.tow_requested_by
-%p
-  %b Tow reason:
-  =@car.tow_reason
 %p
   %b Owner name:
   =@car.owner_name
@@ -58,21 +49,6 @@
 %p
   %b Lien holder zip:
   =@car.lien_holder_zip
-%p
-  %b Charge admin:
-  =@car.charge_admin
-%p
-  %b Tax:
-  =@car.tax
-%p
-  %b Charge Total:
-  =@car.charge_total
-%p
-  %b Storage rate:
-  =@car.storage_rate
-%p
-  %b Mvd inquiry made:
-  =@car.mvd_inquiry_made
 
 #{link_to 'Edit', edit_car_path(@car)} |
 #{link_to 'Back', cars_path}

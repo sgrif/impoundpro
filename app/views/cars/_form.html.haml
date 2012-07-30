@@ -1,4 +1,6 @@
 = simple_form_for @car, :html => { :class => "form-horizontal" } do |f|
   %fieldset
     %legend ITS A FUCKING CAR
-    = f.input :make_id, :collection => Make.all, :label_method => :name, :value_method => :id
+    = f.association :make, :prompt => "Pick a Make", :order => :name
+    = f.association :model, :prompt => "Pick a Model", :collection => @car.make.try(:models), :order => :name
+    = f.submit

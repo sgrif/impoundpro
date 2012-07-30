@@ -24,7 +24,7 @@ class Car < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :make
-  belongs_to :car_model
+  belongs_to :model
   belongs_to :car_year
   belongs_to :car_trim
 

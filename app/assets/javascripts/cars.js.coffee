@@ -2,16 +2,11 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 jQuery ->
-  car.setupForm()
+  if $('body').hasClass 'cars'
+    car.setupForm()
 
 car =
   setupForm: ->
-    $('input.charge').change ->
-      car.update_totals()
-
-    $('input#car_tax').change ->
-      car.update_totals()
-
     $('form#new_car').on 'keydown', 'input', (e) ->
       if e.keyCode is 13
         $('input:submit#new_car_submit').click()
@@ -19,14 +14,10 @@ car =
       else
         true
 
-  true_tax: (tax) ->
-    return tax + 1 if tax < 1
-    return tax/100 + 1
-
-  update_totals: () ->
-    #TODO Calculate storage correctly
-    charges = ((Number) elem.value for elem in $('.charge'))
-    subtotal = charges.reduce (x, y) -> x + y
-    total = subtotal * car.true_tax (Number) $('#car_tax').val()
-    $('#car_charge_subtotal').val(subtotal.toFixed(2))
-    $('#car_charge_total').val(total.toFixed(2))
+    $(':input#car_make_id').change (e) ->
+      model_select = $(':input#car_model_id').attr('disabled', true)
+      $.getJSON "/makes/#{$(this).val()}/models.json", (data) ->
+        model_select.find('option').remove()
+        for model in data
+          model_select.append($("<option>").val(model.id).text(model.name))
+        model_select.removeAttr('disabled')

@@ -11,25 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730060713) do
+ActiveRecord::Schema.define(:version => 20120730064924) do
 
-  create_table "car_models", :force => true do |t|
-    t.integer  "make_id"
+  create_table "car_trims", :force => true do |t|
+    t.integer  "model_id"
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "car_models_car_years", :id => false, :force => true do |t|
-    t.integer "car_model_id"
-    t.integer "car_year_id"
-  end
-
-  create_table "car_trims", :force => true do |t|
-    t.integer  "car_model_id"
-    t.string   "name"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
     t.string   "short_name"
   end
 
@@ -42,6 +30,11 @@ ActiveRecord::Schema.define(:version => 20120730060713) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "car_years_models", :id => false, :force => true do |t|
+    t.integer "model_id"
+    t.integer "car_year_id"
   end
 
   create_table "cars", :force => true do |t|
@@ -68,11 +61,18 @@ ActiveRecord::Schema.define(:version => 20120730060713) do
     t.integer  "user_id"
     t.integer  "car_year_id"
     t.integer  "make_id"
-    t.integer  "car_model_id"
+    t.integer  "model_id"
     t.integer  "car_trim_id"
   end
 
   create_table "makes", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "models", :force => true do |t|
+    t.integer  "make_id"
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

@@ -9,7 +9,7 @@
     = csrf_meta_tags
     = tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY
     = tag :meta, :name => "viewport", :content => "width=device-width, intial-scale=1.0"
-  %body{:class => [controller.controller_name, @body_class]}
+  %body{:class => controller.controller_name}
     = yield(:navbar) if content_for?(:navbar)
     .container
       - if @breadcrumbs.count > 0

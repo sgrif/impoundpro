@@ -1,4 +1,6 @@
 class MakesController < ApplicationController
+  before_filter :admin_only
+
   # GET /makes
   # GET /makes.json
   def index

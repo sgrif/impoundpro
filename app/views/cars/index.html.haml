@@ -24,16 +24,16 @@
               %table
                 %tr
                   %td Make:
-                  %td.car_data{:colspan => 3}= car.make
+                  %td.car_data{:colspan => 3}= car.car_make.name
 
                   %td Model:
-                  %td.car_data{:colspan => 3}= car.model
+                  %td.car_data{:colspan => 3}= car.car_model.name
 
                   %td VIN:
                   %td.car_data{:colspan => 3}= car.vin
                 %tr
                   %td Year:
-                  %td.car_data{:colspan => 3}= car.year
+                  %td.car_data{:colspan => 3}= car.car_year.name
 
                   %td Color:
                   %td.car_data{:colspan => 3}= car.color

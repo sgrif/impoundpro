@@ -3,7 +3,6 @@ class Car < ActiveRecord::Base
   include DecodeVin
 
   #TODO Add in state boolean
-  validates :year, :numericality => {:allow_blank => true}, :inclusion => {:in => 1900..Date.current.year + 2, :allow_blank => true}
   validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
   validates :vin,
     :presence => true,
@@ -15,58 +14,19 @@ class Car < ActiveRecord::Base
 
   validates :lien_holder_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
-  validates :driver_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
-
-  validates :charge_hook_up, :numericality => {:greater_than_or_equal_to => 0}
-  validates :charge_mileage, :numericality => {:greater_than_or_equal_to => 0}
-  validates :charge_admin, :numericality => {:greater_than_or_equal_to => 0}
-  validates :charge_other, :numericality => {:greater_than_or_equal_to => 0}
-  validates :tax, :numericality => {:greater_than_or_equal_to => 0}
-
   validate :check_vin, :on => :create
 
-  before_validation :ensure_tax_is_decimal, :ensure_vin_is_upcase
+  before_validation :ensure_vin_is_upcase
   before_create :decode_vin
 
   attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount, :override_check_vin
   attr_protected :stripe_invoice_item_token, :paid, :vin, :user_id
 
   belongs_to :user
-
-  after_initialize :init
-
-  def charge_subtotal
-    self.charge_mileage + self.charge_storage + self.charge_admin + self.charge_hook_up + self.charge_other
-  end
-
-  def charge_total
-    self.charge_subtotal * (self.tax + 1)
-  end
-
-  def charge_storage
-    self.storage_rate * ((Date.today - date_towed.to_date).to_i + 1)
-  end
-
-  def tax_amount
-    if self.tax > 0
-      self.charge_total - self.charge_subtotal
-    else
-      0
-    end
-  end
-
-  def charges
-    vals = {
-      "Hookup" => self.charge_hook_up,
-      "Mileage" => self.charge_mileage,
-      "Storage" => self.charge_storage,
-      "Admininistration" => self.charge_admin,
-      "Other" => self.charge_other,
-      "Tax" => self.tax_amount
-    }
-    vals.delete_if{|key, value| value <= 0.0}
-    vals
-  end
+  belongs_to :make
+  belongs_to :car_model
+  belongs_to :car_year
+  belongs_to :car_trim
 
   def check_vin
     if self.new_record? and !self.override_check_vin.present? and !self.errors.has_key?(:vin)
@@ -85,34 +45,17 @@ class Car < ActiveRecord::Base
   end
 
   def to_s
-    [self.year, self.make, self.model].join " " unless self.year.nil? or self.make.nil? or self.model.nil?
+    [self.car_year.name, self.make.name, self.car_model.name].join " " unless self.car_year.nil? or self.car_make.nil? or self.car_model.nil?
     self.vin
   end
 
   protected
 
-  def init
-    self.charge_hook_up           ||= 0.0
-    self.charge_mileage           ||= 0.0
-    self.charge_admin             ||= 0.0
-    self.charge_other             ||= 0.0
-    self.tax                      ||= 0.0
-    self.storage_rate             ||= 0.0
-    self.date_towed               ||= Date.today
-    self.mail_notice_of_lien_date ||= Date.today
-  end
-
   def decode_vin
-    keep = ["year", "make", "model", "size", "state", "license_plate_number", "color"]
+    keep = []
     new_attrs = Car.find_by_vin(self.vin).try(:attributes) || parse_vin(self.vin)
     new_attrs.keep_if { |k, v| keep.include?(k) }
     self.attributes = new_attrs
-  end
-
-  def ensure_tax_is_decimal
-    if self.tax >= 1
-      self.tax /= 100
-    end
   end
 
   def ensure_vin_is_upcase

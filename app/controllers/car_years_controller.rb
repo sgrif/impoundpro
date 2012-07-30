@@ -1,11 +1,13 @@
 class CarYearsController < ApplicationController
+  before_filter :only_admin, :except => :index
+
   # GET /car_years
   # GET /car_years.json
   def index
     @car_years = CarYear.all
 
     respond_to do |format|
-      format.html # index.html.erb
+      format.html { only_admin } # index.html.erb
       format.json { render json: @car_years }
     end
   end

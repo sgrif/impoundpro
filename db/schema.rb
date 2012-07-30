@@ -11,19 +11,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730011620) do
+ActiveRecord::Schema.define(:version => 20120730060713) do
 
-  create_table "car_makes", :force => true do |t|
+  create_table "car_models", :force => true do |t|
+    t.integer  "make_id"
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "car_models", :force => true do |t|
-    t.integer  "car_make_id"
-    t.string   "name"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
   end
 
   create_table "car_models_car_years", :id => false, :force => true do |t|
@@ -51,27 +45,16 @@ ActiveRecord::Schema.define(:version => 20120730011620) do
   end
 
   create_table "cars", :force => true do |t|
-    t.integer  "year"
-    t.string   "make"
-    t.string   "model"
     t.string   "size"
     t.string   "state"
     t.string   "vin"
     t.string   "license_plate_number"
-    t.date     "date_towed"
-    t.string   "tow_requested_by"
-    t.string   "tow_reason"
     t.string   "owner_name"
     t.string   "owner_address"
     t.string   "lien_holder_name"
     t.string   "lien_holder_address"
-    t.decimal  "charge_mileage",            :precision => 8, :scale => 2
-    t.decimal  "charge_admin",              :precision => 8, :scale => 2
-    t.float    "tax"
-    t.decimal  "storage_rate",              :precision => 8, :scale => 2
-    t.boolean  "mvd_inquiry_made"
-    t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at",                                              :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.string   "color"
     t.string   "owner_city"
     t.string   "owner_state"
@@ -79,18 +62,20 @@ ActiveRecord::Schema.define(:version => 20120730011620) do
     t.string   "lien_holder_city"
     t.string   "lien_holder_state"
     t.string   "lien_holder_zip"
-    t.string   "driver_name"
-    t.string   "driver_address"
-    t.string   "driver_city"
-    t.string   "driver_state"
-    t.string   "driver_zip"
-    t.decimal  "charge_hook_up",            :precision => 8, :scale => 2
-    t.decimal  "charge_other",              :precision => 8, :scale => 2
     t.string   "stripe_invoice_item_token"
     t.boolean  "paid"
     t.string   "invoice_item_id"
-    t.date     "mail_notice_of_lien_date"
     t.integer  "user_id"
+    t.integer  "car_year_id"
+    t.integer  "make_id"
+    t.integer  "car_model_id"
+    t.integer  "car_trim_id"
+  end
+
+  create_table "makes", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "stripe_webhooks", :force => true do |t|

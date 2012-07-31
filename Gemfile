@@ -32,6 +32,7 @@ gem 'haml'
 gem 'simple_form'
 gem 'active_attr'
 gem 'chosen-rails'
+gem 'yaml_db'
 
 group :development do
   gem "nifty-generators"

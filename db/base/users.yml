@@ -1,0 +1,45 @@
+
+---
+users:
+  columns:
+  - id
+  - email
+  - password_digest
+  - salt
+  - name
+  - address
+  - created_at
+  - updated_at
+  - city
+  - state
+  - zip
+  - county
+  - phone_number
+  - auth_token
+  - password_reset_token
+  - password_reset_sent_at
+  - preparers_name
+  - stripe_customer_token
+  - paid
+  - admin
+  records: 
+  - - 7
+    - sgriffin@griffinassoc.com
+    - $2a$10$.X9WStdZZsCYrABB2kA71uMbWA5OcPcboVQx5HsTl3yADnvVe4nK6
+    - 
+    - Griffin & Associates
+    - 119 Dartmouth SE
+    - '2012-05-25 02:41:37.330787'
+    - '2012-07-30 05:11:31.628415'
+    - Albuquerque
+    - NM
+    - '87106'
+    - Bernalillo
+    - (505) 764-4444
+    - 4c36074d3554e9af8370
+    - 7d8c4cb220751feea1a9
+    - '2012-05-26 01:33:20.887439'
+    - Sean Griffin
+    - cus_W70seuAzDirKnu
+    - true
+    - true

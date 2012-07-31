@@ -1,12 +1,14 @@
 class TrimsController < ApplicationController
+  before_filter :only_admin, :except => :index
+
   # GET /trims
   # GET /trims.json
   def index
     @trims = params[:model_id] ? Model.find(params[:model_id]).trims.by_year(params[:year_id]) : Trim.all
 
     respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @trims }
+      format.html { only_admin }# index.html.erb
+      format.json { render json: @trims, :except => [:created_at, :updated_at] }
     end
   end
 

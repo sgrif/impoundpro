@@ -35,9 +35,11 @@ body {
   .section-body {
     padding: $spacing;
 
-    legend + .row {
-      margin-top: 18px;
-      -webkit-margin-top-collapse: separate;
+    legend {
+      & + .row, & + .row-fluid {
+        margin-top: 18px;
+        -webkit-margin-top-collapse: separate;
+      }
     }
 
     .form-horizontal .control-group.pull-left {

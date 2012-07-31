@@ -31,6 +31,7 @@ gem 'bcrypt-ruby'
 gem 'haml'
 gem 'simple_form'
 gem 'active_attr'
+gem 'chosen-rails'
 
 group :development do
   gem "nifty-generators"

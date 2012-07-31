@@ -10,8 +10,7 @@
  *
  *= require_self
  *= require_tree .
- *= require jquery.ui.autocomplete
- *= require jquery.ui.button
+ *= require chosen
 */
 .ac {
   text-align: center;

@@ -19,12 +19,39 @@ body {
     padding: $spacing;
   }
 
+  h2.section-header {
+    padding: {
+      top: $spacing * 2/3;
+      bottom: $spacing * 2/3;
+    }
+  }
+
+  h3.section-header {
+    padding: {
+      top: $spacing / 2;
+      bottom: $spacing / 2;
+    }
+  }
   .section-body {
     padding: $spacing;
 
     legend + .row {
       margin-top: 18px;
       -webkit-margin-top-collapse: separate;
+    }
+
+    .form-horizontal .control-group.pull-left {
+      > .controls {
+        margin: {
+          left: 0;
+          right: $spacing*4;
+        }
+      }
+
+      label {
+        text-align: left;
+        padding-top: 0;
+      }
     }
   }
 }

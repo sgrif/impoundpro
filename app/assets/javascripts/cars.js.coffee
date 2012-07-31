@@ -14,10 +14,37 @@ car =
       else
         true
 
-    $(':input#car_make_id').change (e) ->
-      model_select = $(':input#car_model_id').attr('disabled', true)
-      $.getJSON "/makes/#{$(this).val()}/models.json", (data) ->
-        model_select.find('option').remove()
-        for model in data
-          model_select.append($("<option>").val(model.id).text(model.name))
-        model_select.removeAttr('disabled')
+    $('.chzn-select').chosen()
+    $('.chzn-select-deselect').chosen allow_single_deselect: true
+
+    make_select = $(':input#car_make_id')
+    model_select = $(':input#car_model_id')
+    year_select = $(':input#car_year_id')
+    trim_select = $(':input#car_trim_id')
+
+    make_select.change ->
+      car.updateSelect model_select, "/makes/#{make_select.val()}/models.json", [year_select, trim_select]
+
+    model_select.change ->
+      car.updateSelect year_select, "/models/#{model_select.val()}/years.json", [trim_select]
+
+    year_select.change ->
+      car.updateSelect trim_select, "/models/#{model_select.val()}/years/#{year_select.val()}/trims.json"
+
+  updateSelect: (target, url, disable = []) ->
+    $(':submit').attr('disabled', true)
+
+    disable << target
+    for item in disable
+      item.attr('disabled', true).trigger('liszt:updated').find('option').remove() unless item.attr('disabled')
+
+    $.getJSON url, (data) ->
+      target.find('option').remove()
+      target.append($("<option>").val(''))
+      target.parents(".control-group").addClass('hidden')
+      target.parents(".control-group").removeClass('hidden') if data.length > 0
+      for item in data
+        target.append($("<option>").val(item.id).text(item.name))
+      target.removeAttr('disabled').trigger('liszt:updated')
+      $(':submit').removeAttr('disabled')
+

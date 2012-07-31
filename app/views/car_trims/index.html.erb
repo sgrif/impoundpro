@@ -11,7 +11,7 @@
 
 <% @car_trims.each do |car_trim| %>
   <tr>
-    <td><%= car_trim.car_model_id %></td>
+    <td><%= car_trim.model_id %></td>
     <td><%= car_trim.name %></td>
     <td><%= link_to 'Show', car_trim %></td>
     <td><%= link_to 'Edit', edit_car_trim_path(car_trim) %></td>

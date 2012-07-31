@@ -1,12 +1,12 @@
-class CarYear < ActiveRecord::Base
-  has_and_belongs_to_many :models do
-    def by_make(make)
-      find_all_by_make_id(make)
-    end
-  end
-  has_and_belongs_to_many :car_trims do
-    def by_model(model)
-      find_all_by_car_model_id(model)
-    end
-  end
+class Year < ActiveRecord::Base
+  default_scope :order => "years.name DESC"
+
+  has_many :cars
+  has_and_belongs_to_many :models
+  has_and_belongs_to_many :trims
+
+  scope :by_trim, (lambda do |trim|
+    ret = joins(:trims).where(['trims.id = ?', trim]) if trim
+    return ret.nil? ? self.scoped : ret
+  end)
 end

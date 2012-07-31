@@ -1,5 +1,5 @@
 class MakesController < ApplicationController
-  before_filter :admin_only
+  before_filter :only_admin
 
   # GET /makes
   # GET /makes.json

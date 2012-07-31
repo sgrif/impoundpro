@@ -1,7 +1,7 @@
 @import "variables";
 @import "mixins";
 
-.gatekeeper
+.sessions, #new_user
 {
   padding-top: $spacing*2;
 
@@ -15,11 +15,11 @@
       border-bottom: 1px solid $grayLightish;
       @include border-radius(5px 5px 0 0);
       text-shadow: 1px 1px 0 $white;
-      padding: $spacing;
+      padding: $spacing * 2/3;
     }
 
     div.form-content {
-      margin: $spacing;
+      margin: $spacing*2/3 $spacing;
     }
 
     div.form-actions {

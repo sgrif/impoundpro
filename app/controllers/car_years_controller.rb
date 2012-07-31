@@ -1,84 +1,84 @@
-class CarYearsController < ApplicationController
+class YearsController < ApplicationController
   before_filter :only_admin, :except => :index
 
-  # GET /car_years
-  # GET /car_years.json
+  # GET /years
+  # GET /years.json
   def index
-    @car_years = CarYear.all
+    @years = params[:model_id] ? Model.find(params[:model_id]).years : Year.all
 
     respond_to do |format|
       format.html { only_admin } # index.html.erb
-      format.json { render json: @car_years }
+      format.json { render json: @years, :except => [:created_at, :updated_at] }
     end
   end
 
-  # GET /car_years/1
-  # GET /car_years/1.json
+  # GET /years/1
+  # GET /years/1.json
   def show
-    @car_year = CarYear.find(params[:id])
+    @year = Year.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @car_year }
+      format.json { render json: @year }
     end
   end
 
-  # GET /car_years/new
-  # GET /car_years/new.json
+  # GET /years/new
+  # GET /years/new.json
   def new
-    @car_year = CarYear.new
+    @year = Year.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @car_year }
+      format.json { render json: @year }
     end
   end
 
-  # GET /car_years/1/edit
+  # GET /years/1/edit
   def edit
-    @car_year = CarYear.find(params[:id])
+    @year = Year.find(params[:id])
   end
 
-  # POST /car_years
-  # POST /car_years.json
+  # POST /years
+  # POST /years.json
   def create
-    @car_year = CarYear.new(params[:car_year])
+    @year = Year.new(params[:year])
 
     respond_to do |format|
-      if @car_year.save
-        format.html { redirect_to @car_year, notice: 'Car year was successfully created.' }
-        format.json { render json: @car_year, status: :created, location: @car_year }
+      if @year.save
+        format.html { redirect_to @year, notice: 'Car year was successfully created.' }
+        format.json { render json: @year, status: :created, location: @year }
       else
         format.html { render action: "new" }
-        format.json { render json: @car_year.errors, status: :unprocessable_entity }
+        format.json { render json: @year.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PUT /car_years/1
-  # PUT /car_years/1.json
+  # PUT /years/1
+  # PUT /years/1.json
   def update
-    @car_year = CarYear.find(params[:id])
+    @year = Year.find(params[:id])
 
     respond_to do |format|
-      if @car_year.update_attributes(params[:car_year])
-        format.html { redirect_to @car_year, notice: 'Car year was successfully updated.' }
+      if @year.update_attributes(params[:year])
+        format.html { redirect_to @year, notice: 'Car year was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @car_year.errors, status: :unprocessable_entity }
+        format.json { render json: @year.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /car_years/1
-  # DELETE /car_years/1.json
+  # DELETE /years/1
+  # DELETE /years/1.json
   def destroy
-    @car_year = CarYear.find(params[:id])
-    @car_year.destroy
+    @year = Year.find(params[:id])
+    @year.destroy
 
     respond_to do |format|
-      format.html { redirect_to car_years_url }
+      format.html { redirect_to years_url }
       format.json { head :no_content }
     end
   end

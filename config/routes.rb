@@ -1,10 +1,14 @@
 Tyler::Application.routes.draw do
 
-  resources :car_trims
+  resources :trims
 
-  resources :car_years
+  resources :years
 
-  resources :models
+  resources :models do
+    resources :years do
+      resources :trims
+    end
+  end
 
   resources :makes do
     resources :models

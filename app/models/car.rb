@@ -25,8 +25,8 @@ class Car < ActiveRecord::Base
   belongs_to :user
   belongs_to :make
   belongs_to :model
-  belongs_to :car_year
-  belongs_to :car_trim
+  belongs_to :year
+  belongs_to :trim
 
   def check_vin
     if self.new_record? and !self.override_check_vin.present? and !self.errors.has_key?(:vin)
@@ -45,8 +45,8 @@ class Car < ActiveRecord::Base
   end
 
   def to_s
-    [self.car_year.name, self.make.name, self.car_model.name].join " " unless self.car_year.nil? or self.car_make.nil? or self.car_model.nil?
-    self.vin
+    return [self.year.name, self.make.name, self.model.name].join " " unless self.year.nil? or self.make.nil? or self.model.nil?
+    "ID: #{self.vin}"
   end
 
   protected

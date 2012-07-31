@@ -11,31 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730064924) do
-
-  create_table "car_trims", :force => true do |t|
-    t.integer  "model_id"
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "short_name"
-  end
-
-  create_table "car_trims_car_years", :id => false, :force => true do |t|
-    t.integer "car_trim_id"
-    t.integer "car_year_id"
-  end
-
-  create_table "car_years", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "car_years_models", :id => false, :force => true do |t|
-    t.integer "model_id"
-    t.integer "car_year_id"
-  end
+ActiveRecord::Schema.define(:version => 20120731030932) do
 
   create_table "cars", :force => true do |t|
     t.string   "size"
@@ -59,10 +35,10 @@ ActiveRecord::Schema.define(:version => 20120730064924) do
     t.boolean  "paid"
     t.string   "invoice_item_id"
     t.integer  "user_id"
-    t.integer  "car_year_id"
+    t.integer  "year_id"
     t.integer  "make_id"
     t.integer  "model_id"
-    t.integer  "car_trim_id"
+    t.integer  "trim_id"
   end
 
   create_table "makes", :force => true do |t|
@@ -78,6 +54,11 @@ ActiveRecord::Schema.define(:version => 20120730064924) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "models_years", :id => false, :force => true do |t|
+    t.integer "model_id"
+    t.integer "year_id"
+  end
+
   create_table "stripe_webhooks", :force => true do |t|
     t.integer  "user_id"
     t.string   "type"
@@ -85,6 +66,18 @@ ActiveRecord::Schema.define(:version => 20120730064924) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "target_id"
+  end
+
+  create_table "trims", :force => true do |t|
+    t.integer  "model_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "name"
+  end
+
+  create_table "trims_years", :id => false, :force => true do |t|
+    t.integer "trim_id"
+    t.integer "year_id"
   end
 
   create_table "users", :force => true do |t|
@@ -107,6 +100,12 @@ ActiveRecord::Schema.define(:version => 20120730064924) do
     t.string   "stripe_customer_token"
     t.boolean  "paid"
     t.boolean  "admin",                  :default => false
+  end
+
+  create_table "years", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end

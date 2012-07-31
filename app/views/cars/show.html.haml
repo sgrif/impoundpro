@@ -1,12 +1,12 @@
 %p
   %b Year:
-  =@car.car_year
+  =@car.year.try(:name)
 %p
   %b Make:
-  =@car.make
+  =@car.make.try(:name)
 %p
   %b Model:
-  =@car.model
+  =@car.model.try(:name)
 %p
   %b Size:
   =@car.size

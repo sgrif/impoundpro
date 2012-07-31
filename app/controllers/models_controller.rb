@@ -1,5 +1,5 @@
 class ModelsController < ApplicationController
-  before_filter :admin_only, :except => :index
+  before_filter :only_admin, :except => :index
 
   # GET /models
   # GET /models.json
@@ -7,7 +7,7 @@ class ModelsController < ApplicationController
     @models = params[:make_id] ? Make.find(params[:make_id]).models : Model.all
 
     respond_to do |format|
-      format.html { admin_only } # index.html.erb
+      format.html { only_admin } # index.html.erb
       format.json { render json: @models, :except => [:created_at, :updated_at] }
     end
   end

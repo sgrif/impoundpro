@@ -35,25 +35,36 @@ body {
   .section-body {
     padding: $spacing;
 
-    legend {
-      & + .row, & + .row-fluid {
-        margin-top: 18px;
-        -webkit-margin-top-collapse: separate;
-      }
-    }
+    .well {
+      fieldset {
+        legend {
+          & + .row, & + .row-fluid {
+            margin-top: 18px;
+            -webkit-margin-top-collapse: separate;
+          }
+        }
 
-    .form-horizontal .control-group.pull-left {
-      > .controls {
-        margin: {
-          left: 0;
-          right: $spacing*4;
+        &.form-vertical {
+          .control-group {
+            > .controls {
+              margin: {
+                left: 0;
+                right: $spacing*4;
+              }
+            }
+
+            &.last-row {
+              margin-bottom: 0;
+            }
+
+            label {
+              text-align: left;
+              padding-top: 0;
+            }
+          }
         }
       }
-
-      label {
-        text-align: left;
-        padding-top: 0;
-      }
     }
+
   }
 }

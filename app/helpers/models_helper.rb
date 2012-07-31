@@ -1,2 +1,2 @@
-module CarModelsHelper
+module ModelsHelper
 end

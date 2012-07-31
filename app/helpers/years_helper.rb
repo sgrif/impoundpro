@@ -1,2 +1,2 @@
-module CarYearsHelper
+module YearsHelper
 end

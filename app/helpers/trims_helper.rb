@@ -1,2 +1,2 @@
-module CarTrimsHelper
+module TrimsHelper
 end

@@ -1,26 +1,31 @@
 / TODO Override select box by creating new row (add boolean filter column and default_scope to false)
 = simple_form_for @car, :html => { :class => "form-horizontal" } do |f|
   .well
-    %fieldset
+    %fieldset.form-vertical
       %legend.lead
         How did we do?
         %small
           If possible we generated some information from the VIN. If we got it wrong, you can
           change it below.
-      %p.row-fluid
-        = f.association :make, :order => :name,
-          :input_html => {:class => "chzn-select", :data => {:placeholder => "Choose a Make"}},
-          :label => false, :disabled => false, :wrapper_html => {:class => "pull-left"}
-        = f.association :model, :order => :name, :collection => @car.make.try(:models),
-          :input_html => {:class => "chzn-select", :data => {:placeholder => "Choose a Model"}},
-          :label => false, :disabled => @car.make.nil?, :wrapper_html => {:class => "pull-left"}
-        = f.association :year, :order => :name, :collection => filter_years(@car),
-          :input_html => {:class => "chzn-select", :data => {:placeholder => "Choose a Year"}},
-          :label => false, :disabled => @car.model.nil?, :wrapper_html => {:class => "pull-left"}
+      .row
+        .span3
+          = f.association :make, :order => :name,
+            :input_html => {:class => "chzn-select", :data => {:placeholder => "Choose a Make"}},
+            :label => false, :disabled => false
+        .span3
+          = f.association :model, :order => :name, :collection => (@car.make.nil? ? [] : @car.make.models),
+            :input_html => {:class => "chzn-select", :data => {:placeholder => "Choose a Model"}},
+            :label => false, :disabled => @car.make.nil?
+        .span3
+          = f.association :year, :order => :name, :collection => (@car.model.nil? ? [] : @car.model.years),
+            :input_html => {:class => "chzn-select", :data => {:placeholder => "Choose a Year"}},
+            :label => false, :disabled => @car.model.nil?
       - if true # Determine if we can show a trim
-        = f.association :trim, :order => :name, :collection => filter_trims(@car),
-          :input_html => {:class => "chzn-select-deselect span6", :data => {:placeholder => "Choose a Trim"}},
-          :label => false, :disabled => @car.year.nil?, :wrapper_html => {:class => "pull-left"}
+        .row
+          .span5
+            = f.association :trim, :order => :name, :collection => (@car.model.nil? ? [] : @car.model.trims.by_year(@car.year_id)),
+              :input_html => {:class => "chzn-select-deselect span6", :data => {:placeholder => "Choose a Trim"}},
+              :label => false, :disabled => @car.year.nil?, :wrapper_html => {:class => 'last-row'}
 
   .form-actions
     = f.submit "Save Car", :class => "btn btn-primary"

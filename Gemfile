@@ -50,11 +50,11 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'pdf-inspector'
-  gem 'cover_me'
+#  gem 'cover_me'
 end
 
 group :production do
-  gem 'mysql'
+  gem 'mysql2'
 end
 
 # To use ActiveModel has_secure_password

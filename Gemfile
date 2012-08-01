@@ -13,6 +13,7 @@ gem 'pg'
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
+  gem 'jquery-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer'
@@ -23,7 +24,6 @@ group :assets do
   gem 'uglifier'
 end
 
-gem 'jquery-rails'
 gem 'stripe'
 gem 'prawn_rails'
 gem 'bcrypt-ruby'

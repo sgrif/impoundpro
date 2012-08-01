@@ -8,34 +8,40 @@ jQuery ->
 
 user =
   setupForm: ->
-    $("form#new_user, form.edit_user").submit ->
+    @number = $("input#credit_card_number")
+    @cvc = $("input#credit_card_cvc")
+    @year = $("select#credit_card_expiry_1i")
+    @month = $("select#credit_card_expiry_2i")
+
+    $("form#new_user, form[id^=edit_user]").submit ->
       $('input[type=submit]').attr('disabled', true)
-      if $('#card_number').length
+      if @number.length
         user.processCard()
         false
       else
         true
 
-    $("input#card_number").change ->
+    @number.change ->
       user.handleStripeValidation $(this), Stripe.validateCardNumber $(this).val()
 
-    $("input#card_code").change ->
+    @cvc.change ->
       user.handleStripeValidation $(this), Stripe.validateCVC $(this).val()
 
-    $("select#card_year").change ->
-      user.handleStripeValidation $(this), Stripe.validateExpiry $("select#card_month").val(), $(this).val()
+    @year.change (e) =>
+      $this = $(e.target)
+      user.handleStripeValidation $this, Stripe.validateExpiry @month.val(), $this.val()
 
-    $("select#card_month").change ->
-      if $("select#card_year").val()
-        user.handleStripeValidation $("select#card_year"),
-        Stripe.validateExpiry $(this).val(), $("select#card_year").val()
+    @month.change (e) =>
+      $this = $(e.target)
+      if @year.val()
+        user.handleStripeValidation @year, Stripe.validateExpiry $this.val(), @year.val()
 
   processCard: ->
     Stripe.createToken(
-      number: $('#card_number').val()
-      cvc: $('#card_code').val()
-      exp_month: $('#card_month').val()
-      exp_year: $('#card_year').val(),
+      number: @number.val()
+      cvc: @cvc.val()
+      exp_month: @month.val()
+      exp_year: @year.val(),
       user.handleStripeResponse)
     false
 
@@ -48,10 +54,10 @@ user =
       $("input[type=submit]").attr("disabled", false)
 
   handleStripeValidation: (field, response) ->
-    field.parent().removeClass 'valid invalid'
+    field.parents('.control-group').removeClass 'success error'
     if response
-      field.parent().addClass "valid"
-      $("input[type='submit']").attr("disabled", false) unless $(".invalid").length
+      field.parents('.control-group').addClass "success"
+      $("input[type='submit']").attr("disabled", false) unless $(".error").length
     else
-      field.parent().addClass "invalid"
+      field.parents('.control-group').addClass "error"
       $("input[type='submit']").attr("disabled", true)

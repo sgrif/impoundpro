@@ -1,14 +1,13 @@
 class CarsController < ApplicationController
-
-  before_filter :authorize_cars, :except => [:index, :unclaimed_vehicles_report, :new, :create]
-  before_filter :has_cars, :except => [:index, :new, :create]
-  before_filter :requires_unlocked, :only => [:owner_lien_notice, :lien_holder_lien_notice, :driver_lien_notice, :owner_mail_labels, :lien_holder_mail_labels,
-                                              :driver_mail_labels, :notice_of_public_sale, :affidavit_of_resale, :title_application, :fifty_state_check]
+  skip_before_filter :has_subscription, :only => :index
+  before_filter { add_breadcrumb "Cars", cars_path }
+    before_filter :only => [:new, :create] { add_breadcrumb "Add New", new_car_path }
+    before_filter :only => [:show, :edit, :update] { add_breadcrumb Car.find(params[:id]).to_s, car_path(params[:id]) }
+      before_filter :only => [:edit, :update] { add_breadcrumb "Edit", edit_car_path(params[:id]) }
 
   # GET /cars
   # GET /cars.json
   def index
-
     @cars = current_user.cars
 
     respond_to do |format|
@@ -47,11 +46,13 @@ class CarsController < ApplicationController
   # POST /cars
   # POST /cars.json
   def create
-    @car = Car.new(params[:car])
+    vin = params[:car].delete :vin
+    @car = Car.find_or_initialize_by_vin_and_user_id(vin, current_user.id)
+    @car.override_check_vin = params[:override_check_vin]
 
     respond_to do |format|
       if @car.save
-        format.html { redirect_to cars_path, :notice => 'Car was successfully created.' }
+        format.html { redirect_to edit_car_path(@car) }
         format.json { render :json => @car, :status => :created, :location => @car }
       else
         format.html { render :action => "new" }

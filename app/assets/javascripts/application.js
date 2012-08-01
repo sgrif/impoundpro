@@ -12,6 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.ui.autocomplete
-//= require jquery.ui.button
+//= require bootstrap
+//= require chosen-jquery
 //= require_tree .

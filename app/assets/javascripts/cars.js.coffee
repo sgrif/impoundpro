@@ -2,48 +2,49 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 jQuery ->
-  car.setupForm()
+  if $('body').hasClass 'cars'
+    car.setupForm()
 
 car =
   setupForm: ->
-    $('input.charge').change ->
-      car.update_totals()
+    $('form#new_car').on 'keydown', 'input', (e) ->
+      if e.keyCode is 13
+        $('input:submit#new_car_submit').click()
+        false
+      else
+        true
 
-    $('input#car_tax').change ->
-      car.update_totals()
+    $('.chzn-select').chosen()
+    $('.chzn-select-deselect').chosen allow_single_deselect: true
 
-    $('.forms_overlay td').width ->
-        $(this).parent()
-          .next('.forms')
-          .width()
+    make_select = $(':input#car_make_id')
+    model_select = $(':input#car_model_id')
+    year_select = $(':input#car_year_id')
+    trim_select = $(':input#car_trim_id')
 
-    $('.forms_overlay td').height ->
-      $(this).parent()
-        .next('.forms')
-        .height()
+    make_select.change ->
+      car.updateSelect model_select, "/makes/#{make_select.val()}/models.json", [year_select, trim_select]
 
-    $('input.combobox').each ->
-      $(this).combobox()
+    model_select.change ->
+      car.updateSelect year_select, "/models/#{model_select.val()}/years.json", [trim_select]
 
-    $('input#car_make').bind "autocompletechange autocompleteselect", (e, ui) ->
-      val = ui.item?.value || $(this).val()
-      if this.make != val
-        this.make = val
-        $('input#car_model').combobox('destroy')
-        if makes[this.make]
-          $('input#car_model')
-            .data('auto-complete', makes[this.make])
-            .combobox()
-    .change()
+    year_select.change ->
+      car.updateSelect trim_select, "/models/#{model_select.val()}/years/#{year_select.val()}/trims.json"
 
-  true_tax: (tax) ->
-    return tax + 1 if tax < 1
-    return tax/100 + 1
+  updateSelect: (target, url, disable = []) ->
+    $(':submit').attr('disabled', true)
 
-  update_totals: () ->
-    #TODO Calculate storage correctly
-    charges = ((Number) elem.value for elem in $('.charge'))
-    subtotal = charges.reduce (x, y) -> x + y
-    total = subtotal * car.true_tax (Number) $('#car_tax').val()
-    $('#car_charge_subtotal').val(subtotal.toFixed(2))
-    $('#car_charge_total').val(total.toFixed(2))
+    disable << target
+    for item in disable
+      item.attr('disabled', true).trigger('liszt:updated').find('option').remove() unless item.attr('disabled')
+
+    $.getJSON url, (data) ->
+      target.find('option').remove()
+      target.append($("<option>").val(''))
+      target.parents(".control-group").addClass('hidden')
+      target.parents(".control-group").removeClass('hidden') if data.length > 0
+      for item in data
+        target.append($("<option>").val(item.id).text(item.name))
+      target.removeAttr('disabled').trigger('liszt:updated')
+      $(':submit').removeAttr('disabled')
+

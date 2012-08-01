@@ -1,91 +1,65 @@
+require 'decode_vin'
 class Car < ActiveRecord::Base
+  include DecodeVin
 
   #TODO Add in state boolean
-  validates :year, :presence => true, :numericality => true, :inclusion => {:in => 1900..Date.current.year + 2}
-  validates :make, :presence => true
-  validates :model, :presence => true
-  validates :size, :presence => true
-  validates :color, :presence => true
-  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state"}
-  validates :vin, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this vin"}
-  validates :license_plate_number, :presence => true, :uniqueness => {:scope => 'user_id', :message => "There is already an active car on your account with this LP#"}
+  validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
+  validates :vin,
+    :presence => true,
+    :uniqueness => { :scope => 'user_id', :message => "You already have a car with this VIN" },
+    :length => { :maximum => 17 },
+    :format => { :with => /^[A-Z0-9]*$/, :message => "Only letters and number allowed" }
 
   validates :owner_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
   validates :lien_holder_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
-  validates :driver_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
+  validate :check_vin, :on => :create
 
-  validates :date_towed, :presence => true
-  validates :tow_requested_by, :presence => true
-  validates :tow_reason, :presence => true
+  before_validation :ensure_vin_is_upcase
+  before_create :decode_vin
 
-  validates :charge_hook_up, :numericality => {:greater_than_or_equal_to => 0}
-  validates :charge_mileage, :numericality => {:greater_than_or_equal_to => 0}
-  validates :charge_admin, :numericality => {:greater_than_or_equal_to => 0}
-  validates :charge_other, :numericality => {:greater_than_or_equal_to => 0}
-  validates :tax, :numericality => {:greater_than_or_equal_to => 0}
-
-  before_validation :ensure_tax_is_decimal
-
-  attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount
-  attr_protected :stripe_invoice_item_token, :paid
+  attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount, :override_check_vin
+  attr_protected :stripe_invoice_item_token, :paid, :vin, :user_id
 
   belongs_to :user
+  belongs_to :make
+  belongs_to :model
+  belongs_to :year
+  belongs_to :trim
 
-  after_initialize :init
-
-  def charge_subtotal
-    self.charge_mileage + self.charge_storage + self.charge_admin + self.charge_hook_up + self.charge_other
-  end
-
-  def charge_total
-    self.charge_subtotal * (self.tax + 1)
-  end
-
-  def charge_storage
-    self.storage_rate * ((Date.today - date_towed.to_date).to_i + 1)
-  end
-
-  def tax_amount
-    if self.tax > 0
-      self.charge_total - self.charge_subtotal
-    else
-      0
+  def check_vin
+    if self.new_record? and !self.override_check_vin.present? and !self.errors.has_key?(:vin)
+      sum = 0
+      self.vin.chars.each_with_index do |c, i|
+        if CheckVin[:char_trans][c].nil?
+          errors.add :check_vin, "VINs should never contain character #{c}. Did you misread a numeric #{CheckVin[:misreads][c]}?"
+          next
+        else
+          sum += (CheckVin[:char_trans][c] * CheckVin[:weights][i])
+        end
+      end
+      check_digit = CheckVin[:char_trans][self.vin[8]]
+      errors.add :check_vin, "VIN verification algorithm failed" if check_digit.nil? or sum % 11 != check_digit
     end
   end
 
-  def charges
-    vals = {
-      "Hookup" => self.charge_hook_up,
-      "Mileage" => self.charge_mileage,
-      "Storage" => self.charge_storage,
-      "Admininistration" => self.charge_admin,
-      "Other" => self.charge_other,
-      "Tax" => self.tax_amount
-    }
-    vals.delete_if{|key, value| value <= 0.0}
-    vals
+  def to_s
+    return [self.year.name, self.make.name, self.model.name].join " " unless self.year.nil? or self.make.nil? or self.model.nil?
+    "ID: #{self.vin}"
   end
 
   protected
 
-  def init
-    self.charge_hook_up           ||= 0.0
-    self.charge_mileage           ||= 0.0
-    self.charge_admin             ||= 0.0
-    self.charge_other             ||= 0.0
-    self.tax                      ||= 0.0
-    self.storage_rate             ||= 0.0
-    self.preparers_name           ||= self.user.preparers_name if self.user
-    self.date_towed               ||= Date.today
-    self.mail_notice_of_lien_date ||= Date.today
+  def decode_vin
+    keep = []
+    new_attrs = Car.find_by_vin(self.vin).try(:attributes) || parse_vin(self.vin)
+    new_attrs.keep_if { |k, v| keep.include?(k) }
+    self.attributes = new_attrs
   end
 
-  def ensure_tax_is_decimal
-    if self.tax >= 1
-      self.tax /= 100
-    end
+  def ensure_vin_is_upcase
+    self.vin = self.vin.upcase if self.new_record?
   end
 
 end

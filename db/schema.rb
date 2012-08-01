@@ -11,50 +11,52 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120524211503) do
+ActiveRecord::Schema.define(:version => 20120731030932) do
 
   create_table "cars", :force => true do |t|
-    t.integer  "year"
-    t.string   "make"
-    t.string   "model"
     t.string   "size"
     t.string   "state"
     t.string   "vin"
     t.string   "license_plate_number"
-    t.date     "date_towed"
-    t.string   "tow_requested_by"
-    t.string   "tow_reason"
     t.string   "owner_name"
     t.string   "owner_address"
     t.string   "lien_holder_name"
     t.string   "lien_holder_address"
-    t.decimal  "charge_mileage",            :precision => 8, :scale => 2
-    t.decimal  "charge_admin",              :precision => 8, :scale => 2
-    t.float    "tax"
-    t.decimal  "storage_rate",              :precision => 8, :scale => 2
-    t.boolean  "mvd_inquiry_made"
-    t.string   "preparers_name"
-    t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at",                                              :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
     t.string   "color"
-    t.integer  "user_id"
     t.string   "owner_city"
     t.string   "owner_state"
     t.string   "owner_zip"
     t.string   "lien_holder_city"
     t.string   "lien_holder_state"
     t.string   "lien_holder_zip"
-    t.string   "driver_name"
-    t.string   "driver_address"
-    t.string   "driver_city"
-    t.string   "driver_state"
-    t.string   "driver_zip"
-    t.decimal  "charge_hook_up",            :precision => 8, :scale => 2
-    t.decimal  "charge_other",              :precision => 8, :scale => 2
     t.string   "stripe_invoice_item_token"
     t.boolean  "paid"
     t.string   "invoice_item_id"
-    t.date     "mail_notice_of_lien_date"
+    t.integer  "user_id"
+    t.integer  "year_id"
+    t.integer  "make_id"
+    t.integer  "model_id"
+    t.integer  "trim_id"
+  end
+
+  create_table "makes", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "models", :force => true do |t|
+    t.integer  "make_id"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "models_years", :id => false, :force => true do |t|
+    t.integer "model_id"
+    t.integer "year_id"
   end
 
   create_table "stripe_webhooks", :force => true do |t|
@@ -66,14 +68,26 @@ ActiveRecord::Schema.define(:version => 20120524211503) do
     t.string   "target_id"
   end
 
+  create_table "trims", :force => true do |t|
+    t.integer  "model_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "name"
+  end
+
+  create_table "trims_years", :id => false, :force => true do |t|
+    t.integer "trim_id"
+    t.integer "year_id"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "password_digest"
     t.string   "salt"
     t.string   "name"
     t.string   "address"
-    t.datetime "created_at",             :null => false
-    t.datetime "updated_at",             :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.string   "city"
     t.string   "state"
     t.string   "zip"
@@ -85,6 +99,13 @@ ActiveRecord::Schema.define(:version => 20120524211503) do
     t.string   "preparers_name"
     t.string   "stripe_customer_token"
     t.boolean  "paid"
+    t.boolean  "admin",                  :default => false
+  end
+
+  create_table "years", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end

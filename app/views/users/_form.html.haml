@@ -1,69 +1,25 @@
-=form_for(@user, :url => user_path) do |f|
-  -if @user.errors.any?
-    #error_explanation
-      %h2 #{pluralize(@user.errors.count, "error")} prohibited this user from being saved:
-      %ul
-      -@user.errors.full_messages.each do |msg|
-        %li= msg
-  =f.hidden_field :stripe_card_token
+= simple_form_for @user, :url => user_path, :html => { :class => 'form-horizontal' } do |f|
 
-  %fieldset#credit_card_info
-    %legend #{"Edit " unless @user.new_record?}Credit Card Info
-    -if @user.stripe_card_token
-      Payment info provided
-    -else
-      #stripe_error
-        %noscript JavaScript is not enabled and is required for this form. First enable it in your web browser settings.
-      .field
-        =label_tag :card_number, "Credit Card Number"
-        %span= text_field_tag :card_number, nil, :name => nil, :size => 30
-      .field
-        =label_tag :card_code, "Security Code"
-        %span= text_field_tag :card_code, nil, :name => nil, :size => 30
-      .field
-        =label_tag :card_month, "Card Expiration"
-        %span
-          =select_month nil, {:add_month_numbers => true, :prompt => true}, {:name => nil, :id => "card_month"} |
-          =select_year nil, {:start_year => Date.today.year, :end_year => Date.today.year+15, :prompt => true}, {:name => nil, :id => "card_year"}
-  -if @user.new_record? || @user.paid
-    %fieldset
-      -if @user.new_record?
-        %legend User Details
-        .field
-          =f.label :email
-          =f.email_field :email
-      -else
-        %legend Change Password
-      .field
-        =f.label :password
-        =f.password_field :password
-      .field
-        =f.label :password_confirmation, "Confirm Password"
-        =f.password_field :password_confirmation
-    %fieldset
-      %legend Company Details
-      .field
-        =f.label :name
-        =f.text_field :name
-      .field
-        =f.label :address
-        =f.text_field :address
-      .field
-        =f.label :city
-        =f.text_field :city
-      .field
-        =f.label :state
-        =f.select :state, States.invert.sort, {:prompt => true}
-      .field
-        =f.label :zip
-        =f.text_field :zip
-      .field
-        =f.label :county
-        =f.text_field :county
-      .field
-        =f.label :phone_number
-        =f.phone_field :phone_number
-      .field
-        =f.label :preparers_name, "Form preparers name"
-        =f.text_field :preparers_name
-  .actions= f.submit
+  = f.input :stripe_card_token, :as => :hidden
+  %fieldset
+    %legend Login Details
+    = f.input :email, :disabled => true, :hint => "You cannot change your email"
+    = f.input :password, :label => "Change Password"
+    = f.input :password_confirmation, :label => "Confirm Password"
+  %fieldset
+    %legend Company Details
+    .row
+      .span4
+        = f.input :name
+        = f.input :phone_number
+        = f.input :preparers_name, :label => "Form preparers name"
+      .span4
+        = f.input :address
+        = f.input :city
+        = f.input :state, :collection => States.invert.sort, :prompt => true
+        = f.input :zip
+        = f.input :county
+  .form-actions
+    = f.submit "Update Profile", :class => 'btn btn-primary'
+    = link_to "Subscription", subscribe_user_path, :class => 'btn btn-info'
+    = link_to "Back", root_path, :class => 'btn'

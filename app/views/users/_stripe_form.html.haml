@@ -1,0 +1,14 @@
+= simple_form_for @user, :url => user_path, :html => { :class => 'form-vertical' } do |f|
+  %fieldset
+    %legend Update Payment Info
+    = f.error :stripe_card_token
+    = simple_fields_for @user.credit_card do |c|
+      = c.input :number
+      = c.input :expiry, :as => :date, :order => [:month, :year], :add_month_numbers => true
+      = c.input :cvc, :label => "CVC"
+
+  .form-actions
+    = f.submit "Subscribe", :class => 'btn btn-primary'
+    - if @user.has_subscription?
+      = f.submit "Cancel Subscription", :method => :destroy, :confirm => "Are you sure? You will be unable to use the site until you resubscribe.", :class => 'btn btn-danger'
+    = link_to "Back", user_path, :class => 'btn'

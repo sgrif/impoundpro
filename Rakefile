@@ -4,7 +4,7 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Tyler::Application.load_tasks
+ImpoundPro::Application.load_tasks
 
 namespace :tmp do
   namespace :assets do 

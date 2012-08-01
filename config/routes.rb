@@ -1,4 +1,4 @@
-Tyler::Application.routes.draw do
+ImpoundPro::Application.routes.draw do
 
   resources :trims
 

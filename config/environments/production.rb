@@ -1,4 +1,4 @@
-Tyler::Application.configure do
+ImpoundPro::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
@@ -65,12 +65,4 @@ Tyler::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   config.action_mailer.default_url_options = { :host => "0.0.0.0:3000" }
-  config.action_mailer.smtp_settings = {
-    :address => 'smtp.gmail.com',
-    :port => 587,
-    :user_name => 'ferret4prez@gmail.com',
-    :password => 'Me345678',
-    :authentication => 'login'
-  }
-  ActionMailer::Base.default :from => 'ferret4prez@gmail.com'
 end

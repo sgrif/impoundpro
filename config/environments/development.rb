@@ -1,4 +1,4 @@
-Tyler::Application.configure do
+ImpoundPro::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
@@ -36,12 +36,4 @@ Tyler::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.default_url_options = { :host => "0.0.0.0:3000" }
-  config.action_mailer.smtp_settings = {
-    :address => 'smtp.gmail.com',
-    :port => 587,
-    :user_name => 'ferret4prez@gmail.com',
-    :password => 'Me345678',
-    :authentication => 'login'
-  }
-  ActionMailer::Base.default :from => 'ferret4prez@gmail.com'
 end

@@ -2,7 +2,7 @@
 require File.expand_path('../application', __FILE__)
 
 # Initialize the rails application
-Tyler::Application.initialize!
+ImpoundPro::Application.initialize!
 
 Time::DATE_FORMATS[:month_and_day] = "%B %d"
 Time::DATE_FORMATS[:short_year] = "%y"

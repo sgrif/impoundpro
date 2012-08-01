@@ -25,13 +25,13 @@ group :assets do
 end
 
 gem 'stripe'
-#gem 'prawn_rails'
-#gem 'bcrypt-ruby'
-#gem 'haml'
+gem 'prawn_rails'
+gem 'bcrypt-ruby'
+gem 'haml'
 gem 'simple_form'
-#gem 'active_attr'
-#gem 'chosen-rails'
-#gem 'yaml_db'
+gem 'active_attr'
+gem 'chosen-rails'
+gem 'yaml_db'
 
 group :development do
   gem "nifty-generators"

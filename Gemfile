@@ -31,7 +31,7 @@ gem 'haml'
 gem 'simple_form'
 gem 'active_attr'
 gem 'chosen-rails'
-gem 'yaml_db'
+gem 'thin'
 
 group :test do
   gem 'rspec-rails'

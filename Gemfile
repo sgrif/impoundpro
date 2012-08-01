@@ -15,6 +15,7 @@ group :assets do
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer'
+  gem 'libv8', '~> 3.3.10.4'
 
   gem 'jquery-ui-rails'
   gem 'bootstrap-sass'

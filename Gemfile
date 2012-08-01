@@ -33,10 +33,6 @@ gem 'active_attr'
 gem 'chosen-rails'
 gem 'yaml_db'
 
-group :development do
-  gem "nifty-generators"
-end
-
 group :test do
   gem 'rspec-rails'
   gem "factory_girl_rails"

@@ -211,7 +211,7 @@ DEPENDENCIES
   capybara
   capybara-webkit
   chosen-rails
-  coffee-rails (~> 3.2.2)
+  coffee-rails
   database_cleaner
   factory_girl_rails
   faker
@@ -227,9 +227,9 @@ DEPENDENCIES
   prawn_rails
   rails (= 3.2.7)
   rspec-rails
-  sass-rails (~> 3.2.4)
+  sass-rails
   shoulda-matchers
   simple_form
   stripe
-  uglifier (>= 1.0.3)
+  uglifier
   yaml_db

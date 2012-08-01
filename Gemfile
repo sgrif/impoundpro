@@ -5,7 +5,7 @@ gem 'rails', '3.2.2'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+gem 'pg'
 
 
 # Gems used only for assets and not required
@@ -51,10 +51,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'pdf-inspector'
 #  gem 'cover_me'
-end
-
-group :production do
-  gem 'mysql2'
 end
 
 # To use ActiveModel has_secure_password

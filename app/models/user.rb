@@ -1,26 +1,45 @@
+#TODO CC Broken
 require 'digest/sha2'
 
 class User < ActiveRecord::Base
   #Allow changeable in state and out of state time limits for date of posting and date of auction
   validates :email, :presence => true, :uniqueness => {:scope => :email, :message => "There is already an account for email %{value}", :allow_nil => true, :allow_blank => true}, :on => :create
   validates :name, :presence => true
-  validates :address, :presence => true
-  validates :city, :presence => true
-  validates :state, :presence => true, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
-  validates :zip, :presence => true
-  validates :phone_number, :presence => true
-  validates :county, :presence => true
+  validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
 
-  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :email, :preparers_name, :stripe_card_token
-  attr_accessor :stripe_card_token
+  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card
+  attr_accessor :stripe_card_token, :credit_card
 
   has_secure_password
 
   before_create { generate_token(:auth_token) }
   before_update :send_password_changed_notice
 
-  has_many :cars, :dependent => :destroy, :order => "created_at DESC"
+  has_many :cars, :order => "created_at DESC"
   has_many :stripe_webhooks
+
+  after_initialize {@credit_card = CreditCard.new}
+
+  def trial_end_date
+    2.weeks.since(self.created_at)
+  end
+
+  def trial_days_remaining
+    (self.trial_end_date.to_date - Date.today).to_i
+  end
+
+  def has_subscription?
+    sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
+    !sub.nil? and sub.status == "active"
+  end
+
+  def needs_subscription?
+    !self.has_subscription? && (self.trial_end_date.past? || self.cars.count > 5)
+  end
+
+  def profile_complete?
+    !(self.address.blank? || self.city.blank? || self.state.blank? || self.zip.blank?)
+  end
 
   def send_password_reset
     generate_token(:password_reset_token)
@@ -30,7 +49,7 @@ class User < ActiveRecord::Base
   end
 
   def send_password_changed_notice
-    UserMailer.password_changed(self).deliver if self.password_digest_will_change!
+    UserMailer.password_changed(self).deliver if password.present?
   end
 
   def welcome
@@ -41,7 +60,6 @@ class User < ActiveRecord::Base
     if valid?
       if stripe_card_token.present?
         self.add_subscription(stripe_card_token)
-        self.paid = true
       end
       save!
     end
@@ -75,9 +93,7 @@ class User < ActiveRecord::Base
 
   def cancel
     customer = Stripe::Customer.retrieve(stripe_customer_token)
-    customer.delete
-    self.email = nil
-    save!
+    customer.cancel_subscription
   end
 
   private
@@ -86,5 +102,23 @@ class User < ActiveRecord::Base
     begin
       self[column] = SecureRandom.hex(10)
     end while User.exists?(column => self[column])
+  end
+end
+
+class CreditCard
+  include ActiveAttr::Model
+  attribute :number
+  attribute :expiry, :type => Date
+  attribute :cvc
+
+  def token
+    Stripe::Token.create(
+      :card => {
+        :number => self.number,
+        :exp_month => self.expiry.month,
+        :exp_year => self.expiry.year,
+        :cvc => self.cvc
+      }
+    )
   end
 end

@@ -1,5 +1,28 @@
-%h1 New car
+.section
+  %h1.section-header New Car
 
-!= render 'form'
+  .section-body
+    = simple_form_for @car, :html => { :class => "form-vertical" } do |f|
+      - if vin_check_errors = @car.errors.delete(:check_vin) and @car.errors.empty?
+        .alert.alert-block
+          %h4 Invalid VIN
+          %p
+            The VIN you entered appears to be invalid. It's possible, though unlikely that this vehicle
+            does not conform to VIN standards. Please double check that you entered the VIN correctly.
+            If you're sure these errors do not apply, click the button below.
+          %p.vin-check-errors
+            %ul
+              - vin_check_errors.each do |e|
+                %li= e
+          %p.vin-check-actions
+            %button.btn.btn-warning{:type => :submit, :name => :override_check_vin, :value => "true"}
+              %i.icon-warning-sign.icon-white
+              &nbsp;I'm sure. Ignore these errors.
+      %fieldset
+        %legend Step 1: Enter VIN
+        = f.input :vin, :input_html => { :data => { :provide => "typeahead",
+          :source => @car.user.cars.pluck(:vin).to_json }, :autocomplete => "off" }
 
-= link_to 'Back', cars_path
+      .form-actions
+        = f.submit "Next", :class => "btn btn-primary", :id => "new_car_submit"
+        = link_to "Cancel", cars_path, :class => "btn"

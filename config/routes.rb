@@ -1,38 +1,68 @@
 Tyler::Application.routes.draw do
 
-  resources :password_resets
+  resources :trims
 
-  controller :sessions do
-    get 'login' => :new
+  resources :years
 
-    post 'login' => :create
-
-    delete 'logout' => :destroy
-
-    get 'logout' => :destroy
-  end
-
-  resource :user
-
-  post 'stripe_webhook' => 'stripe_webhooks#create'
-
-  match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
-
-  resources :cars do
-    member do
-      get 'unlock'
-      get 'owner_lien_notice'
-      get 'lien_holder_lien_notice'
-      get 'driver_lien_notice'
-      get 'owner_mail_labels'
-      get 'lien_holder_mail_labels'
-      get 'driver_mail_labels'
-      get 'notice_of_public_sale'
-      get 'affidavit_of_resale'
-      get 'title_application'
-      get 'fifty_state_check'
+  resources :models do
+    resources :years do
+      resources :trims
     end
   end
+
+  resources :makes do
+    resources :models
+  end
+
+  constraints(:subdomain => "secure") do
+    resources :password_resets
+
+    controller :sessions do
+      get 'login' => :new
+
+      post 'login' => :create
+
+      delete 'logout' => :destroy
+
+      get 'logout' => :destroy
+    end
+
+    resource :user do
+      get 'subscribe' => :subscribe
+    end
+
+    post 'stripe_webhook' => 'stripe_webhooks#create'
+
+    match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
+
+    resources :cars do
+      member do
+        get 'unlock'
+        get 'owner_lien_notice'
+        get 'lien_holder_lien_notice'
+        get 'driver_lien_notice'
+        get 'owner_mail_labels'
+        get 'lien_holder_mail_labels'
+        get 'driver_mail_labels'
+        get 'notice_of_public_sale'
+        get 'affidavit_of_resale'
+        get 'title_application'
+        get 'fifty_state_check'
+      end
+    end
+
+    match "/" => 'cars#index'
+  end
+
+  controller :landing do
+    get 'home'
+    get 'tour'
+    get 'pricing'
+  end
+
+  match "login" => redirect(:subdomain => "secure")
+
+  root :to => 'landing#home'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -90,7 +120,5 @@ Tyler::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id))(.:format)'
-
-  root :to => 'cars#index'
 
 end

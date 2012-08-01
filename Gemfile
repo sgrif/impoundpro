@@ -1,39 +1,44 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
-gem 'rails', '3.2.2'
+ruby '1.9.3'
+gem 'rails', '3.2.7'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-
+gem 'pg'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.4'
-  gem 'coffee-rails', '~> 3.2.2'
+  gem 'sass-rails'
+  gem 'coffee-rails'
+  gem 'jquery-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'therubyracer'
+  # gem 'therubyracer'
 
   gem 'jquery-ui-rails'
+  gem 'bootstrap-sass'
 
-  gem 'uglifier', '>= 1.0.3'
+  gem 'uglifier'
 end
 
-gem 'jquery-rails'
 gem 'stripe'
-gem 'prawn_rails'
-gem 'capistrano'
-gem 'bcrypt-ruby'
-gem 'haml'
+#gem 'prawn_rails'
+#gem 'bcrypt-ruby'
+#gem 'haml'
+gem 'simple_form'
+#gem 'active_attr'
+#gem 'chosen-rails'
+#gem 'yaml_db'
 
-group :development, :test do
-  gem 'rspec-rails'
+group :development do
+  gem "nifty-generators"
 end
 
 group :test do
+  gem 'rspec-rails'
   gem "factory_girl_rails"
   gem "faker"
   gem "capybara"
@@ -44,11 +49,7 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda-matchers'
   gem 'pdf-inspector'
-  gem 'cover_me'
-end
-
-group :production do
-  gem 'mysql'
+#  gem 'cover_me'
 end
 
 # To use ActiveModel has_secure_password

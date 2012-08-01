@@ -1,0 +1,15 @@
+- unless @current_user.has_subscription?
+  - if @current_user.needs_subscription?
+    .alert.alert-error.alert-block
+      %h4 Trial Expired!
+      %p Your free trial has expired. Please purchase a subscription to continue using Impound Pro
+      %p= link_to "Subscribe", subscribe_user_path, :class => "btn btn-primary btn-large"
+  - else
+    .alert.alert-block{:class => (@current_user.trial_days_remaining <= 7 ? "" : "alert-info")}
+      %button.close{:data => {:dismiss => "alert"}}
+        %i.icon-remove
+      %h4 Free Trial
+      %p
+        Your free trial has #{@current_user.trial_days_remaining} days and
+        #{5 - @current_user.cars.count} cars remaining.
+      %p= link_to "Subscribe Now", subscribe_user_path, :class => "btn btn-primary"

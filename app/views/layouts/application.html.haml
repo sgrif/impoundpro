@@ -1,17 +1,31 @@
 !!! 5
-%html
+%html{:lang => "en"}
   %head
-    %title Tyler
-    =stylesheet_link_tag "application", :media => "all"
-    =javascript_include_tag "https://js.stripe.com/v1/stripe-debug.js", "application"
-    =csrf_meta_tags
-    =tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY
+    %title Impound Pro
+    /[if lt IE 9]
+      = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
+    = stylesheet_link_tag "application", :media => "all"
+    = javascript_include_tag "https://js.stripe.com/v1/", "application"
+    = csrf_meta_tags
+    = tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY
+    = tag :meta, :name => "viewport", :content => "width=device-width, intial-scale=1.0"
   %body{:class => controller.controller_name}
-    -if flash[:alert]
-      %p#alert= flash[:alert]
-    -if flash[:error]
-      %p#error= flash[:error]
-    -if flash[:notice]
-      %p#notice= flash[:notice]
+    = yield(:navbar) if content_for?(:navbar)
+    .container
+      - if @breadcrumbs.count > 0
+        %ul.breadcrumb
+          - @breadcrumbs.each do |b|
+            - unless b == @breadcrumbs.last
+              %li
+                = link_to b[:name], b[:url]
+                %span.divider /
+            - else
+              %li.active
+                = b[:name]
 
-    != yield
+      = content_for?(:flash) ? yield(:flash) : render('shared/display_flash')
+      = yield
+
+      %footer
+        %hr
+        %p © Impound Pro 2012

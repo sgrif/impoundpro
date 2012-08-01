@@ -1,0 +1,70 @@
+@import "variables";
+@import "mixins";
+@import "bootstrap/mixins";
+
+body {
+  background-image: image-url('noise.png');
+}
+
+.section {
+  background-color: $white;
+  border: 1px solid $grayLightish;
+  @include border-radius(5px);
+
+  .section-header {
+    background-color: $grayLightest;
+    border-bottom: 1px solid $grayLightish;
+    @include border-radius(5px 5px 0 0);
+    text-shadow: 1px 1px 0 $white;
+    padding: $spacing;
+  }
+
+  h2.section-header {
+    padding: {
+      top: $spacing * 2/3;
+      bottom: $spacing * 2/3;
+    }
+  }
+
+  h3.section-header {
+    padding: {
+      top: $spacing / 2;
+      bottom: $spacing / 2;
+    }
+  }
+  .section-body {
+    padding: $spacing;
+
+    .well {
+      fieldset {
+        legend {
+          & + .row, & + .row-fluid {
+            margin-top: 18px;
+            -webkit-margin-top-collapse: separate;
+          }
+        }
+
+        &.form-vertical {
+          .control-group {
+            > .controls {
+              margin: {
+                left: 0;
+                right: $spacing*4;
+              }
+            }
+
+            &.last-row {
+              margin-bottom: 0;
+            }
+
+            label {
+              text-align: left;
+              padding-top: 0;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}

@@ -14,8 +14,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.2'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  gem 'libv8'
-  gem 'therubyracer'
+  # gem 'therubyracer'
 
   gem 'jquery-ui-rails'
   gem 'bootstrap-sass'

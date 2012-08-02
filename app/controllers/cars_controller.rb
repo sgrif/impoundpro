@@ -113,7 +113,7 @@ class CarsController < ApplicationController
   # GET /cars/1/owner_lien_notice.pdf
   def owner_lien_notice
     @car = Car.find(params[:id])
-    @car.mail_notice_of_lien_date = Date.today
+    #@car.mail_notice_of_lien_date = Date.today
     @car.save
 
     respond_to do |format|
@@ -124,7 +124,7 @@ class CarsController < ApplicationController
   # GET /cars/1/owner_lien_notice.pdf
   def lien_holder_lien_notice
     @car = Car.find(params[:id])
-    @car.mail_notice_of_lien_date = Date.today
+    #@car.mail_notice_of_lien_date = Date.today
     @car.save
 
     respond_to do |format|
@@ -135,7 +135,7 @@ class CarsController < ApplicationController
   # GET /cars/1/owner_lien_notice.pdf
   def driver_lien_notice
     @car = Car.find(params[:id])
-    @car.mail_notice_of_lien_date = Date.today
+    #@car.mail_notice_of_lien_date = Date.today
     @car.save
 
     respond_to do |format|
@@ -209,7 +209,7 @@ class CarsController < ApplicationController
   # GET /cars/1/unclaimed_vehicles_report.pdf
   def unclaimed_vehicles_report
     @user = current_user
-    @cars = @user.cars.where("date_towed <= '#{30.days.ago}'")
+    @cars = Car.all #@user.cars.where("date_towed <= '#{30.days.ago}'")
 
     respond_to do |format|
       format.pdf {render :layout => false} #unclaimed_vehicles_report.pdf.prawn

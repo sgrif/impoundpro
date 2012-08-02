@@ -4,12 +4,12 @@ prawn_document() do |pdf|
 
   pdf.draw_text "X", :at => [241, 625]
   pdf.draw_text "Driver", :at => [300, 625]
-  pdf.draw_text @car.driver_name, :at => [35, 600]
-  pdf.draw_text @car.driver_address, :at => [45, 570]
-  pdf.draw_text "#{@car.driver_city}, #{@car.driver_state}, #{@car.driver_zip}", :at => [120, 540]
+#  pdf.draw_text @car.driver_name, :at => [35, 600]
+#  pdf.draw_text @car.driver_address, :at => [45, 570]
+#  pdf.draw_text "#{@car.driver_city}, #{@car.driver_state}, #{@car.driver_zip}", :at => [120, 540]
 
   pdf.font_size 16
-  pdf.draw_text @car.year, :at => [0, 485]
+  pdf.draw_text @car.year_id, :at => [0, 485]
   pdf.draw_text @car.make, :at => [80, 485]
   pdf.draw_text @car.model, :at => [200, 485]
   pdf.draw_text @car.size, :at => [330, 485]
@@ -20,26 +20,26 @@ prawn_document() do |pdf|
 
   pdf.font_size 12
   pdf.draw_text "X", :at => [30, 404]
-  pdf.draw_text number_to_currency(@car.charge_total, :format => "%n"), :at => [410, 406]
-  if @car.charges.count <= 4
-    i = 0
-    @car.charges.each do |name, amount|
-      pdf.draw_text name, :at => [100, 377 - i]
-      pdf.draw_text number_to_currency(amount, :format => "%n"), :at => [410, 377 - i]
-      i += 17
-    end
-  else
-    pdf.font_size 16
-    pdf.draw_text "See attached page", :at => [200, 377]
-    pdf.font_size 12
-  end
+#  pdf.draw_text number_to_currency(@car.charge_total, :format => "%n"), :at => [410, 406]
+#  if @car.charges.count <= 4
+#    i = 0
+#    @car.charges.each do |name, amount|
+#      pdf.draw_text name, :at => [100, 377 - i]
+#      pdf.draw_text number_to_currency(amount, :format => "%n"), :at => [410, 377 - i]
+#      i += 17
+#    end
+#  else
+#    pdf.font_size 16
+#    pdf.draw_text "See attached page", :at => [200, 377]
+#    pdf.font_size 12
+#  end
 
-  pdf.font_size 10
-  pdf.draw_text number_to_currency(@car.storage_rate, :format => "%n"), :at => [40, 297]
+#  pdf.font_size 10
+#  pdf.draw_text number_to_currency(@car.storage_rate, :format => "%n"), :at => [40, 297]
 
-  pdf.font_size 10
-  pdf.draw_text @car.date_towed.to_s(:month_and_day), :at => [370, 260]
-  pdf.draw_text @car.date_towed.to_s(:short_year), :at => [470, 260]
+#  pdf.font_size 10
+#  pdf.draw_text @car.date_towed.to_s(:month_and_day), :at => [370, 260]
+#  pdf.draw_text @car.date_towed.to_s(:short_year), :at => [470, 260]
 
   pdf.draw_text Time.now.to_s(:month_and_day), :at => [40, 248]
   pdf.draw_text Time.now.to_s(:short_year), :at => [140, 248]
@@ -53,23 +53,23 @@ prawn_document() do |pdf|
   pdf.font_size 12
   pdf.draw_text Date.today.to_s(:long), :at => [440, 30]
 
-  if @car.charges.count > 4
-    pdf.start_new_page()
-
-    pdf.font_size 18
-    pdf.text "Charges"
-    pdf.font_size 14
-
-    charges = @car.charges
-    charges.delete("Tax")
-
-    charges.each do |name, amount|
-      pdf.text "#{name}: #{number_to_currency(amount)}"
-    end
-    pdf.text "---------"
-    pdf.text "Subtotal: #{number_to_currency(@car.charge_subtotal)}"
-    pdf.text "Tax: #{number_to_currency(@car.tax_amount)}"
-    pdf.text "---------"
-    pdf.text "Total: #{number_to_currency(@car.charge_total)}"
-  end
+#  if @car.charges.count > 4
+#    pdf.start_new_page()
+#
+#    pdf.font_size 18
+#    pdf.text "Charges"
+#    pdf.font_size 14
+#
+#    charges = @car.charges
+#    charges.delete("Tax")
+#
+#    charges.each do |name, amount|
+#      pdf.text "#{name}: #{number_to_currency(amount)}"
+#    end
+#    pdf.text "---------"
+#    pdf.text "Subtotal: #{number_to_currency(@car.charge_subtotal)}"
+#    pdf.text "Tax: #{number_to_currency(@car.tax_amount)}"
+#    pdf.text "---------"
+#    pdf.text "Total: #{number_to_currency(@car.charge_total)}"
+#  end
 end

@@ -5,9 +5,9 @@ prawn_document(:margin => [20, 20, 20, 20]) do |pdf|
   pdf.font_size 10
   pdf.draw_text @car.owner_name, :at => [15, 592]
   pdf.draw_text @car.owner_address, :at => [15, 565]
-  pdf.draw_text "#{@car.owner_city}, #{@car.owner_state}, #{@car.owner_zip}", :at => [15, 540]
+  pdf.draw_text "#{@car.owner_city}, #{@car.owner_state}, #{@car.owner_zip}", :at => [15, 540] if @car.owner_city and @car.owner_state and @car.owner_zip
 
-  pdf.draw_text @car.year, :at => [15, 495]
+  pdf.draw_text @car.year_id, :at => [15, 495]
   pdf.draw_text @car.make, :at => [95, 495]
   pdf.draw_text @car.model, :at => [240, 495]
   pdf.draw_text @car.size, :at => [365, 495]
@@ -19,8 +19,8 @@ prawn_document(:margin => [20, 20, 20, 20]) do |pdf|
   #TODO Do I leave the "vehicle was advertised" section blank?
 
   pdf.font_size 12
-  pdf.draw_text((@car.mail_notice_of_lien_date + 44.days).to_s(:month_and_day), :at => [225, 222])
-  pdf.draw_text((@car.mail_notice_of_lien_date + 44.days).to_s(:short_year), :at => [425, 222])
+#  pdf.draw_text((@car.mail_notice_of_lien_date + 44.days).to_s(:month_and_day), :at => [225, 222])
+#  pdf.draw_text((@car.mail_notice_of_lien_date + 44.days).to_s(:short_year), :at => [425, 222])
 
   #TODO Is this date always 44 days after lien notice mail date - cahngeable and is it always at 5 PM - changeable?
 
@@ -40,8 +40,8 @@ prawn_document(:margin => [20, 20, 20, 20]) do |pdf|
   pdf.draw_text @car.user.name, :at => [90, 403]
   pdf.draw_text @car.user.address, :at => [90, 377]
   pdf.draw_text "#{@car.user.city}, #{@car.user.state} #{@car.user.zip}", :at => [130, 350]
-  pdf.draw_text Time.now.to_s(:short_date), :at =>[475, 308]
-  pdf.draw_text Time.now.to_s(:short_date), :at =>[475, 207]
+  pdf.draw_text Date.today.to_s(:short_date), :at =>[475, 308]
+  pdf.draw_text Date.today.to_s(:short_date), :at =>[475, 207]
 
   #TODO Do I leave "Lien Claimant printed name" blank? - Preparer's name or company name
 end

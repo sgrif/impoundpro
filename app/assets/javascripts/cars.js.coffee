@@ -34,9 +34,9 @@ car =
   updateSelect: (target, url, disable = []) ->
     $(':submit').attr('disabled', true)
 
-    disable << target
+    disable.push target
     for item in disable
-      item.attr('disabled', true).trigger('liszt:updated').find('option').remove() unless item.attr('disabled')
+      item.val('').attr('disabled', true).trigger('liszt:updated') unless item.attr('disabled')
 
     $.getJSON url, (data) ->
       target.find('option').remove()

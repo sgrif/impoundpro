@@ -27,6 +27,41 @@
               :input_html => {:class => "chzn-select-deselect span6", :data => {:placeholder => "Choose a Trim"}},
               :label => false, :disabled => @car.year.nil?, :wrapper_html => {:class => 'last-row'}
 
+  %fieldset
+    %legend Additional Details
+    .row-fluid
+      .span5
+        = f.input :size
+      .span5
+        = f.input :color
+    .row-fluid
+      .span5
+        = f.input :state
+      .span5
+        = f.input :license_plate_number
+
+  %fieldset.bordered
+    %legend Owner Info
+    .row-fluid
+      .span5
+        = f.input :owner_name, :label => "Name"
+        = f.input :owner_address, :label => "Address"
+      .span5
+        = f.input :owner_city, :label => "City"
+        = f.input :owner_state, :label => "State"
+        = f.input :owner_zip, :label => "Zip"
+
+  %fieldset
+    %legend Lien Holder Info
+    .row-fluid
+      .span5
+        = f.input :lien_holder_name, :label => "Name"
+        = f.input :lien_holder_address, :label => "Address"
+      .span5
+        = f.input :lien_holder_city, :label => "City"
+        = f.input :lien_holder_state, :label => "State"
+        = f.input :lien_holder_zip, :label => "Zip"
+
   .form-actions
     = f.submit "Save Car", :class => "btn btn-primary"
     = link_to "Back", car_path(@car), :class => "btn"

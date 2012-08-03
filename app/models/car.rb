@@ -2,17 +2,17 @@ require 'decode_vin'
 class Car < ActiveRecord::Base
   include DecodeVin
 
-  #TODO Add in state boolean
   validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
   validates :vin,
     :presence => true,
     :uniqueness => { :scope => 'user_id', :message => "You already have a car with this VIN" },
-    :length => { :maximum => 17 },
     :format => { :with => /^[A-Z0-9]*$/, :message => "Only letters and number allowed" }
 
   validates :owner_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
+  validates :owner_zip, :numericality => {:allow_blank => true}
 
   validates :lien_holder_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
+  validates :lien_holder_zip, :numericality => {:allow_blank => true}
 
   validate :check_vin, :on => :create
 
@@ -30,6 +30,7 @@ class Car < ActiveRecord::Base
 
   def check_vin
     if self.new_record? and !self.override_check_vin.present? and !self.errors.has_key?(:vin)
+      errors.add :check_vin, "VIN is not 17 digits" unless vin.length == 17
       sum = 0
       self.vin.chars.each_with_index do |c, i|
         if CheckVin[:char_trans][c].nil?

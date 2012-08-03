@@ -8,8 +8,9 @@
           %h4 Invalid VIN
           %p
             The VIN you entered appears to be invalid. It's possible, though unlikely that this vehicle
-            does not conform to VIN standards. Please double check that you entered the VIN correctly.
-            If you're sure these errors do not apply, click the button below.
+            does not conform to VIN standards, especially if the vehicle was made after 1978.
+            Please review the errors below, and ensure you entered the VIN correctly. If you're sure
+            everything is correct, you can override this check by clicking the button below.
           %p.vin-check-errors
             %ul
               - vin_check_errors.each do |e|

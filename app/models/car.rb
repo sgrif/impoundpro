@@ -30,14 +30,14 @@ class Car < ActiveRecord::Base
 
   def check_vin
     if self.new_record? and !self.override_check_vin.present? and !self.errors.has_key?(:vin)
-      errors.add :check_vin, "VIN is not 17 digits" unless vin.length == 17
+      errors.add :check_vin, "VIN is not 17 digits" unless self.vin.length == 17
       sum = 0
       self.vin.chars.each_with_index do |c, i|
         if CheckVin[:char_trans][c].nil?
           errors.add :check_vin, "VINs should never contain character #{c}. Did you misread a numeric #{CheckVin[:misreads][c]}?"
           next
         else
-          sum += (CheckVin[:char_trans][c] * CheckVin[:weights][i])
+          sum += (CheckVin[:char_trans][c].to_i * CheckVin[:weights][i].to_i)
         end
       end
       check_digit = CheckVin[:char_trans][self.vin[8]]

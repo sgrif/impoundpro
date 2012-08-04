@@ -4,7 +4,6 @@ $iconWhiteSpritePath: image-url('glyphicons-halflings-white.png');
 
 @import "variables";
 @import "bootstrap";
-
 body { padding-top: 90px; }
 @import "bootstrap-responsive";
 
@@ -88,6 +87,10 @@ h1, h2, h3, h4, h5, h6, .navbar .brand {
     color: $textColor;
     @include placeholder($gray);
   }
+
+  .btn-navbar {
+    @include buttonBackground($white, darken($white, 5%))
+  }
 }
 
 div.subnav {
@@ -117,11 +120,6 @@ div.subnav {
 
 // BUTTONS
 // -----------------------------------------------------
-
-.btn-primary {
-  @include buttonBackground(lighten($linkColor, 5%), $linkColor);
-}
-
 [class^="icon-"], [class*=" icon-"] {
   vertical-align: -2px;
 }

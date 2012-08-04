@@ -44,7 +44,7 @@
                   %td{:colspan => 12, :style => 'text-align: center;'} Print
                 - unless car.paid
                   %tr.forms_overlay
-                    %td{:colspan => 12}= link_to 'Unlock Car', unlock_car_path(car), :confirm => "Your credit card will be charged at the end of the month. Are you sure?"
+                    %td{:colspan => 12}= link_to 'Unlock Car', unlock_car_path(car), :data => { :confirm => "Your credit card will be charged at the end of the month. Are you sure?" }
 
                 %tr.forms
                   %td= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, :format => :pdf)
@@ -58,7 +58,7 @@
                   %td= link_to 'Title Application', title_application_car_path(car, :format => :pdf)
                   %td= link_to '50 State Check', fifty_state_check_car_path(car, :format => :pdf)
                   %td= link_to 'Edit Car', edit_car_path(car)
-                  %td= link_to 'Delete Car', car, :confirm => "Are you sure?", :method => :delete, :class => :delete_car
+                  %td= link_to 'Delete Car', car, :data => { :confirm => "Are you sure?" }, :method => :delete, :class => :delete_car
 
       #{link_to 'New Car', new_car_path} |
       #{link_to '30 Day Unclaimed Vehicle Report', cars_unclaimed_vehicles_report_path(:format => :pdf)} |

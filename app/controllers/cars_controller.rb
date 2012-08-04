@@ -8,7 +8,7 @@ class CarsController < ApplicationController
   # GET /cars
   # GET /cars.json
   def index
-    @cars = current_user.cars
+    @cars = current_user.cars.includes(:make, :model, :year)
 
     respond_to do |format|
       format.html # index.html.erb

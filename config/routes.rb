@@ -35,6 +35,8 @@ ImpoundPro::Application.routes.draw do
 
     match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
 
+    get 'reports' => 'cars#index'
+
     resources :cars do
       member do
         get 'unlock'

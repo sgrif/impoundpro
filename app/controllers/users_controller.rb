@@ -1,8 +1,8 @@
 #TODO Prompt user to finish user setup
 class UsersController < ApplicationController
   skip_before_filter :has_subscription
-  skip_before_filter :authorize, :only => [:new, :create, :forgot_password, :send_reset_link, :reset_password]
-  before_filter :redirect_if_logged_in, :only => [:new, :create]
+  skip_before_filter :authorize, only: [:new, :create, :forgot_password, :send_reset_link, :reset_password]
+  before_filter :redirect_if_logged_in, only: [:new, :create]
 
   # GET /user
   def show
@@ -13,7 +13,6 @@ class UsersController < ApplicationController
   # GET /user/new
   def new
     @user = User.new
-    @body_class = :gatekeeper
   end
 
   # GET /user/edit
@@ -38,13 +37,13 @@ class UsersController < ApplicationController
         @user.welcome
         login(@user)
         format.html { redirect_to root_path,
-          :flash => { :success_title => 'Congratulations!', :success => 'You registered successfully.' } }
-        format.json { render :json => @user, :status => :created, :location => @user }
+          flash: { success_title: 'Congratulations!', success: 'You registered successfully.' } }
+        format.json { render json: @user, status: :created, location: @user }
       else
         @user.stripe_card_token = nil if @user.errors[:base].count > 0
         @body_class = :gatekeeper
-        format.html { render :action => "new" }
-        format.json { render :json => @user.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -55,13 +54,13 @@ class UsersController < ApplicationController
     @user = current_user
 
     respond_to do |format|
-      if @user.update_with_payment(params[:user])
+      if @user.update_with_payment(params[:user], as: (:admin if current_user.admin))
         @user.send_password_changed_notice
-        format.html { redirect_to root_path, :flash => { :success => 'Profile changed successfully.' } }
+        format.html { redirect_to root_path, flash: { success: 'Profile changed successfully.' } }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @user.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -73,7 +72,7 @@ class UsersController < ApplicationController
     @user.cancel
 
     respond_to do |format|
-      format.html { redirect_to root_path, :alert => 'Your subscription has been cancelled' }
+      format.html { redirect_to root_path, alert: 'Your subscription has been cancelled' }
       format.json { head :no_content }
     end
   end

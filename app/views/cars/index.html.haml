@@ -4,11 +4,11 @@
 - unless @current_user.needs_subscription?
   - unless @current_user.profile_complete?
     .alert.alert-info.alert-block
-      %button.close{:data => {:dismiss => "alert"}}
+      %button.close{data: {dismiss: "alert"}}
         %i.icon-remove
       %h4 Let's get to know each other
       %p Your profile is incomplete. Tell us more about you so we can automate your business even more!
-      %p= link_to "Complete Profile", edit_user_path, :class => "btn btn-primary"
+      %p= link_to "Complete Profile", edit_user_path, class: "btn btn-primary"
 = render 'shared/subscribe_alert'
 
 - unless @current_user.needs_subscription?
@@ -19,48 +19,48 @@
       %table#cars
 
         - @cars.each do |car|
-          %tr{:class => cycle('list_line_odd', 'list_line_even')}
+          %tr{class: cycle('list_line_odd', 'list_line_even')}
             %td
               %table
                 %tr
                   %td Make:
-                  %td.car_data{:colspan => 3}= car.make.to_s
+                  %td.car_data{colspan: 3}= car.make.to_s
 
                   %td Model:
-                  %td.car_data{:colspan => 3}= car.model.to_s
+                  %td.car_data{colspan: 3}= car.model.to_s
 
                   %td VIN:
-                  %td.car_data{:colspan => 3}= car.vin
+                  %td.car_data{colspan: 3}= car.vin
                 %tr
                   %td Year:
-                  %td.car_data{:colspan => 3}= car.year.to_s
+                  %td.car_data{colspan: 3}= car.year.to_s
 
                   %td Color:
-                  %td.car_data{:colspan => 3}= car.color
+                  %td.car_data{colspan: 3}= car.color
 
                   %td
-                  %td.car_data{:colspan => 3}= link_to 'View Owner and LH Details', car
+                  %td.car_data{colspan: 3}= link_to 'View Owner and LH Details', car
                 %tr
-                  %td{:colspan => 12, :style => 'text-align: center;'} Print
+                  %td{colspan: 12, style: 'text-align: center;'} Print
                 - unless car.paid
                   %tr.forms_overlay
-                    %td{:colspan => 12}= link_to 'Unlock Car', unlock_car_path(car), :data => { :confirm => "Your credit card will be charged at the end of the month. Are you sure?" }
+                    %td{colspan: 12}= link_to 'Unlock Car', unlock_car_path(car), data: { confirm: "Your credit card will be charged at the end of the month. Are you sure?" }
 
                 %tr.forms
-                  %td= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, :format => :pdf)
-                  %td= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(car, :format => :pdf)
-                  %td= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, :format => :pdf)
-                  %td= link_to 'Owner Mail Labels', owner_mail_labels_car_path(car, :format => :pdf)
-                  %td= link_to 'Lien Holder Mail Labels', lien_holder_mail_labels_car_path(car, :format => :pdf)
-                  %td= link_to 'Driver Mail Labels', driver_mail_labels_car_path(car, :format => :pdf)
-                  %td= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(car, :format => :pdf)
-                  %td= link_to 'Aff of Resale', affidavit_of_resale_car_path(car, :format => :pdf)
-                  %td= link_to 'Title Application', title_application_car_path(car, :format => :pdf)
-                  %td= link_to '50 State Check', fifty_state_check_car_path(car, :format => :pdf)
+                  %td= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, format: :pdf)
+                  %td= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(car, format: :pdf)
+                  %td= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, format: :pdf)
+                  %td= link_to 'Owner Mail Labels', owner_mail_labels_car_path(car, format: :pdf)
+                  %td= link_to 'Lien Holder Mail Labels', lien_holder_mail_labels_car_path(car, format: :pdf)
+                  %td= link_to 'Driver Mail Labels', driver_mail_labels_car_path(car, format: :pdf)
+                  %td= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(car, format: :pdf)
+                  %td= link_to 'Aff of Resale', affidavit_of_resale_car_path(car, format: :pdf)
+                  %td= link_to 'Title Application', title_application_car_path(car, format: :pdf)
+                  %td= link_to '50 State Check', fifty_state_check_car_path(car, format: :pdf)
                   %td= link_to 'Edit Car', edit_car_path(car)
-                  %td= link_to 'Delete Car', car, :data => { :confirm => "Are you sure?" }, :method => :delete, :class => :delete_car
+                  %td= link_to 'Delete Car', car, data: { confirm: "Are you sure?" }, method: :delete, class: :delete_car
 
       #{link_to 'New Car', new_car_path} |
       #{link_to '30 Day Unclaimed Vehicle Report', cars_unclaimed_vehicles_report_path(:format => :pdf)} |
       #{link_to 'User Control Panel', user_path} |
-      #{link_to 'Logout', logout_url, :method => :delete}
+      #{link_to 'Logout', logout_url, method: :delete}

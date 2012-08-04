@@ -1,6 +1,6 @@
 .row
   .container.ac.brand
-    %h1= link_to "Impound Pro", root_path
+    %h1= link_to "Impound Pro", root_url(subdomain: 'www')
   .span4.offset4
-    =render :partial => "shared/display_flash"
-    =render :partial => "form"
+    =render partial: "shared/display_flash"
+    =render partial: "form"

@@ -1,5 +1,5 @@
 class ModelsController < ApplicationController
-  before_filter :only_admin, :except => :index
+  before_filter :only_admin, except: :index
 
   # GET /models
   # GET /models.json
@@ -8,7 +8,7 @@ class ModelsController < ApplicationController
 
     respond_to do |format|
       format.html { only_admin } # index.html.erb
-      format.json { render json: @models, :except => [:created_at, :updated_at] }
+      format.json { render json: @models, except: [:created_at, :updated_at] }
     end
   end
 

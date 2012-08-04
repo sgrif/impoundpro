@@ -1,0 +1,5 @@
+- if ["new", "create"].include? params[:action]
+  - content_for :navbar do
+    / nothing
+
+= render template: "layouts/application"

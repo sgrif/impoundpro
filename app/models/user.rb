@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   #Allow changeable in state and out of state time limits for date of posting and date of auction
   validates :email, presence: true, uniqueness: { scope: :email, message: "There is already an account for email %{value}", allow_nil: true, allow_blank: true }, on: :create
   validates :name, presence: true
-  validates :state, inclusion: {:in => States.keys, message: "%{value} is not a valid state", allow_blank: true}
+  validates :state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
 
   attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card
   attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card, :email, as: :admin
@@ -49,15 +49,15 @@ class User < ActiveRecord::Base
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
     save!
-    UserMailer.password_reset(self).deliver
+    #UserMailer.password_reset(self).deliver
   end
 
   def send_password_changed_notice
-    UserMailer.password_changed(self).deliver if password.present?
+    #UserMailer.password_changed(self).deliver if password.present?
   end
 
   def welcome
-    UserMailer.welcome(self).deliver
+    #UserMailer.welcome(self).deliver
   end
 
   def save_with_payment

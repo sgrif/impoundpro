@@ -1,0 +1,39 @@
+- content_for :content do
+  .navbar.navbar-fixed-top
+    .navbar-inner
+      .container
+        %a.btn.btn-navbar{data: {toggle: "collapse", target: ".nav-collapse"}}
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        = link_to "Impound Pro", root_path, class: "brand"
+        .nav-collapse
+          %ul.nav
+            %li{class: cp([root_path, cars_path])}= link_to "Cars", cars_path
+            %li{class: cp([reports_path])}= link_to "Reports", reports_path
+          %ul.nav.pull-right
+            %li.dropdown{ class: cp(user_path) }
+              %a.dropdown-toggle{ href: "#", data: { toggle: :dropdown } }
+                %i.icon-user.icon-white
+                &nbsp;#{@current_user.email}
+                %b.caret
+              %ul.dropdown-menu
+                %li{ class: cp(user_path) }= link_to "Edit Profile", user_path
+                %li= link_to "Log Out", logout_path
+
+  .container
+    - if @breadcrumbs.count > 0
+      %ul.breadcrumb
+        - @breadcrumbs.each do |b|
+          - unless b == @breadcrumbs.last
+            %li
+              = link_to b[:name], b[:url]
+              %span.divider /
+          - else
+            %li.active
+              = b[:name]
+
+    = render('shared/display_flash')
+    = yield
+
+= render template: 'layouts/application'

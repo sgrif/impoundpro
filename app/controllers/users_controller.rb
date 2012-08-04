@@ -1,5 +1,7 @@
 #TODO Prompt user to finish user setup
 class UsersController < ApplicationController
+  layout "secure"
+
   skip_before_filter :has_subscription
   skip_before_filter :authorize, only: [:new, :create, :forgot_password, :send_reset_link, :reset_password]
   before_filter :redirect_if_logged_in, only: [:new, :create]
@@ -13,6 +15,7 @@ class UsersController < ApplicationController
   # GET /user/new
   def new
     @user = User.new
+    render layout: "sessions"
   end
 
   # GET /user/edit
@@ -42,7 +45,7 @@ class UsersController < ApplicationController
       else
         @user.stripe_card_token = nil if @user.errors[:base].count > 0
         @body_class = :gatekeeper
-        format.html { render action: "new" }
+        format.html { render action: "new", layout: "sessions" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end

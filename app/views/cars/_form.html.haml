@@ -7,7 +7,7 @@
         %small
           If possible we generated some information from the VIN. If we got it wrong, you can
           change it below.
-      .row
+      .row-fluid
         .span3
           = f.association :make, order: :name,
             input_html: {class: "chzn-select", data: {placeholder: "Choose a Make"}},
@@ -21,8 +21,8 @@
             input_html: {class: "chzn-select", data: {placeholder: "Choose a Year"}},
             label: false, disabled: @car.model.nil?
       - if true # Determine if we can show a trim
-        .row
-          .span5
+        .row-fluid
+          .span12
             = f.association :trim, order: :name, collection: (@car.model.nil? ? [] : @car.model.trims.by_year(@car.year_id)),
               input_html: {class: "chzn-select-deselect span6", data: {placeholder: "Choose a Trim"}},
               label: false, disabled: @car.year.nil?, wrapper_html: {class: 'last-row'}

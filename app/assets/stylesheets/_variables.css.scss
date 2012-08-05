@@ -6,6 +6,9 @@ $grayLightish:          #ddd;
 $grayLighter:           #eee;
 $whiteSmoke:            darken($white, 4%);
 
+$boxBackground: $white;
+$boxBackgroundHighlight: $whiteSmoke;
+
 // Navbar
 // -------------------------
 $navbarHeight:                    70px;

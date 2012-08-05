@@ -28,7 +28,9 @@ html, body {
   margin-bottom: -70px;
 }
 
-#wrapper { padding-top: 90px; }
+@media (min-width: 980px) {
+  #wrapper { padding-top: 90px; }
+}
 
 #footer-pusher { height: 70px; }
 

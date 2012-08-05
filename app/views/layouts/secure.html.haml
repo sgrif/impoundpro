@@ -4,13 +4,13 @@
       .container-fluid
         = link_to "Impound Pro", root_path, class: "brand"
         %ul.nav.pull-right
-          %li.dropdown{ class: cp(user_path) }
+          %li.dropdown
             %a.dropdown-toggle{ href: "#", data: { toggle: :dropdown } }
               %i.icon-user
               &nbsp;#{@current_user.email}
               %b.caret
             %ul.dropdown-menu
-              %li{ class: cp(user_path) }= link_to "Edit Profile", user_path
+              %li= link_to "Edit Profile", user_path
               %li= link_to "Log Out", logout_path
 
   #content

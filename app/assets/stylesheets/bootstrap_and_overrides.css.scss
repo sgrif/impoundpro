@@ -5,7 +5,6 @@ $iconWhiteSpritePath: image-url('glyphicons-halflings-white.png');
 @import "variables";
 @import "bootstrap";
 @import 'font-awesome';
-body { padding-top: 90px; }
 @import "bootstrap-responsive";
 
 // TYPOGRAPHY
@@ -121,8 +120,14 @@ div.subnav {
 
 // BUTTONS
 // -----------------------------------------------------
-[class^="icon-"], [class*=" icon-"] {
-  vertical-align: -2px;
+.btn {
+  i {
+    margin-right: 2px;
+
+    &.icon-large {
+      vertical-align: -2px;
+    }
+  }
 }
 
 // MODALS

@@ -3,7 +3,9 @@
 
 .sessions, #new_user
 {
-  padding-top: $spacing*2;
+  #wrapper {
+    padding-top: 60px;
+  }
 
   fieldset {
     background-color: $white;

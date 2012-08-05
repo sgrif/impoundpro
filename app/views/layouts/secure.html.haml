@@ -40,7 +40,7 @@
                   %span.badge.badge-success= @current_user.cars.count
               %li{class: cp(reports_path)}= link_to "<i class='icon-calendar'></i> Reports".html_safe, reports_path
               %li.nav-header Account
-              %li{class: cp(user_path)}= link_to "<i class='icon-user'></i> Profile".html_safe, user_path
+              %li{class: cp(user_path)}= link_to "<i class='icon-cog'></i> Settings".html_safe, user_path
               %li{class: cp(subscribe_user_path)}= link_to "<i class='icon-credit-card'></i> Subscription".html_safe, subscribe_user_path
               %li= link_to "<i class='icon-off'></i> Logout".html_safe, logout_path
 

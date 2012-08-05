@@ -21,8 +21,9 @@
               &nbsp;I'm sure. Ignore these errors.
       %fieldset
         %legend Step 1: Enter VIN
-        = f.input :vin, input_html: { data: { provide: "typeahead",
-          source: @car.user.cars.pluck(:vin).to_json }, autocomplete: "off" }
+        .row-fluid
+          = f.input :vin, input_html: { data: { provide: "typeahead",
+            source: @car.user.cars.pluck(:vin).to_json }, autocomplete: "off" }
 
       .form-actions
         = f.submit "Next", class: "btn btn-primary", id: "new_car_submit"

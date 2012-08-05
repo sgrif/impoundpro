@@ -13,9 +13,9 @@
               %li= link_to "Edit Profile", user_path
               %li= link_to "Log Out", logout_path
         %form.navbar-form.pull-right{action: cars_path, method: 'post'}
-          %input.search-query{ type: "search", name: 'car[vin]', placeholder: "Enter Vin", autocomplete: "off",
+          %input.search-query{ type: "search", name: 'car[vin]', placeholder: "VIN Lookup", autocomplete: "off",
             title: "Did You Know?", data: { provide: "typeahead", source: @current_user.cars.pluck(:vin).to_json,
-            content: "You can add a new car from this form, too. Just enter the VIN, and if you haven't added the car yet, we'll create it for you! Give it a try!"}}
+            content: "You can add a car record from this form, too. Just enter a VIN, and if you don't already have a record for it, we'll create one for you! Give it a try!"}}
 
   #content
     .container-fluid

@@ -165,7 +165,3 @@ code, pre, pre.prettyprint, .well {
   border: 1px solid rgba(0,0,0,.05);
   @include border-radius(0);
 }
-
-.table-bordered, .well, .prettyprint {
-  @include border-radius(0);
-}

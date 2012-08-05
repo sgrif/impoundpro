@@ -23,34 +23,7 @@
             %th Status
             %th Actions
         %tbody
-          - @cars.each do |car|
-            %tr{class: cycle('list_line_odd', 'list_line_even')}
-              %td
-                = link_to car.vin, car_path(car)
-                %br
-                %small{style: 'font-size: 90%'}= car.to_s if car.make and car.model and car.year
-              %td= car.created_at.to_date.to_s(:long_ordinal)
-              %td
-                %span.label.label-success Active
-              %td
-                .btn-toolbar{style: 'margin: 0;'}
-                  .btn-group
-                    = link_to "<i class='icon-edit'></i> Edit".html_safe, edit_car_path(car), class: 'btn'
-                  .btn-group
-                    = link_to "<i class='icon-trash'></i> Delete".html_safe, car_path(car), class: 'btn btn-danger', method: 'delete', data: { confirm: "Are you sure?" }
-                  .btn-group
-                    = link_to "<i class='icon-print'></i> Forms <span class='caret'></span>".html_safe, "#", data: { toggle: 'dropdown' }, class: 'btn btn-primary dropdown-toggle'
-                    %ul.dropdown-menu
-                      %li= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, format: :pdf)
-                      %li= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(car, format: :pdf)
-                      %li= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, format: :pdf)
-                      %li= link_to 'Owner Mail Labels', owner_mail_labels_car_path(car, format: :pdf)
-                      %li= link_to 'Lien Holder Mail Labels', lien_holder_mail_labels_car_path(car, format: :pdf)
-                      %li= link_to 'Driver Mail Labels', driver_mail_labels_car_path(car, format: :pdf)
-                      %li= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(car, format: :pdf)
-                      %li= link_to 'Aff of Resale', affidavit_of_resale_car_path(car, format: :pdf)
-                      %li= link_to 'Title Application', title_application_car_path(car, format: :pdf)
-                      %li= link_to '50 State Check', fifty_state_check_car_path(car, format: :pdf)
+          = render(@cars)
 
       .form-actions
         = link_to "<i class='icon-plus icon-large'></i> Add New".html_safe, new_car_path, class: 'btn btn-success btn-large'

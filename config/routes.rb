@@ -1,5 +1,4 @@
 ImpoundPro::Application.routes.draw do
-
   resources :trims
 
   resources :years
@@ -35,6 +34,8 @@ ImpoundPro::Application.routes.draw do
 
     match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
 
+    get 'reports' => 'cars#index'
+
     resources :cars do
       member do
         get 'unlock'
@@ -51,7 +52,7 @@ ImpoundPro::Application.routes.draw do
       end
     end
 
-    match "/" => 'cars#index'
+    match "/" => 'secure#dashboard'
   end
 
   controller :landing do

@@ -1,8 +1,8 @@
-.section
-  %h1.section-header New Car
+.box
+  %h3.box-header New Car
 
-  .section-body
-    = simple_form_for @car, :html => { :class => "form-vertical" } do |f|
+  .box-body
+    = simple_form_for @car, html: { class: "form-vertical" } do |f|
       - if vin_check_errors = @car.errors.delete(:check_vin) and @car.errors.empty?
         .alert.alert-block
           %h4 Invalid VIN
@@ -16,14 +16,14 @@
               - vin_check_errors.each do |e|
                 %li= e
           %p.vin-check-actions
-            %button.btn.btn-warning{:type => :submit, :name => :override_check_vin, :value => "true"}
+            %button.btn.btn-warning{type: :submit, name: :override_check_vin, value: "true"}
               %i.icon-warning-sign.icon-white
               &nbsp;I'm sure. Ignore these errors.
       %fieldset
         %legend Step 1: Enter VIN
-        = f.input :vin, :input_html => { :data => { :provide => "typeahead",
-          :source => @car.user.cars.pluck(:vin).to_json }, :autocomplete => "off" }
+        = f.input :vin, input_html: { data: { provide: "typeahead",
+          source: @car.user.cars.pluck(:vin).to_json }, autocomplete: "off" }
 
       .form-actions
-        = f.submit "Next", :class => "btn btn-primary", :id => "new_car_submit"
-        = link_to "Cancel", cars_path, :class => "btn"
+        = f.submit "Next", class: "btn btn-primary", id: "new_car_submit"
+        = link_to "Cancel", cars_path, class: "btn"

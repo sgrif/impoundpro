@@ -1,0 +1,58 @@
+- content_for :content do
+  .navbar.navbar-fixed-top
+    .navbar-inner
+      .container-fluid
+        = link_to "Impound Pro", root_path, class: "brand"
+        %ul.nav.pull-right
+          %li.dropdown
+            %a.dropdown-toggle{ href: "#", data: { toggle: :dropdown } }
+              %i.icon-user
+              &nbsp;#{@current_user.email}
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to "Edit Profile", user_path
+              %li= link_to "Log Out", logout_path
+
+  #content
+    .container-fluid
+      .row-fluid
+        .span2
+          .row.box-small
+            = image_tag avatar_url(@current_user), class: 'avatar pull-left'
+            %span
+              %strong.one-line= truncate(@current_user.name, length: 22)
+              %br
+              = link_to @current_user.preparers_name, user_path
+              %br
+              %small #{link_to "Profile", edit_user_path} | #{link_to "Log Out", logout_path}
+          .box-small.side-nav
+            %ul.nav.nav-list
+              %li.nav-header Main
+              %li{class: cp(root_path)}= link_to "<i class='icon-home'></i> Dashboard".html_safe, root_path
+              %li{class: cp([cars_path, new_car_path, car_path(@car.try(:id) || 1), edit_car_path(@car.try(:id) || 1)])}
+                = link_to cars_path do
+                  %i.icon-truck
+                  Cars
+                  %span.badge.badge-success= @current_user.cars.count
+              %li{class: cp(reports_path)}= link_to "<i class='icon-calendar'></i> Reports".html_safe, reports_path
+              %li.nav-header Account
+              %li{class: cp(user_path)}= link_to "<i class='icon-user'></i> Profile".html_safe, user_path
+              %li{class: cp(subscribe_user_path)}= link_to "<i class='icon-credit-card'></i> Subscription".html_safe, subscribe_user_path
+              %li= link_to "<i class='icon-off'></i> Logout".html_safe, logout_path
+
+        .span10
+          - if @breadcrumbs.count > 0
+            %ul.breadcrumb
+              - @breadcrumbs.each do |b|
+                - unless b == @breadcrumbs.last
+                  %li
+                    = link_to b[:name], b[:url]
+                    %span.divider /
+                - else
+                  %li.active
+                    = b[:name]
+
+          = render('shared/display_flash')
+          = yield
+
+= render template: 'layouts/application'

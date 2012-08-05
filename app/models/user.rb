@@ -3,11 +3,12 @@ require 'digest/sha2'
 
 class User < ActiveRecord::Base
   #Allow changeable in state and out of state time limits for date of posting and date of auction
-  validates :email, :presence => true, :uniqueness => {:scope => :email, :message => "There is already an account for email %{value}", :allow_nil => true, :allow_blank => true}, :on => :create
-  validates :name, :presence => true
-  validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
+  validates :email, presence: true, uniqueness: { scope: :email, message: "There is already an account for email %{value}", allow_nil: true, allow_blank: true }, on: :create
+  validates :name, presence: true
+  validates :state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
 
   attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card
+  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card, :email, as: :admin
   attr_accessor :stripe_card_token, :credit_card
 
   has_secure_password
@@ -15,7 +16,7 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
   before_update :send_password_changed_notice
 
-  has_many :cars, :order => "created_at DESC"
+  has_many :cars, order: "created_at DESC"
   has_many :stripe_webhooks
 
   after_initialize {@credit_card = CreditCard.new}
@@ -29,8 +30,11 @@ class User < ActiveRecord::Base
   end
 
   def has_subscription?
+=begin TODO Optimize to use webhooks instead
     sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
     !sub.nil? and sub.status == "active"
+=end
+    true
   end
 
   def needs_subscription?
@@ -45,15 +49,15 @@ class User < ActiveRecord::Base
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
     save!
-    UserMailer.password_reset(self).deliver
+    #UserMailer.password_reset(self).deliver
   end
 
   def send_password_changed_notice
-    UserMailer.password_changed(self).deliver if password.present?
+    #UserMailer.password_changed(self).deliver if password.present?
   end
 
   def welcome
-    UserMailer.welcome(self).deliver
+    #UserMailer.welcome(self).deliver
   end
 
   def save_with_payment
@@ -72,15 +76,16 @@ class User < ActiveRecord::Base
     false
   end
 
-  def update_with_payment(attributes)
-    if self.update_attributes(attributes)
+  def update_with_payment(attributes, *args)
+    options = args.extract_options!
+    if self.update_attributes(attributes, options)
       self.save_with_payment
     end
   end
 
   def add_subscription(card)
     customer = Stripe::Customer.retrieve(get_stripe_customer_token)
-    customer.update_subscription(:plan => "basic", :card => card)
+    customer.update_subscription(:plan => "basic", card: card)
   end
 
   def get_stripe_customer_token
@@ -108,16 +113,16 @@ end
 class CreditCard
   include ActiveAttr::Model
   attribute :number
-  attribute :expiry, :type => Date
+  attribute :expiry, type: Date
   attribute :cvc
 
   def token
     Stripe::Token.create(
-      :card => {
-        :number => self.number,
-        :exp_month => self.expiry.month,
-        :exp_year => self.expiry.year,
-        :cvc => self.cvc
+      card: {
+        number: self.number,
+        exp_month: self.expiry.month,
+        exp_year: self.expiry.year,
+        cvc: self.cvc
       }
     )
   end

@@ -1,4 +1,10 @@
-- content_for :flash do
-  / nothing
+- content_for :content do
+  .container
+    .row
+      .container.ac.brand
+        %h1= link_to "Impound Pro", root_url(subdomain: 'www')
+      .span4.offset4
+        =render partial: "shared/display_flash"
+      = yield
 
-= render :template => "layouts/application"
+= render template: "layouts/application"

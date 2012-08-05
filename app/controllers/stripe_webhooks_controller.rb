@@ -12,13 +12,13 @@ class StripeWebhooksController < ApplicationController
 
     user = User.find_by_stripe_customer_token user_token
     if user
-      webhook = user.stripe_webhooks.build(:type => params[:stripe_webhook][:type], :event_id => params[:stripe_webhook][:id], :target_id => params[:data][:object][:id])
+      webhook = user.stripe_webhooks.build(:type => params[:stripe_webhook][:type], event_id: params[:stripe_webhook][:id], target_id: params[:data][:object][:id])
       if webhook.save!
         process_webhook webhook
       end
     end
 
-    render :nothing => true
+    render nothing: true
   end
 
   def process_webhook(webhook)

@@ -1,20 +1,22 @@
-- content_for :navbar do
+- content_for :content do
   .navbar.navbar-fixed-top
     .navbar-inner
       .container
-        %a.btn.btn-navbar{:data => {:toggle => "collapse", :target => ".nav-collapse"}}
+        %a.btn.btn-navbar{data: {toggle: "collapse", target: ".nav-collapse"}}
           %span.icon-bar
           %span.icon-bar
           %span.icon-bar
-        = link_to "Impound Pro", root_path, :class => "brand"
+        = link_to "Impound Pro", root_path, class: "brand"
         .nav-collapse
           %ul.nav.pull-right
-            %li{:class => cp(root_path)}= link_to "Home", root_path
-            %li{:class => cp(tour_path)}= link_to "Tour", tour_path
-            %li{:class => cp(pricing_path)}= link_to "Pricing", pricing_path
+            %li{class: cp(root_path)}= link_to "Home", root_path
+            %li{class: cp(tour_path)}= link_to "Tour", tour_path
+            %li{class: cp(pricing_path)}= link_to "Pricing", pricing_path
 
             %li.divider-vertical
 
-            %p.navbar-text.pull-left= link_to "Log In", login_path, {:class => "btn btn-info"}
+            %p.navbar-text.pull-left= link_to "Log In", login_path, {class: "btn btn-info"}
+  .container
+    = yield
 
-= render :template => "layouts/application"
+= render template: "layouts/application"

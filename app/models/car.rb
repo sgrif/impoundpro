@@ -2,19 +2,19 @@ require 'decode_vin'
 class Car < ActiveRecord::Base
   include DecodeVin
 
-  validates :state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
+  validates :state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
   validates :vin,
-    :presence => true,
-    :uniqueness => { :scope => 'user_id', :message => "You already have a car with this VIN" },
-    :format => { :with => /^[A-Z0-9]*$/, :message => "Only letters and number allowed" }
+    presence: true,
+    uniqueness: { scope: 'user_id', message: "You already have a car with this VIN" },
+    format: { with: /^[A-Z0-9]*$/, message: "Only letters and number allowed" }
 
-  validates :owner_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
-  validates :owner_zip, :numericality => {:allow_blank => true}
+  validates :owner_state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
+  validates :owner_zip, numericality: {allow_blank: true}
 
-  validates :lien_holder_state, :inclusion => {:in => States.keys, :message => "%{value} is not a valid state", :allow_blank => true}
-  validates :lien_holder_zip, :numericality => {:allow_blank => true}
+  validates :lien_holder_state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
+  validates :lien_holder_zip, numericality: {allow_blank: true}
 
-  validate :check_vin, :on => :create
+  validate :check_vin, on: :create
 
   before_validation :ensure_vin_is_upcase
   before_create :decode_vin

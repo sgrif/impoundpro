@@ -1,5 +1,5 @@
 class TrimsController < ApplicationController
-  before_filter :only_admin, :except => :index
+  before_filter :only_admin, except: :index
 
   # GET /trims
   # GET /trims.json
@@ -8,7 +8,7 @@ class TrimsController < ApplicationController
 
     respond_to do |format|
       format.html { only_admin }# index.html.erb
-      format.json { render json: @trims, :except => [:created_at, :updated_at] }
+      format.json { render json: @trims, except: [:created_at, :updated_at] }
     end
   end
 

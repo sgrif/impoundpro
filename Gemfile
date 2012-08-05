@@ -14,12 +14,13 @@ group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'jquery-rails'
+  gem 'jquery-ui-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer'
 
-  gem 'jquery-ui-rails'
   gem 'bootstrap-sass'
+  gem 'font-awesome-sass-rails'
 
   gem 'uglifier'
 end

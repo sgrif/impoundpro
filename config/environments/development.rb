@@ -36,4 +36,5 @@ ImpoundPro::Application.configure do
   config.assets.debug = true
 
   config.action_mailer.default_url_options = { :host => "0.0.0.0:3000" }
+  $stdout.sync = true
 end

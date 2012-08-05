@@ -10,22 +10,13 @@
     = tag :meta, :name => "stripe-key", :content => ENV['STRIPE_PUBLIC_KEY']
     = tag :meta, :name => "viewport", :content => "width=device-width, intial-scale=1.0"
   %body{:class => controller.controller_name}
-    = yield(:navbar) if content_for?(:navbar)
-    .container
-      - if @breadcrumbs.count > 0
-        %ul.breadcrumb
-          - @breadcrumbs.each do |b|
-            - unless b == @breadcrumbs.last
-              %li
-                = link_to b[:name], b[:url]
-                %span.divider /
-            - else
-              %li.active
-                = b[:name]
+    #root
+      #wrapper
+        = content_for?(:content) ? yield(:content) : yield
 
-      = content_for?(:flash) ? yield(:flash) : render('shared/display_flash')
-      = yield
-
-      %footer
-        %hr
-        %p © Impound Pro 2012
+      #footer-pusher
+    %footer
+      .container-fluid
+        .row-fluid
+          %hr
+          %p © 2012 Impound Pro, LLC

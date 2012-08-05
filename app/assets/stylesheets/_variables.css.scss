@@ -1,9 +1,10 @@
 @import "bootstrap/variables";
 
-$grayLightest: lighten($grayLighter, 2%);
-$grayLightish: mix($grayLight, $grayLighter);
-$spacing: 30px;
+$spacing:               30px;
 
+$grayLightish:          #ddd;
+$grayLighter:           #eee;
+$whiteSmoke:            darken($white, 4%);
 
 // Navbar
 // -------------------------

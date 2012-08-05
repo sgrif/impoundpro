@@ -25,5 +25,7 @@
         %tbody
           = render(@cars)
 
+      = paginate @cars, remote: true
+
       .form-actions
         = link_to "<i class='icon-plus icon-large'></i> Add New".html_safe, new_car_path, class: 'btn btn-success btn-large'

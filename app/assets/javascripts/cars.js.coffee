@@ -14,6 +14,14 @@ car =
       else
         true
 
+    History = window.History
+
+    History.Adapter.bind window, 'statechange', ->
+      $.getScript(History.getState().url)
+
+    $('body.cars').on 'click', '.pagination a[data-remote=true]', (e) ->
+      History.pushState null, "", e.currentTarget.href
+
     unless $('#car_owner_name').val() or $('#car_owner_address').val()
       $('#car_owner_info').addClass('hidden').before(
         "<div class='ac'><a href='#car_owner_info' class='btn btn-success show-hidden'>

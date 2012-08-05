@@ -5,7 +5,9 @@ prawn_document(:margin => [10,10,10,10]) do |pdf|
   pdf.font_size 12
   pdf.draw_text @car.vin, :at => [25, 700]
   pdf.draw_text @car.year_id, :at => [215, 700]
+  pdf.font_size 10
   pdf.draw_text @car.make, :at => [254, 700]
+  pdf.font_size 12
   pdf.draw_text @car.model, :at => [320, 700]
   pdf.draw_text @car.color, :at => [450, 700]
 

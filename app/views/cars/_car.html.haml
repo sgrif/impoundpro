@@ -15,12 +15,18 @@
       .btn-group
         = link_to "<i class='icon-print'></i> Forms <span class='caret'></span>".html_safe, "#", data: { toggle: 'dropdown' }, class: 'btn btn-primary dropdown-toggle'
         %ul.dropdown-menu
-          %li= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, format: :pdf)
-          %li= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(car, format: :pdf)
-          %li= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, format: :pdf)
-          %li= link_to 'Owner Mail Labels', owner_mail_labels_car_path(car, format: :pdf)
-          %li= link_to 'Lien Holder Mail Labels', lien_holder_mail_labels_car_path(car, format: :pdf)
-          %li= link_to 'Driver Mail Labels', driver_mail_labels_car_path(car, format: :pdf)
+          - unless car.owner_name.blank? and car.owner_address.blank?
+            %li= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, format: :pdf)
+            %li= link_to 'Owner Mail Labels', owner_mail_labels_car_path(car, format: :pdf)
+            %li.divider
+          - unless car.lien_holder_name.blank? and car.lien_holder_address.blank?
+            %li= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(car, format: :pdf)
+            %li= link_to 'Lien Holder Mail Labels', lien_holder_mail_labels_car_path(car, format: :pdf)
+            %li.divider
+          - unless true
+            %li= link_to 'Driver Lien Notice', driver_lien_notice_car_path(car, format: :pdf)
+            %li= link_to 'Driver Mail Labels', driver_mail_labels_car_path(car, format: :pdf)
+            %li.divider
           %li= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(car, format: :pdf)
           %li= link_to 'Aff of Resale', affidavit_of_resale_car_path(car, format: :pdf)
           %li= link_to 'Title Application', title_application_car_path(car, format: :pdf)

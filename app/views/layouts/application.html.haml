@@ -1,55 +1,22 @@
 !!! 5
-%html{lang: "en"}
+%html{:lang => "en"}
   %head
     %title Impound Pro
     /[if lt IE 9]
       = javascript_include_tag "http://html5shim.googlecode.com/svn/trunk/html5.js"
-    = stylesheet_link_tag "application", media: "all"
+    = stylesheet_link_tag "application", :media => "all"
     = javascript_include_tag "https://js.stripe.com/v1/", "application"
     = csrf_meta_tags
-    = tag :meta, name: "stripe-key", content: ENV['STRIPE_PUBLIC_KEY']
-    = tag :meta, name: "viewport", content: "width=device-width, intial-scale=1.0"
-  %body{class: controller.controller_name}
-    - if content_for?(:navbar)
-      = yield(:navbar)
-    - else
-      .navbar.navbar-fixed-top
-        .navbar-inner
-          .container
-            %a.btn.btn-navbar{data: {toggle: "collapse", target: ".nav-collapse"}}
-              %span.icon-bar
-              %span.icon-bar
-              %span.icon-bar
-            = link_to "Impound Pro", root_path, class: "brand"
-            .nav-collapse
-              %ul.nav
-                %li{class: cp([root_path, cars_path])}= link_to "Cars", cars_path
-                %li{class: cp([reports_path])}= link_to "Reports", reports_path
-              %ul.nav.pull-right
-                %li.dropdown{ class: cp(user_path) }
-                  %a.dropdown-toggle{ href: "#", data: { toggle: :dropdown } }
-                    %i.icon-user.icon-white
-                    &nbsp;#{@current_user.email}
-                    %b.caret
-                  %ul.dropdown-menu
-                    %li{ class: cp(user_path) }= link_to "Edit Profile", user_path
-                    %li= link_to "Log Out", logout_path
+    = tag :meta, :name => "stripe-key", :content => ENV['STRIPE_PUBLIC_KEY']
+    = tag :meta, :name => "viewport", :content => "width=device-width, intial-scale=1.0"
+  %body{:class => controller.controller_name}
+    #root
+      #wrapper
+        = content_for?(:content) ? yield(:content) : yield
 
-    .container
-      - if @breadcrumbs.count > 0
-        %ul.breadcrumb
-          - @breadcrumbs.each do |b|
-            - unless b == @breadcrumbs.last
-              %li
-                = link_to b[:name], b[:url]
-                %span.divider /
-            - else
-              %li.active
-                = b[:name]
-
-      = content_for?(:flash) ? yield(:flash) : render('shared/display_flash')
-      = yield
-
-      %footer
-        %hr
-        %p © Impound Pro 2012
+      #footer-pusher
+    %footer
+      .container-fluid
+        .row-fluid
+          %hr
+          %p © 2012 Impound Pro, LLC

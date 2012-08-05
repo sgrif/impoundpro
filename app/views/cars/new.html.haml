@@ -1,7 +1,7 @@
-.section
-  %h1.section-header New Car
+.box
+  %h3.box-header New Car
 
-  .section-body
+  .box-body
     = simple_form_for @car, html: { class: "form-vertical" } do |f|
       - if vin_check_errors = @car.errors.delete(:check_vin) and @car.errors.empty?
         .alert.alert-block

@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     user = User.find_by_email(params[:login][:email])
     if user && user.authenticate(params[:login][:password])
       login(user, params[:remember_me])
-      redirect_to cars_url
+      redirect_to root_url
     else
       @body_class = :gatekeeper
       redirect_to login_url, flash: { error: "Invalid user/password combination" }

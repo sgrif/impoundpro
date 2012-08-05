@@ -29,9 +29,11 @@ ImpoundPro::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  config.assets.compress = true
+  # Do not compress assets
+  config.assets.compress = false
 
-  config.assets.debug = false
+  # Expands the lines which load the assets
+  config.assets.debug = true
 
   config.action_mailer.default_url_options = { :host => "0.0.0.0:3000" }
   $stdout.sync = true

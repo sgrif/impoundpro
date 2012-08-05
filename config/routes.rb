@@ -1,5 +1,4 @@
 ImpoundPro::Application.routes.draw do
-
   resources :trims
 
   resources :years
@@ -53,7 +52,7 @@ ImpoundPro::Application.routes.draw do
       end
     end
 
-    match "/" => 'cars#index'
+    match "/" => 'secure#dashboard'
   end
 
   controller :landing do

@@ -1,4 +1,4 @@
-- content_for :navbar do
+- content_for :content do
   .navbar.navbar-fixed-top
     .navbar-inner
       .container
@@ -16,5 +16,7 @@
             %li.divider-vertical
 
             %p.navbar-text.pull-left= link_to "Log In", login_path, {class: "btn btn-info"}
+  .container
+    = yield
 
 = render template: "layouts/application"

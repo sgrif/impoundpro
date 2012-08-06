@@ -10,4 +10,14 @@
       margin-top: $spacing/2;
     }
   }
+
+  .car-info-table {
+    th {
+      width: 10%;
+    }
+
+    td {
+      width: 40%;
+    }
+  }
 }

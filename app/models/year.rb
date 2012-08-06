@@ -9,4 +9,8 @@ class Year < ActiveRecord::Base
     ret = joins(:trims).where(['trims.id = ?', trim]) if trim
     return ret.nil? ? self.scoped : ret
   end)
+
+  def to_s
+    self.name
+  end
 end

@@ -1,55 +1,109 @@
-%h1 #{@car.to_s} (Unstyled Page!)
-%p
-  %b Year:
-  =@car.year.try(:name)
-%p
-  %b Make:
-  =@car.make.try(:name)
-%p
-  %b Model:
-  =@car.model.try(:name)
-%p
-  %b Size:
-  =@car.size
-%p
-  %b State:
-  =@car.state
-%p
-  %b Vin:
-  =@car.vin
-%p
-  %b License plate number:
-  =@car.license_plate_number
-%p
-  %b Owner name:
-  =@car.owner_name
-%p
-  %b Owner address:
-  =@car.owner_address
-%p
-  %b Owner city:
-  =@car.owner_city
-%p
-  %b Owner state:
-  =@car.owner_state
-%p
-  %b Owner zip:
-  =@car.owner_zip
-%p
-  %b Lien holder name:
-  =@car.lien_holder_name
-%p
-  %b Lien holder address:
-  =@car.lien_holder_address
-%p
-  %b Lien holder city:
-  =@car.lien_holder_city
-%p
-  %b Lien holder state:
-  =@car.lien_holder_state
-%p
-  %b Lien holder zip:
-  =@car.lien_holder_zip
+.box
+  %h3.box-header= @car.to_s
 
-#{link_to 'Edit', edit_car_path(@car)} |
-#{link_to 'Back', cars_path}
+  .box-body
+    .row-fluid
+      .page-header
+        %h1 Header Section #{content_tag :small, "We should have some cool stats here"}
+
+    .row-fluid
+      .span12
+        .well.well-small
+          .btn-toolbar.ac
+            .btn-group
+              = link_to "<i class='icon-edit'></i> Edit".html_safe, edit_car_path(@car), class: "btn"
+              = link_to "Some Action", "#", class: "btn"
+              = link_to "Some Other Action", "#", class: "btn"
+            .btn-group
+              = link_to "<i class='icon-trash'></i> Delete".html_safe, car_path(@car), class: 'btn btn-danger', method: 'delete', data: { confirm: "Are you sure?" }
+            .btn-group
+              = link_to "<i class='icon-print'></i> Forms <span class='caret'></span>".html_safe, "#", data: { toggle: 'dropdown' }, class: 'btn btn-primary dropdown-toggle'
+              %ul.dropdown-menu
+                - unless @car.owner_name.blank? and @car.owner_address.blank?
+                  %li= link_to 'Owner Lien Notice', owner_lien_notice_car_path(@car, format: :pdf)
+                  %li= link_to 'Owner Mail Labels', owner_mail_labels_car_path(@car, format: :pdf)
+                  %li.divider
+                - unless @car.lien_holder_name.blank? and @car.lien_holder_address.blank?
+                  %li= link_to 'Lien Holder Lien Notice', lien_holder_lien_notice_car_path(@car, format: :pdf)
+                  %li= link_to 'Lien Holder Mail Labels', lien_holder_mail_labels_car_path(@car, format: :pdf)
+                  %li.divider
+                - unless true
+                  %li= link_to 'Driver Lien Notice', driver_lien_notice_car_path(@car, format: :pdf)
+                  %li= link_to 'Driver Mail Labels', driver_mail_labels_car_path(@car, format: :pdf)
+                  %li.divider
+                %li= link_to 'Notice of Public Sale', notice_of_public_sale_car_path(@car, format: :pdf)
+                %li= link_to 'Aff of Resale', affidavit_of_resale_car_path(@car, format: :pdf)
+                %li= link_to 'Title Application', title_application_car_path(@car, format: :pdf)
+                %li= link_to '50 State Check', fifty_state_check_car_path(@car, format: :pdf)
+
+    .row-fluid
+      .tabbable
+        %ul.nav.nav-tabs
+          %li.active
+            %a{href: "#info_general", data: { toggle: 'tab' }} General
+          %li
+            %a{href: "#info_ownership", data: { toggle: 'tab' }} Ownership
+        .tab-content
+          .tab-pane.active#info_general
+            %table.table.table-striped.car-info-table
+              %tbody
+                %tr
+                  %th Year
+                  %td= @car.year.to_s
+                  %th Color
+                  %td= @car.color
+                %tr
+                  %th Make
+                  %td= @car.make.to_s
+                  %th Size
+                  %td= @car.size
+                %tr
+                  %th Model
+                  %td= @car.model.to_s
+                  %th LP
+                  %td= @car.license_plate_number
+                %tr
+                  %th Trim
+                  %td= @car.trim.to_s
+                  %th State
+                  %td= States[@car.state]
+
+          .tab-pane#info_ownership
+            %h3 Owner
+            %table.table.table-striped.car-info-table
+              %tbody
+                %tr
+                  %th Name
+                  %td= @car.owner_name
+                  %th City
+                  %td= @car.owner_city
+                %tr
+                  %th Address
+                  %td= @car.owner_address
+                  %th State
+                  %td= States[@car.owner_state]
+                %tr
+                  %th
+                  %td
+                  %th Zip
+                  %td= @car.owner_zip
+
+            %hr
+            %h3 Lien Holder
+            %table.table.table-striped.car-info-table
+              %tbody
+                %tr
+                  %th Name
+                  %td= @car.lien_holder_name
+                  %th City
+                  %td= @car.lien_holder_city
+                %tr
+                  %th Address
+                  %td= @car.lien_holder_address
+                  %th State
+                  %td= States[@car.lien_holder_state]
+                %tr
+                  %th
+                  %td
+                  %th Zip
+                  %td= @car.lien_holder_zip

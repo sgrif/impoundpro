@@ -1,0 +1,2 @@
+$("table#cars tbody").html("<%= escape_javascript(render @cars) %>");
+$(".pagination").html("<%= escape_javascript(paginate @cars, remote: true) %>");

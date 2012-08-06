@@ -31,3 +31,6 @@
 
 # Ignore vendor gem files
 /vendor/ruby
+
+# Ignore Mac OS files
+.DS_Store

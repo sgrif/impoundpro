@@ -10,10 +10,11 @@ class CarsController < ApplicationController
   # GET /cars
   # GET /cars.json
   def index
-    @cars = current_user.cars.includes(:make, :model, :year)
+    @cars = current_user.cars.includes(:make, :model, :year).page(params[:page]).per(5)
 
     respond_to do |format|
       format.html # index.html.erb
+      format.js { response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate" }
       format.json { render json: @cars }
     end
   end
@@ -53,7 +54,9 @@ class CarsController < ApplicationController
     @car.override_check_vin = params[:override_check_vin]
 
     respond_to do |format|
-      if @car.save
+      if !@car.new_record?
+        format.html { redirect_to car_path(@car) }
+      elsif @car.save
         format.html { redirect_to edit_car_path(@car) }
         format.json { render json: @car, status: :created, location: @car }
       else

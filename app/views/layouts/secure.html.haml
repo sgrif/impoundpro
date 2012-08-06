@@ -12,6 +12,10 @@
             %ul.dropdown-menu
               %li= link_to "Edit Profile", user_path
               %li= link_to "Log Out", logout_path
+        %form.navbar-form.pull-right{action: cars_path, method: 'post'}
+          %input.search-query{ type: "search", name: 'car[vin]', placeholder: "VIN Lookup", autocomplete: "off",
+            title: "Did You Know?", data: { provide: "typeahead", source: @current_user.cars.pluck(:vin).to_json,
+            content: "You can add a car record from this form, too. Just enter a VIN, and if you don't already have a record for it, we'll create one for you! Give it a try!"}}
 
   #content
     .container-fluid
@@ -36,7 +40,7 @@
                   %span.badge.badge-success= @current_user.cars.count
               %li{class: cp(reports_path)}= link_to "<i class='icon-calendar'></i> Reports".html_safe, reports_path
               %li.nav-header Account
-              %li{class: cp(user_path)}= link_to "<i class='icon-user'></i> Profile".html_safe, user_path
+              %li{class: cp(user_path)}= link_to "<i class='icon-cog'></i> Settings".html_safe, user_path
               %li{class: cp(subscribe_user_path)}= link_to "<i class='icon-credit-card'></i> Subscription".html_safe, subscribe_user_path
               %li= link_to "<i class='icon-off'></i> Logout".html_safe, logout_path
 

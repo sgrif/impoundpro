@@ -41,29 +41,29 @@
       .span5
         = f.input :license_plate_number
 
-  %fieldset.bordered
-    %legend Owner Info
-    .row-fluid
-      .span5
-        = f.input :owner_name, label: "Name"
-        = f.input :owner_address, label: "Address"
-      .span5
-        = f.input :owner_city, label: "City"
-        = f.input :owner_state, label: "State", collection: States.invert.sort,
-          input_html: { class: "chzn-select-deselect", data: { placeholder: "Choose a State" } }
-        = f.input :owner_zip, label: "Zip"
+  %hr
+  .row-fluid
+    .span6
+      .well
+        %fieldset#car_owner_info
+          %legend Owner
+          = f.input :owner_name, label: "Name"
+          = f.input :owner_address, label: "Address"
+          = f.input :owner_city, label: "City"
+          = f.input :owner_state, label: "State", collection: States.invert.sort,
+            input_html: { class: "chzn-select-deselect", data: { placeholder: "Choose a State" } }
+          = f.input :owner_zip, label: "Zip"
 
-  %fieldset
-    %legend Lien Holder Info
-    .row-fluid
-      .span5
-        = f.input :lien_holder_name, label: "Name"
-        = f.input :lien_holder_address, label: "Address"
-      .span5
-        = f.input :lien_holder_city, label: "City"
-        = f.input :lien_holder_state, label: "State", collection: States.invert.sort,
-          input_html: { class: "chzn-select-deselect", data: { placeholder: "Choose a State" } }
-        = f.input :lien_holder_zip, label: "Zip"
+    .span6
+      .well
+        %fieldset#car_lien_holder_info
+          %legend Lien Holder
+          = f.input :lien_holder_name, label: "Name"
+          = f.input :lien_holder_address, label: "Address"
+          = f.input :lien_holder_city, label: "City"
+          = f.input :lien_holder_state, label: "State", collection: States.invert.sort,
+            input_html: { class: "chzn-select-deselect", data: { placeholder: "Choose a State" } }
+          = f.input :lien_holder_zip, label: "Zip"
 
   .form-actions
     = f.submit "Save Car", class: "btn btn-primary"

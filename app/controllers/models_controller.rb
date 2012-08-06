@@ -1,4 +1,6 @@
 class ModelsController < ApplicationController
+  layout "secure"
+
   before_filter :only_admin, except: :index
 
   # GET /models
@@ -46,7 +48,7 @@ class ModelsController < ApplicationController
 
     respond_to do |format|
       if @model.save
-        format.html { redirect_to @model, notice: 'Car model was successfully created.' }
+        format.html { redirect_to make_models_path(@model.make_id), notice: 'Car model was successfully created.' }
         format.json { render json: @model, status: :created, location: @model }
       else
         format.html { render action: "new" }
@@ -62,7 +64,7 @@ class ModelsController < ApplicationController
 
     respond_to do |format|
       if @model.update_attributes(params[:model])
-        format.html { redirect_to @model, notice: 'Car model was successfully updated.' }
+        format.html { redirect_to make_models_path(@model.make_id), notice: 'Car model was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

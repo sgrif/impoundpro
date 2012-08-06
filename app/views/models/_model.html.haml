@@ -1,0 +1,6 @@
+%tr
+  %td= model.make_id
+  %td= model.name
+  %td= link_to 'Show', model
+  %td= link_to 'Edit', edit_model_path(model)
+  %td= link_to 'Destroy', model, confirm: 'Are you sure?', method: :delete

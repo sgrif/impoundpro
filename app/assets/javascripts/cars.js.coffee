@@ -32,9 +32,6 @@ car =
         "<div class='ac'><a href='#car_lien_holder_info' class='btn btn-success show-hidden'>
         <i class='icon-plus'></i> Add Lien Holder</a></div>")
 
-    $('.chzn-select').chosen()
-    $('.chzn-select-deselect').chosen allow_single_deselect: true
-
     make_select = $(':input#car_make_id')
     model_select = $(':input#car_model_id')
     year_select = $(':input#car_year_id')

@@ -1,0 +1,23 @@
+.box
+  %h3.box-header Makes
+
+  .box-body
+    = form_tag makes_path, method: 'get', class: 'form-search' do
+      %p
+        = text_field_tag :search, params[:search], class: 'search-query'
+        = submit_tag "Search", name: nil, class: 'btn'
+
+    %table#makes.table.table-striped.table-bordered
+      %thead
+        %tr
+          %th Name
+          %th Models
+          %th
+
+      %tbody
+        = render @makes
+
+    = paginate @makes
+
+    .form-actions
+      = link_to "<i class='icon-plus'></i> New Make".html_safe, new_make_path, class: 'btn btn-success btn-large'

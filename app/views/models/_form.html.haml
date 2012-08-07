@@ -1,0 +1,11 @@
+= simple_form_for(@model) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.association :years, as: 'select', input_html: { multiple: true, class: 'chzn-select' }
+    = f.input :name
+    = f.association :make, as: 'hidden'
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'
+    = link_to "Back", make_models_path(@model.make_id), class: 'btn'

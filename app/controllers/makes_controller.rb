@@ -1,10 +1,13 @@
 class MakesController < ApplicationController
+  layout "secure"
+
   before_filter :only_admin
 
   # GET /makes
   # GET /makes.json
   def index
-    @makes = Make.all
+    @makes = Make.search(params[:search]).select("makes.*, count(models.id) as models_count")
+      .joins("left outer join models on make_id=makes.id").group("makes.id").page(params[:page]).per(10)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -46,7 +49,7 @@ class MakesController < ApplicationController
 
     respond_to do |format|
       if @make.save
-        format.html { redirect_to @make, notice: 'Car make was successfully created.' }
+        format.html { redirect_to makes_path, notice: 'Car make was successfully created.' }
         format.json { render json: @make, status: :created, location: @make }
       else
         format.html { render action: "new" }
@@ -62,7 +65,7 @@ class MakesController < ApplicationController
 
     respond_to do |format|
       if @make.update_attributes(params[:make])
-        format.html { redirect_to @make, notice: 'Car make was successfully updated.' }
+        format.html { redirect_to makes_path, notice: 'Car make was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

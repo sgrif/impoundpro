@@ -1,0 +1,15 @@
+.box
+  %h3.box-header Listing models
+
+  .box-body
+    %table
+      %tr
+        %th Car make
+        %th Name
+        %th
+        %th
+        %th
+
+      %tbody= render(@models)
+
+    = link_to 'New Car model', new_model_path

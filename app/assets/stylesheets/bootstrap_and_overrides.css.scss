@@ -32,10 +32,10 @@ h1, h2, h3, h4, h5, h6, .navbar .brand {
 
   .brand {
     text-shadow: none;
-
-    &:hover {
-      background-color: #EEEEEE;
-    }
+    background: image-url('logo2.png') no-repeat left center;
+    height: 20px;
+    width: 200px;
+    margin-left: -2px;
   }
 
   .navbar-text {

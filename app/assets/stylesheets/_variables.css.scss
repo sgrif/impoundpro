@@ -12,17 +12,17 @@ $boxBackgroundHighlight: $whiteSmoke;
 // Navbar
 // -------------------------
 $navbarHeight:                    70px;
-$navbarBackground:                darken($white, 3%);
-$navbarBackgroundHighlight:       $white;
+$navbarBackground:                #024A9E;
+$navbarBackgroundHighlight:       #0956AE;
 
 $navbarText:                      $textColor;
-$navbarLinkColor:                 $linkColor;
+$navbarLinkColor:                 $whiteSmoke;
 $navbarLinkColorHover:            $linkColor;
 $navbarLinkColorActive:           $navbarLinkColorHover;
 $navbarLinkBackgroundHover:       $grayLighter;
 $navbarLinkBackgroundActive:      $grayLighter;
 
-$navbarSearchBackground:          lighten($navbarBackground, 25%);
+$navbarSearchBackground:          #4487D3;
 $navbarSearchBackgroundFocus:     $white;
 $navbarSearchBorder:              $grayLighter;
 $navbarSearchPlaceholderColor:    $grayLight;

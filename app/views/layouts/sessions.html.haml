@@ -2,7 +2,7 @@
   .container
     .row
       .container.ac.brand
-        %h1= link_to "Impound Pro", root_url(subdomain: 'www')
+        %h1= link_to image_tag('logo-large.png'), root_url(subdomain: 'www')
       .span4.offset4
         =render partial: "shared/display_flash"
       = yield

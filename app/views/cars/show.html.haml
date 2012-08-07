@@ -1,10 +1,10 @@
 .box
-  %h3.box-header= @car.to_s
+  %h3.box-header Car Information
 
   .box-body
     .row-fluid
       .page-header
-        %h1 Header Section #{content_tag :small, "We should have some cool stats here"}
+        %h1= @car.to_s
 
     .row-fluid
       .span12

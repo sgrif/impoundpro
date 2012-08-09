@@ -32,8 +32,10 @@ class UsersController < ApplicationController
   # POST /user.json
   def create
     email = params[:user].delete :email
+    name = params[:user].delete :name
     @user = User.new(params[:user])
     @user.email = email
+    @user.name = name
 
     respond_to do |format|
       if @user.save

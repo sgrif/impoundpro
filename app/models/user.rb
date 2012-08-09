@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true
   validates :state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
 
-  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card
+  attr_accessible :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card
   attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card, :email, as: :admin
   attr_accessor :stripe_card_token, :credit_card
 

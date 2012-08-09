@@ -10,7 +10,7 @@
     %legend Company Details
     .row
       .span4
-        = f.input :name
+        = f.input :name, disabled: !@current_user.admin, label: "Company name"
         = f.input :phone_number, placeholder: "(505) 555-1234"
         = f.input :preparers_name, label: "Form preparers name"
       .span4

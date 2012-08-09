@@ -34,7 +34,7 @@ ImpoundPro::Application.routes.draw do
 
     match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
 
-    get 'reports' => 'secure#dashboard'
+    get 'reports' => 'secure#reports'
 
     resources :cars do
       member do

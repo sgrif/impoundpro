@@ -22,7 +22,7 @@ class Car < ActiveRecord::Base
   attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount, :override_check_vin
   attr_protected :stripe_invoice_item_token, :paid, :vin, :user_id
 
-  belongs_to :user
+  belongs_to :user, counter_cache: true
   belongs_to :make
   belongs_to :model
   belongs_to :year

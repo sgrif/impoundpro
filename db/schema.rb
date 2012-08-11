@@ -68,6 +68,20 @@ ActiveRecord::Schema.define(:version => 20120810160800) do
     t.string   "target_id"
   end
 
+  create_table "tow_records", :force => true do |t|
+    t.integer  "car_id"
+    t.date     "date_towed"
+    t.string   "tow_requester"
+    t.string   "tow_reason"
+    t.string   "driver_name"
+    t.string   "driver_address"
+    t.string   "driver_city"
+    t.string   "driver_state"
+    t.string   "driver_zip"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
   create_table "trims", :force => true do |t|
     t.integer  "model_id"
     t.datetime "created_at", :null => false

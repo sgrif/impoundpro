@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(:version => 20120807013044) do
 
   create_table "users", :force => true do |t|
     t.string   "email"
-    t.string   "password_digest",        :limit => 63
+    t.string   "password_digest",        :limit => 60
     t.string   "name",                   :limit => 63
     t.string   "address",                :limit => 127
     t.datetime "created_at",                                               :null => false
@@ -114,10 +114,6 @@ ActiveRecord::Schema.define(:version => 20120807013044) do
     t.boolean  "paid"
     t.boolean  "admin",                                 :default => false
   end
-
-  add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["stripe_customer_token"], :name => "index_users_on_stripe_customer_token", :unique => true
 
   create_table "years", :force => true do |t|
     t.string   "name"

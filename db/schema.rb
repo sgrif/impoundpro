@@ -71,15 +71,15 @@ ActiveRecord::Schema.define(:version => 20120807013044) do
   create_table "tow_records", :force => true do |t|
     t.integer  "car_id"
     t.date     "date_towed"
-    t.string   "tow_requester"
-    t.string   "tow_reason"
-    t.string   "driver_name"
-    t.string   "driver_address"
-    t.string   "driver_city"
-    t.string   "driver_state"
-    t.string   "driver_zip"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.string   "tow_requester",  :limit => 50
+    t.string   "tow_reason",     :limit => 50
+    t.string   "driver_name",    :limit => 50
+    t.string   "driver_address", :limit => 127
+    t.string   "driver_city",    :limit => 50
+    t.string   "driver_state",   :limit => 4
+    t.string   "driver_zip",     :limit => 10
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "trims", :force => true do |t|

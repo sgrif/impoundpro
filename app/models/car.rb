@@ -6,7 +6,8 @@ class Car < ActiveRecord::Base
   validates :vin,
     presence: true,
     uniqueness: { scope: 'user_id', message: "You already have a car with this VIN" },
-    format: { with: /^[A-Z0-9]*$/, message: "Only letters and number allowed" }
+    format: { with: /^[A-Z0-9]*$/, message: "Only letters and number allowed" },
+    on: :create # We can't change on update anyway
 
   validates :owner_state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
   validates :owner_zip, numericality: {allow_blank: true}
@@ -28,6 +29,9 @@ class Car < ActiveRecord::Base
   belongs_to :year
   belongs_to :trim
 
+  alias_method :original_model, :model
+  alias_method :original_year, :year
+
   def check_vin
     if self.new_record? and !self.override_check_vin.present? and !self.errors.has_key?(:vin)
       errors.add :check_vin, "VIN is not 17 digits" unless self.vin.length == 17
@@ -46,8 +50,15 @@ class Car < ActiveRecord::Base
   end
 
   def to_s
-    return [self.year.name, self.make.name, self.model.name].join " " unless self.year.nil? or self.make.nil? or self.model.nil?
-    "ID: #{self.vin}"
+    year_id and make_id and model_id ? "#{year.name} #{make.name} #{model.name}" : "ID: #{vin}"
+  end
+
+  def model
+    make.models.loaded? ? make.models.detect { |o| o.id = model_id } : original_model
+  end
+
+  def year
+    self.model.years.loaded? ? self.model.years.detect { |o| o.id = year_id } : original_year
   end
 
   protected

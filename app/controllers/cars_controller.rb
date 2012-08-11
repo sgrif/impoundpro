@@ -4,8 +4,6 @@ class CarsController < ApplicationController
   skip_before_filter :has_subscription, only: :index
   before_filter { add_breadcrumb "Cars", cars_path }
     before_filter only: [:new, :create] { add_breadcrumb "Add New", new_car_path }
-    before_filter only: [:show, :edit, :update] { add_breadcrumb Car.find(params[:id]).to_s, car_path(params[:id]) }
-      before_filter only: [:edit, :update] { add_breadcrumb "Edit", edit_car_path(params[:id]) }
 
   # GET /cars
   # GET /cars.json
@@ -43,7 +41,13 @@ class CarsController < ApplicationController
 
   # GET /cars/1/edit
   def edit
-    @car = Car.find(params[:id])
+    @car = Car.find(params[:id], include: [{make: :models}])
+    @models = @car.make.models
+    @years = @car.model.years.reload
+    @trims = @car.model.trims.by_year(@car.year_id).reload
+
+    add_breadcrumb @car.to_s, car_path(@car)
+    add_breadcrumb "Edit", edit_car_path(@car)
   end
 
   # POST /cars
@@ -76,6 +80,13 @@ class CarsController < ApplicationController
         format.html { redirect_to @car, notice: 'Car was successfully updated.' }
         format.json { head :no_content }
       else
+        @models = @car.make.models.reload
+        @years = @car.model.years.reload
+        @trims = @car.model.trims.by_year(@car.year_id).reload
+
+        add_breadcrumb @car.to_s, car_path(@car)
+        add_breadcrumb "Edit", edit_car_path(@car)
+
         format.html { render action: "edit" }
         format.json { render json: @car.errors, status: :unprocessable_entity }
       end

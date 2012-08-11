@@ -13,17 +13,17 @@
             input_html: {class: "chzn-select", data: {placeholder: "Choose a Make"}},
             label: false, disabled: false
         .span3
-          = f.association :model, order: :name, collection: (@car.make.nil? ? [] : @car.make.models),
+          = f.association :model, order: :name, collection: @models,
             input_html: {class: "chzn-select", data: {placeholder: "Choose a Model"}},
-            label: false, disabled: @car.make.nil?
+            label: false, disabled: @car.make_id.nil?
         .span3
-          = f.association :year, order: :name, collection: (@car.model.nil? ? [] : @car.model.years),
+          = f.association :year, order: :name, collection: @years,
             input_html: {class: "chzn-select", data: {placeholder: "Choose a Year"}},
-            label: false, disabled: @car.model.nil?
+            label: false, disabled: @car.model_id.nil?
       - if true # Determine if we can show a trim
         .row-fluid
           .span12
-            = f.association :trim, order: :name, collection: (@car.model.nil? ? [] : @car.model.trims.by_year(@car.year_id)),
+            = f.association :trim, order: :name, collection: @trims,
               input_html: {class: "chzn-select-deselect span6", data: {placeholder: "Choose a Trim"}},
               label: false, disabled: @car.year.nil?, wrapper_html: {class: 'last-row'}
 

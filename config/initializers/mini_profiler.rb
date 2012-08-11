@@ -1,1 +1,1 @@
-Rack::MiniProfiler.config.skip_schema_queries = false
+Rack::MiniProfiler.config.skip_schema_queries = true

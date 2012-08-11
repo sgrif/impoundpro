@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120810160800) do
+ActiveRecord::Schema.define(:version => 20120807013044) do
 
   create_table "cars", :force => true do |t|
     t.string   "size"
@@ -113,7 +113,6 @@ ActiveRecord::Schema.define(:version => 20120810160800) do
     t.string   "stripe_customer_token",  :limit => 20
     t.boolean  "paid"
     t.boolean  "admin",                                 :default => false
-    t.integer  "cars_count",                            :default => 0
   end
 
   add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true

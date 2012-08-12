@@ -29,6 +29,8 @@ class Car < ActiveRecord::Base
   belongs_to :year
   belongs_to :trim
 
+  has_many :tow_records
+
   alias_method :original_model, :model
   alias_method :original_year, :year
 

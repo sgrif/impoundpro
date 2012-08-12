@@ -1,0 +1,13 @@
+%tr
+  %td= tow_record.car_id
+  %td= tow_record.date_towed
+  %td= tow_record.tow_requester
+  %td= tow_record.tow_reason
+  %td= tow_record.driver_name
+  %td= tow_record.driver_address
+  %td= tow_record.driver_city
+  %td= tow_record.driver_state
+  %td= tow_record.driver_zip
+  %td= link_to 'Show', car_tow_record_path(@car, tow_record)
+  %td= link_to 'Edit', edit_car_tow_record_path(@car, tow_record)
+  %td= link_to 'Destroy', car_tow_record_path(@car, tow_record), method: :delete, data: { confirm: 'Are you sure?' }

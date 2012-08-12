@@ -5,6 +5,12 @@ jQuery ->
   if $('body').hasClass 'cars'
     car.setupForm()
 
+    if $("#car_show_tabs").length
+      History = window.History
+      $("#car_show_tabs a[href='#{window.location.hash || '#info_general'}']").tab("show")
+      $("#car_show_tabs").on 'click', 'a[data-toggle="tab"]', (e) ->
+        History.replaceState null, "", e.currentTarget.href
+
 car =
   setupForm: ->
     $('form#new_car').on 'keydown', 'input', (e) ->

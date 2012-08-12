@@ -38,13 +38,12 @@
 
     .row-fluid
       .tabbable
-        %ul.nav.nav-tabs
-          %li.active
-            %a{href: "#info_general", data: { toggle: 'tab' }} General
-          %li
-            %a{href: "#info_ownership", data: { toggle: 'tab' }} Ownership
+        %ul.nav.nav-tabs#car_show_tabs
+          %li= link_to "General", "#info_general", data: { toggle: 'tab' }
+          %li= link_to "Ownership", "#info_ownership", data: { toggle: 'tab' }
+          %li= link_to "Tow Records", "#tow_records", data: { toggle: 'tab' }
         .tab-content
-          .tab-pane.active#info_general
+          .tab-pane#info_general
             %table.table.table-striped.car-info-table
               %tbody
                 %tr
@@ -107,3 +106,11 @@
                   %td
                   %th Zip
                   %td= @car.lien_holder_zip
+
+          .tab-pane#tow_records
+            .row-fluid.ac
+              - if @car.tow_records.any?
+                %table
+                  %tbody
+                    = render @car.tow_records
+              =link_to "Add Record", new_car_tow_record_path(@car), class: 'btn btn-success'

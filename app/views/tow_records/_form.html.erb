@@ -1,4 +1,4 @@
-<%= simple_form_for(@tow_record) do |f| %>
+<%= simple_form_for(@tow_record, url: car_tow_records_path(@car)) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">

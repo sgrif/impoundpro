@@ -16,24 +16,9 @@
     <th></th>
   </tr>
 
-<% @tow_records.each do |tow_record| %>
-  <tr>
-    <td><%= tow_record.car_id %></td>
-    <td><%= tow_record.date_towed %></td>
-    <td><%= tow_record.tow_requester %></td>
-    <td><%= tow_record.tow_reason %></td>
-    <td><%= tow_record.driver_name %></td>
-    <td><%= tow_record.driver_address %></td>
-    <td><%= tow_record.driver_city %></td>
-    <td><%= tow_record.driver_state %></td>
-    <td><%= tow_record.driver_zip %></td>
-    <td><%= link_to 'Show', tow_record %></td>
-    <td><%= link_to 'Edit', edit_tow_record_path(tow_record) %></td>
-    <td><%= link_to 'Destroy', tow_record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
+  <%= render @tow_records %>
 </table>
 
 <br />
 
-<%= link_to 'New Tow record', new_tow_record_path %>
+<%= link_to 'New Tow record', new_car_tow_record_path(@car) %>

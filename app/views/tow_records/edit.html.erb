@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @tow_record %> |
-<%= link_to 'Back', tow_records_path %>
+<%= link_to 'Show', car_tow_record_path(@car, @tow_record) %> |
+<%= link_to 'Back', car_tow_records_path(@car) %>

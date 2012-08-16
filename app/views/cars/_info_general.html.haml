@@ -1,0 +1,22 @@
+%table.table.table-striped.car-info-table
+  %tbody
+    %tr
+      %th Year
+      %td= @car.year.to_s
+      %th Color
+      %td= @car.color
+    %tr
+      %th Make
+      %td= @car.make.to_s
+      %th Size
+      %td= @car.size
+    %tr
+      %th Model
+      %td= @car.model.to_s
+      %th LP
+      %td= @car.license_plate_number
+    %tr
+      %th Trim
+      %td= @car.trim.to_s
+      %th State
+      %td= States[@car.state]

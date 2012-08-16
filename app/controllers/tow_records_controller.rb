@@ -1,4 +1,6 @@
 class TowRecordsController < ApplicationController
+  layout "secure"
+
   # GET /tow_records
   # GET /tow_records.json
   def index

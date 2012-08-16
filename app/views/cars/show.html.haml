@@ -41,76 +41,13 @@
         %ul.nav.nav-tabs#car_show_tabs
           %li= link_to "General", "#info_general", data: { toggle: 'tab' }
           %li= link_to "Ownership", "#info_ownership", data: { toggle: 'tab' }
-          %li= link_to "Tow Records", "#tow_records", data: { toggle: 'tab' }
+          %li= link_to "Lien Procedure", "#info_lien_procedure", data: { toggle: 'tab' }
         .tab-content
           .tab-pane#info_general
-            %table.table.table-striped.car-info-table
-              %tbody
-                %tr
-                  %th Year
-                  %td= @car.year.to_s
-                  %th Color
-                  %td= @car.color
-                %tr
-                  %th Make
-                  %td= @car.make.to_s
-                  %th Size
-                  %td= @car.size
-                %tr
-                  %th Model
-                  %td= @car.model.to_s
-                  %th LP
-                  %td= @car.license_plate_number
-                %tr
-                  %th Trim
-                  %td= @car.trim.to_s
-                  %th State
-                  %td= States[@car.state]
+            = render "info_general"
 
           .tab-pane#info_ownership
-            %h3 Owner
-            %table.table.table-striped.car-info-table
-              %tbody
-                %tr
-                  %th Name
-                  %td= @car.owner_name
-                  %th City
-                  %td= @car.owner_city
-                %tr
-                  %th Address
-                  %td= @car.owner_address
-                  %th State
-                  %td= States[@car.owner_state]
-                %tr
-                  %th
-                  %td
-                  %th Zip
-                  %td= @car.owner_zip
+            = render "info_ownership"
 
-            %hr
-            %h3 Lien Holder
-            %table.table.table-striped.car-info-table
-              %tbody
-                %tr
-                  %th Name
-                  %td= @car.lien_holder_name
-                  %th City
-                  %td= @car.lien_holder_city
-                %tr
-                  %th Address
-                  %td= @car.lien_holder_address
-                  %th State
-                  %td= States[@car.lien_holder_state]
-                %tr
-                  %th
-                  %td
-                  %th Zip
-                  %td= @car.lien_holder_zip
-
-          .tab-pane#tow_records
-            .row-fluid.ac
-              - if @car.tow_records.any?
-                %table
-                  %tbody
-                    = render @car.tow_records
-              =link_to "Add Record", new_car_tow_record_path(@car), class: 'btn btn-success'
+          .tab-pane#info_lien_procedure
+            = render "info_lien_procedure"

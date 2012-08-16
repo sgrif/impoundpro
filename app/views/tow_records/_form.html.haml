@@ -1,0 +1,17 @@
+= simple_form_for(@tow_record, url: car_tow_records_path(@car)) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :car_id
+    = f.input :date_towed
+    = f.input :tow_requester
+    = f.input :tow_reason
+    = f.input :driver_name
+    = f.input :driver_address
+    = f.input :driver_city
+    = f.input :driver_state
+    = f.input :driver_zip
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'
+    = link_to "Back", :back, class: 'btn'

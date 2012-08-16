@@ -1,0 +1,22 @@
+%h1 Listing tow_records
+
+%table
+  %tr
+    %th Car
+    %th Date towed
+    %th Tow requester
+    %th Tow reason
+    %th Driver name
+    %th Driver address
+    %th Driver city
+    %th Driver state
+    %th Driver zip
+    %th
+    %th
+    %th
+
+  = render @tow_records
+
+%br /
+
+= link_to 'New Tow record', new_car_tow_record_path(@car)

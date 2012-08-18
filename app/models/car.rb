@@ -34,6 +34,7 @@ class Car < ActiveRecord::Base
 
   alias_method :original_model, :model
   alias_method :original_year, :year
+  alias_method :original_active_lien_procedure, :active_lien_procedure
 
   def check_vin
     if self.new_record? and !self.override_check_vin.present? and !self.errors.has_key?(:vin)
@@ -64,8 +65,22 @@ class Car < ActiveRecord::Base
     self.model.years.loaded? ? self.model.years.detect { |e| e.id = year_id } : original_year
   end
 
+  def active_lien_procedure
+    lien_procedures.loaded? ? lien_procedures.detect { |e| e.active } : original_active_lien_procedure
+  end
+
   def status
-    active_lien_procedure.nil? ? "inactive" : active_lien_procedure.status
+    if active_lien_procedure
+      active_lien_procedure.status
+    elsif claimed?
+      "claimed"
+    else
+      "inactive"
+    end
+  end
+
+  def claimed? #TODO We'll need to differentiate between actually being claimed and being sold
+    active_lien_procedure.nil? and lien_procedures.any?
   end
 
   protected

@@ -11,9 +11,11 @@
         .well.well-small
           .btn-toolbar.ac
             .btn-group
+              = car_step_tag "Lien Procedure Started", new_car_lien_procedure_path(@car), @car.lien_procedures.any?
+              = car_step_tag "Claimed", car_lien_procedure_path(@car, @lien_procedure || 1, :'lien_procedure[active]' => false), @car.claimed? , @lien_procedure.nil? ,
+                method: "put", data: { confirm: "End lien procedure and mark car as claimed?" }
+            .btn-group
               = link_to "<i class='icon-edit'></i> Edit".html_safe, edit_car_path(@car), class: "btn"
-              = link_to_if @lien_procedure.nil?, "<i class='icon-check-empty'></i> Lien Procedure".html_safe, new_car_lien_procedure_path(@car), class: "btn" do
-                = content_tag :span, "<i class='icon-check'></i> Lien Procedure".html_safe, class: "btn active"
             .btn-group
               = link_to "<i class='icon-trash'></i> Delete".html_safe, car_path(@car), class: 'btn btn-danger', method: 'delete', data: { confirm: "Are you sure?" }
             .btn-group

@@ -37,7 +37,7 @@
                 = link_to cars_path do
                   %i.icon-truck
                   Cars
-                  %span.badge.badge-success= @current_user.active_lien_procedures.size
+                  = status_badge("attention needed", @current_user.active_lien_procedures.attention_required.size)
               %li{class: cp(reports_path)}= link_to "<i class='icon-calendar'></i> Reports".html_safe, reports_path
               %li.nav-header Account
               %li{class: cp(user_path)}= link_to "<i class='icon-cog'></i> Settings".html_safe, user_path

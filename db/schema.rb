@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120807013044) do
+ActiveRecord::Schema.define(:version => 20120818174855) do
 
   create_table "cars", :force => true do |t|
     t.string   "size"
@@ -41,6 +41,21 @@ ActiveRecord::Schema.define(:version => 20120807013044) do
     t.integer  "trim_id"
   end
 
+  create_table "lien_procedures", :force => true do |t|
+    t.integer  "car_id"
+    t.date     "date_towed"
+    t.string   "tow_requester",  :limit => 50
+    t.string   "tow_reason",     :limit => 50
+    t.string   "driver_name",    :limit => 50
+    t.string   "driver_address", :limit => 127
+    t.string   "driver_city",    :limit => 50
+    t.string   "driver_state",   :limit => 4
+    t.string   "driver_zip",     :limit => 10
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.boolean  "active",                        :default => true
+  end
+
   create_table "makes", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -66,20 +81,6 @@ ActiveRecord::Schema.define(:version => 20120807013044) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "target_id"
-  end
-
-  create_table "tow_records", :force => true do |t|
-    t.integer  "car_id"
-    t.date     "date_towed"
-    t.string   "tow_requester",  :limit => 50
-    t.string   "tow_reason",     :limit => 50
-    t.string   "driver_name",    :limit => 50
-    t.string   "driver_address", :limit => 127
-    t.string   "driver_city",    :limit => 50
-    t.string   "driver_state",   :limit => 4
-    t.string   "driver_zip",     :limit => 10
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
   end
 
   create_table "trims", :force => true do |t|

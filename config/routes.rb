@@ -51,7 +51,7 @@ ImpoundPro::Application.routes.draw do
         get 'fifty_state_check'
       end
 
-      resources :tow_records
+      resources :lien_procedures
     end
 
     match "/" => 'secure#dashboard'

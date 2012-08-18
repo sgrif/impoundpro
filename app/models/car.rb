@@ -29,7 +29,7 @@ class Car < ActiveRecord::Base
   belongs_to :year
   belongs_to :trim
 
-  has_many :tow_records
+  has_many :lien_procedures
 
   alias_method :original_model, :model
   alias_method :original_year, :year
@@ -61,6 +61,10 @@ class Car < ActiveRecord::Base
 
   def year
     self.model.years.loaded? ? self.model.years.detect { |o| o.id = year_id } : original_year
+  end
+
+  def active_lien_record
+    lien_procedures.where(active: true).first
   end
 
   protected

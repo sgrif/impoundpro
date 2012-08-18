@@ -1,5 +1,5 @@
 .row-fluid.ac
-  - if true # Determine if we have a record to show
-    = render @car.tow_records.last
+  - if @car.lien_procedures.any?
+    = render @car.lien_procedures.last
   - else
-    =link_to "Add Record", new_car_tow_record_path(@car), class: 'btn btn-success'
+    =link_to "Add Record", new_car_lien_procedure_path(@car), class: 'btn btn-success'

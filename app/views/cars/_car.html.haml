@@ -4,8 +4,7 @@
     %br
     %small{style: 'font-size: 90%'}= car.to_s if car.make and car.model and car.year
   %td= car.created_at.to_date.to_s(:long_ordinal)
-  %td
-    %span.label.label-success Active
+  %td= status_label car.status
   %td
     .btn-toolbar{style: 'margin: 0;'}
       .btn-group

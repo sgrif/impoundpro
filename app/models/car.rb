@@ -29,7 +29,8 @@ class Car < ActiveRecord::Base
   belongs_to :year
   belongs_to :trim
 
-  has_many :lien_procedures
+  has_many :lien_procedures, dependent: :destroy
+  has_one :active_lien_procedure, class_name: "LienProcedure", conditions: { active: true }
 
   alias_method :original_model, :model
   alias_method :original_year, :year
@@ -56,15 +57,15 @@ class Car < ActiveRecord::Base
   end
 
   def model
-    make.models.loaded? ? make.models.detect { |o| o.id = model_id } : original_model
+    make.models.loaded? ? make.models.detect { |e| e.id = model_id } : original_model
   end
 
   def year
-    self.model.years.loaded? ? self.model.years.detect { |o| o.id = year_id } : original_year
+    self.model.years.loaded? ? self.model.years.detect { |e| e.id = year_id } : original_year
   end
 
-  def active_lien_record
-    lien_procedures.where(active: true).first
+  def status
+    active_lien_procedure.nil? ? "inactive" : active_lien_procedure.status
   end
 
   protected

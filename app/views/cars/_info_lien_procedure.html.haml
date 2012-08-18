@@ -1,5 +1,5 @@
 .row-fluid.ac
-  - if @car.lien_procedures.any?
-    = render @car.lien_procedures.last
+  - if @lien_procedure.nil?
+    = link_to "Begin Lien Procedure", new_car_lien_procedure_path(@car), class: 'btn btn-success'
   - else
-    =link_to "Add Record", new_car_lien_procedure_path(@car), class: 'btn btn-success'
+    = render "lien_procedures/show"

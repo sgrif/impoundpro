@@ -1,5 +1,5 @@
 .box
-  %h3.box-header= @car.to_s
+  %h3.box-header #{@car.to_s} #{status_label(@car.status)}
 
   .box-body
     .row-fluid
@@ -12,13 +12,13 @@
           .btn-toolbar.ac
             .btn-group
               = link_to "<i class='icon-edit'></i> Edit".html_safe, edit_car_path(@car), class: "btn"
-              = link_to "Some Action", "#", class: "btn"
-              = link_to "Some Other Action", "#", class: "btn"
+              = link_to_if @lien_procedure.nil?, "<i class='icon-check-empty'></i> Lien Procedure".html_safe, new_car_lien_procedure_path(@car), class: "btn" do
+                = content_tag :span, "<i class='icon-check'></i> Lien Procedure".html_safe, class: "btn active"
             .btn-group
               = link_to "<i class='icon-trash'></i> Delete".html_safe, car_path(@car), class: 'btn btn-danger', method: 'delete', data: { confirm: "Are you sure?" }
             .btn-group
               = link_to "<i class='icon-print'></i> Forms <span class='caret'></span>".html_safe, "#", data: { toggle: 'dropdown' }, class: 'btn btn-primary dropdown-toggle'
-              %ul.dropdown-menu
+              %ul.dropdown-menu.al
                 - unless @car.owner_name.blank? and @car.owner_address.blank?
                   %li= link_to 'Owner Lien Notice', owner_lien_notice_car_path(@car, format: :pdf)
                   %li= link_to 'Owner Mail Labels', owner_mail_labels_car_path(@car, format: :pdf)

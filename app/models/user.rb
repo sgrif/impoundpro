@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
 
   has_many :cars
   has_many :stripe_webhooks
+  has_many :active_lien_procedures, through: :cars, class_name: "LienProcedure", conditions: { active: true }
 
   after_initialize {@credit_card = CreditCard.new}
 

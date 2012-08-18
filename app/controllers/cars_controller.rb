@@ -21,6 +21,7 @@ class CarsController < ApplicationController
   # GET /cars/1.json
   def show
     @car = current_user.cars.find(params[:id])
+    @lien_procedure = @car.active_lien_procedure
 
     respond_to do |format|
       format.html # show.html.erb

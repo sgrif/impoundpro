@@ -2,44 +2,5 @@
   %h3.box-header Tow Record
 
   .box-body
-    %p#notice= notice
-
-    %p
-      %b Car:
-      = @lien_procedure.car_id
-
-    %p
-      %b Date towed:
-      = @lien_procedure.date_towed
-
-    %p
-      %b Tow requester:
-      = @lien_procedure.tow_requester
-
-    %p
-      %b Tow reason:
-      = @lien_procedure.tow_reason
-
-    %p
-      %b Driver name:
-      = @lien_procedure.driver_name
-
-    %p
-      %b Driver address:
-      = @lien_procedure.driver_address
-
-    %p
-      %b Driver city:
-      = @lien_procedure.driver_city
-
-    %p
-      %b Driver state:
-      = @lien_procedure.driver_state
-
-    %p
-      %b Driver zip:
-      = @lien_procedure.driver_zip
-
-
-    = link_to 'Edit', edit_car_lien_procedure_path(@car, @lien_procedure), class: 'btn' |
+    = render "show"
     = link_to 'Back', :back, class: 'btn'

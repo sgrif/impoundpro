@@ -8,7 +8,7 @@ class CarsController < ApplicationController
   # GET /cars
   # GET /cars.json
   def index
-    @cars = current_user.cars.includes(:make, :model, :year).page(params[:page]).per(5)
+    @cars = current_user.cars.includes(:make, :model, :year, :lien_procedures).page(params[:page]).per(5)
 
     respond_to do |format|
       format.html # index.html.erb

@@ -12,6 +12,8 @@
           .btn-toolbar.ac
             .btn-group
               = car_step_tag "Lien Procedure Started", new_car_lien_procedure_path(@car), @car.lien_procedures.any?
+              = car_step_tag "MVD Inquiry", car_lien_procedure_path(@car, @lien_procedure || 1, :'lien_procedure[mvd_inquiry_date]' => Date.today), @lien_procedure.try(:mvd_inquiry_date),
+                @lien_procedure.nil? , method: "put"
               = car_step_tag "Claimed", car_lien_procedure_path(@car, @lien_procedure || 1, :'lien_procedure[active]' => false), @car.claimed? , @lien_procedure.nil? ,
                 method: "put", data: { confirm: "End lien procedure and mark car as claimed?" }
             .btn-group

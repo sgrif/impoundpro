@@ -14,7 +14,7 @@
               %li= link_to "Log Out", logout_path
         %form.navbar-form.pull-right{action: cars_path, method: 'post'}
           %input.search-query{ type: "search", name: 'car[vin]', placeholder: "VIN Lookup", autocomplete: "off",
-            title: "Did You Know?", data: { provide: "typeahead", source: (@cars ? @cars.map(&:vin) : @current_user.cars.pluck(:vin).to_json),
+            title: "Did You Know?", data: { provide: "typeahead", source: (@cars.nil? ? @current_user.cars.pluck(:vin).to_json : @cars.map(&:vin).to_json),
             content: "You can add a car record from this form, too. Just enter a VIN, and if you don't already have a record for it, we'll create one for you! Give it a try!"}}
 
   #content
@@ -37,7 +37,7 @@
                 = link_to cars_path do
                   %i.icon-truck
                   Cars
-                  = status_badge("attention needed", @current_user.active_lien_procedures.attention_required.size)
+                  = status_badge("attention needed", @current_user.active_lien_procedures.attention_required.size) if @current_user.active_lien_procedures.attention_required.size > 0
               %li{class: cp(reports_path)}= link_to "<i class='icon-calendar'></i> Reports".html_safe, reports_path
               %li.nav-header Account
               %li{class: cp(user_path)}= link_to "<i class='icon-cog'></i> Settings".html_safe, user_path

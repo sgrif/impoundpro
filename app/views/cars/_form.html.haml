@@ -67,4 +67,5 @@
 
   .form-actions
     = f.submit "Save Car", class: "btn btn-primary"
+    = f.button :button, "Lien Procedure", name: :redirect, value: @car.active_lien_procedure ? edit_car_lien_procedure_path(@car, @car.active_lien_procedure) : new_car_lien_procedure_path(@car), class: "btn btn-info"
     = link_to "Back", car_path(@car), class: "btn"

@@ -79,7 +79,7 @@ class CarsController < ApplicationController
 
     respond_to do |format|
       if @car.update_attributes(params[:car])
-        format.html { redirect_to @car, notice: 'Car was successfully updated.' }
+        format.html { redirect_to params[:redirect] ? params[:redirect] : @car, notice: 'Car was successfully updated.' }
         format.json { head :no_content }
       else
         @models = @car.make.models.reload

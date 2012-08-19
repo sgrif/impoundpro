@@ -51,7 +51,7 @@ class LienProceduresController < ApplicationController
 
     respond_to do |format|
       if @lien_procedure.save
-        format.html { redirect_to car_lien_procedure_path(@car, @lien_procedure), notice: 'Tow record was successfully created.' }
+        format.html { redirect_to car_lien_procedure_path(@car, @lien_procedure), notice: 'Lien procedure was started successfully.' }
         format.json { render json: @lien_procedure, status: :created, location: @lien_procedure }
       else
         format.html { render action: "new" }
@@ -69,7 +69,7 @@ class LienProceduresController < ApplicationController
 
     respond_to do |format|
       if @lien_procedure.update_attributes(params[:lien_procedure])
-        format.html { redirect_to car_lien_procedure_path(@car, @lien_procedure), notice: 'Tow record was successfully updated.' }
+        format.html { redirect_to @car, notice: 'Lien procedure was updated successfully.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }

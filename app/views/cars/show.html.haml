@@ -11,16 +11,24 @@
         .well.well-small
           .btn-toolbar.ac
             .btn-group
-              = car_step_tag "Lien Procedure Started", new_car_lien_procedure_path(@car), @car.lien_procedures.any?
-              = car_step_tag "MVD Inquiry", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[mvd_inquiry_date]' => Date.today), @lien_procedure.try(:mvd_inquiry_date),
-                @lien_procedure.nil? , method: "put"
-              = car_step_tag "Claimed", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[active]' => false), @car.claimed? , @lien_procedure.nil? ,
-                method: "put", data: { confirm: "End lien procedure and mark car as claimed?" }
-            .btn-group
-              = car_step_tag "Vehicle Released", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[vehicle_released]' => true), @lien_procedure.try(:vehicle_released),
-                @lien_procedure.nil? , method: "put"
-              = car_step_tag "Personals Released", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[personals_released]' => true), @lien_procedure.try(:personals_released),
-                @lien_procedure.nil? , method: "put"
+              = car_step_tag "Lien Procedure Started", new_car_lien_procedure_path(@car), @car.lien_procedures.any?, class: "btn"
+              %button.btn.dropdown-toggle{data: {toggle: 'dropdown'}}
+                %span.caret
+              %ul.dropdown-menu.al
+                %li= car_step_tag "MVD Inquiry", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[mvd_inquiry_date]' => Date.current), @lien_procedure.try(:mvd_inquiry_date),
+                    @lien_procedure.nil? , method: "put"
+                %li= car_step_tag "Lien Notice Mailed", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[lien_notice_mail_date]' => Date.current),
+                    @lien_procedure.try(:lien_notice_mail_date), @lien_procedure.nil? , method: "put"
+                %li= car_step_tag "Public Sale Notice", "#"
+                %li= car_step_tag "Titled", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[active]' => false), false, @car.lien_procedures.empty? ,
+                    method: "put", data: { confirm: "End lien procedure and mark car as titled?" }
+                %li= car_step_tag "Claimed", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[active]' => false), @car.claimed? , @car.lien_procedures.empty? ,
+                    method: "put", data: { confirm: "End lien procedure and mark car as claimed?" }
+                %li.divider
+                %li= car_step_tag "Vehicle Released", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[vehicle_released]' => true), @lien_procedure.try(:vehicle_released),
+                  @lien_procedure.nil? , method: "put"
+                %li= car_step_tag "Personals Released", car_lien_procedure_path(@car, @lien_procedure || 1, 'lien_procedure[personals_released]' => true), @lien_procedure.try(:personals_released),
+                  @lien_procedure.nil? , method: "put"
             .btn-group
               = link_to "<i class='icon-edit'></i> Edit".html_safe, edit_car_path(@car), class: "btn"
             .btn-group

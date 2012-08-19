@@ -23,6 +23,7 @@ class CarsController < ApplicationController
     @car = current_user.cars.find(params[:id])
     @lien_procedure = @car.active_lien_procedure
 
+    add_breadcrumb @car.to_s, car_path(@car)
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @car }

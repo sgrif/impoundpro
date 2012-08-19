@@ -10,6 +10,8 @@ module CarsHelper
       "#{options[:type]} #{options[:type]}-inverse"
     when "attention needed"
       "#{options[:type]} #{options[:type]}-warning"
+    when "action required"
+      "#{options[:type]} #{options[:type]}-important"
     else
       "#{options[:type]}"
     end

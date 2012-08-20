@@ -37,7 +37,7 @@
                 = link_to cars_path do
                   %i.icon-truck
                   Cars
-                  = status_badge("attention needed", @current_user.active_lien_procedures.attention_required.size) if @current_user.active_lien_procedures.attention_required.size > 0
+                  = status_badge("action soon", @current_user.active_lien_procedures.action_soon.size) if @current_user.active_lien_procedures.action_soon.size > 0
                   = status_badge("action required", @current_user.active_lien_procedures.action_required.size) if @current_user.active_lien_procedures.action_required.size > 0
               %li{class: cp(reports_path)}= link_to "<i class='icon-calendar'></i> Reports".html_safe, reports_path
               %li.nav-header Account

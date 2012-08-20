@@ -74,6 +74,8 @@ class Car < ActiveRecord::Base
       active_lien_procedure.status
     elsif claimed?
       "claimed"
+    elsif titled?
+      "titled"
     else
       "inactive"
     end
@@ -81,6 +83,10 @@ class Car < ActiveRecord::Base
 
   def claimed? #TODO We'll need to differentiate between actually being claimed and being sold
     active_lien_procedure.nil? and lien_procedures.any?
+  end
+
+  def titled?
+    active_lien_procedure.nil? and lien_procedures.any? and !claimed?
   end
 
   protected

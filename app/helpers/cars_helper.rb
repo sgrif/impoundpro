@@ -6,9 +6,9 @@ module CarsHelper
     case args.first
     when "active"
       "#{options[:type]} #{options[:type]}-success"
-    when "claimed"
+    when "claimed", "titled"
       "#{options[:type]} #{options[:type]}-inverse"
-    when "attention needed"
+    when "action soon"
       "#{options[:type]} #{options[:type]}-warning"
     when "action required"
       "#{options[:type]} #{options[:type]}-important"

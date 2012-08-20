@@ -15,7 +15,7 @@ class LienProcedure < ActiveRecord::Base
       if mvd_inquiry_date.nil? and date_towed <= 2.days.ago.to_date
         "action required"
       elsif mvd_inquiry_date.nil? and date_towed == Date.yesterday
-        "attention needed"
+        "action soon"
       else
         "active"
       end
@@ -24,7 +24,7 @@ class LienProcedure < ActiveRecord::Base
     end
   end
 
-  def self.attention_required
+  def self.action_soon
     where({mvd_inquiry_date: nil}).where(date_towed: Date.yesterday)
   end
 

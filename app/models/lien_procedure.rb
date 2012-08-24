@@ -24,6 +24,12 @@ class LienProcedure < ActiveRecord::Base
     end
   end
 
+  def next_step
+    if mvd_inquiry_date.nil?
+      "MVD Motor Vehicle Record Request"
+    end
+  end
+
   def self.action_soon
     where({mvd_inquiry_date: nil}).where(date_towed: Date.yesterday)
   end

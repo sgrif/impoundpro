@@ -74,7 +74,7 @@ class Car < ActiveRecord::Base
   end
 
   def status
-    if !active_lien_procedure.try('new_record?')
+    if !active_lien_procedure.try('new_record?') and active_lien_procedure.present?
       active_lien_procedure.status
     elsif claimed?
       "claimed"

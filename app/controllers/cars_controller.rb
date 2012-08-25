@@ -8,7 +8,7 @@ class CarsController < ApplicationController
   # GET /cars
   # GET /cars.json
   def index
-    @cars = current_user.cars.includes(:make, :model, :year, :lien_procedures).page(params[:page]).per(5)
+    @cars = current_user.cars.with_ymm.order_by_status.page(params[:page]).per(5)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,9 +44,9 @@ class CarsController < ApplicationController
   # GET /cars/1/edit
   def edit
     @car = current_user.cars.find(params[:id], include: [{make: :models}])
-    @models = @car.make.models
-    @years = @car.model.years.reload
-    @trims = @car.model.trims.by_year(@car.year_id).reload
+    @models = @car.make_id ? @car.make.models : []
+    @years = @car.model_id ? @car.model.years.reload : []
+    @trims = @car.model_id ? @car.model.trims.by_year(@car.year_id).reload : []
 
     add_breadcrumb @car.to_s, car_path(@car)
     add_breadcrumb "Edit", edit_car_path(@car)

@@ -7,7 +7,7 @@
         - if @lien_procedure.nil?
           %h1 Lien Procedure Inactive
         - else
-          %h1 Next Step #{content_tag :small, @lien_procedure.next_step}
+          %h1 Next Step #{content_tag :small, @lien_procedure.next_step_string}
 
     .row-fluid
       .span12

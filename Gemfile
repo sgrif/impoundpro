@@ -40,19 +40,13 @@ group :development do
   gem "rack-mini-profiler"
 end
 
-group :test do
+group :test, :development do
   gem "rspec-rails"
   gem "factory_girl_rails"
   gem "faker"
   gem "capybara"
   gem "capybara-webkit"
-  gem "guard-rspec"
-  gem "growl"
-  gem "launchy"
   gem "database_cleaner"
-  gem "shoulda-matchers"
-  gem "pdf-inspector"
-#  gem "cover_me"
 end
 
 # To use ActiveModel has_secure_password

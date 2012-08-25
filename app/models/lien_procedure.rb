@@ -1,6 +1,7 @@
 class LienProcedure < ActiveRecord::Base
   validates :car_id, presence: true
   validates :active, uniqueness: { scope: :car_id, message: "This vehicle already has an active lien procedure", if: :active }
+  validates :date_towed, presence: true
 
   validate :validate_dates
 
@@ -10,43 +11,63 @@ class LienProcedure < ActiveRecord::Base
 
   belongs_to :car
 
-  scope :test_scope, where(active: true)
-
   def status
     if active
-      if mvd_inquiry_date.nil? and date_towed <= 2.days.ago.to_date
-        "action required"
-      elsif mvd_inquiry_date.nil? and date_towed == Date.yesterday
-        "action soon"
-      elsif lien_notice_mail_date.nil? and mvd_inquiry_date <= 5.days.ago.to_date
-        "action required"
-      elsif lien_notice_mail_date.nil? and mvd_inquiry_date <= 3.days.ago.to_date
-        "action soon"
-      elsif notice_of_public_sale_date.nil? and lien_notice_mail_date <= 10.days.ago.to_date
-        "action required"
-      elsif notice_of_public_sale_date.nil? and lien_notice_mail_date <= 8.days.ago.to_date
-        "action soon"
-      else
-        "active"
+      if notice_of_public_sale_date.present?
+        return "action required" if lien_notice_mail_date <= 10.days.ago.to_date
+        return "action soon" if lien_notice_mail_date <= 8.days.ago.to_date
+      elsif lien_notice_mail_date.present?
+        return "action required" if mvd_inquiry_date <= 5.days.ago.to_date
+        return "action soon" if mvd_inquiry_date <= 3.days.ago.to_date
+      elsif date_towed.present?
+        return "action required" if date_towed <= 2.days.ago.to_date
+        return "action soon" if date_towed == Date.yesterday
       end
+      "active"
     else
       "inactive"
     end
   end
 
-  def next_step
-    if mvd_inquiry_date.nil?
+  def next_step_string
+    case next_step
+    when :mvd_inquiry_date
       "MVD Motor Vehicle Record Request"
-    elsif lien_notice_mail_date.nil?
+    when :lien_notice_mail_date
       "Mail Lien Notice"
-    elsif notice_of_public_sale_date.nil?
+    when :notice_of_public_sale_date
       "Post Notice of Public Sale"
     end
   end
 
+  def next_step
+    if date_towed.nil?
+      :date_towed
+    elsif mvd_inquiry_date.nil?
+      :mvd_inquiry_date
+    elsif lien_notice_mail_date.nil?
+      :lien_notice_mail_date
+    elsif notice_of_public_sale_date.nil?
+      :notice_of_public_sale_date
+    end
+  end
+
+  def completed_steps
+    ret = Array.new
+    ret << :date_towed unless date_towed.nil?
+    ret << :mvd_inquiry_date unless mvd_inquiry_date.nil?
+    ret << :lien_notice_mail_date unless lien_notice_mail_date.nil?
+    ret << :notice_of_public_sale_date unless notice_of_public_sale_date.nil?
+    ret
+  end
+
   def self.action_soon
+    where self._action_soon
+  end
+
+  def self._action_soon
     t = arel_table
-    where t[:mvd_inquiry_date].eq(nil).and(t[:date_towed].eq(Date.yesterday))
+    t[:mvd_inquiry_date].eq(nil).and(t[:date_towed].eq(Date.yesterday))
       .or(t[:lien_notice_mail_date].eq(nil)
         .and(t[:mvd_inquiry_date].in(4.days.ago.to_date..3.days.ago.to_date)))
       .or(t[:notice_of_public_sale_date].eq(nil)
@@ -54,8 +75,12 @@ class LienProcedure < ActiveRecord::Base
   end
 
   def self.action_required
+    where self._action_required
+  end
+
+  def self._action_required
     t = arel_table
-    where t[:mvd_inquiry_date].eq(nil).and(t[:date_towed].lteq(2.days.ago.to_date))
+    t[:mvd_inquiry_date].eq(nil).and(t[:date_towed].lteq(2.days.ago.to_date))
       .or(t[:lien_notice_mail_date].eq(nil).and(t[:mvd_inquiry_date].lteq(5.days.ago.to_date)))
       .or(t[:notice_of_public_sale_date].eq(nil).and(t[:lien_notice_mail_date].lteq(10.days.ago.to_date)))
   end

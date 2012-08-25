@@ -54,15 +54,17 @@ class Car < ActiveRecord::Base
   end
 
   def to_s
-    year_id and make_id and model_id ? "#{year.name} #{make.name} #{model.name}" : "ID: #{vin}"
+    (year_id and make_id and model_id) ? "#{year.name} #{make.name} #{model.name}" : "ID: #{vin}"
   end
 
   def model
-    make.models.loaded? ? make.models.detect { |e| e.id = model_id } : original_model
+    return nil if model_id.nil?
+    make.models.loaded? ? make.models.detect { |e| e.id == model_id } : original_model
   end
 
   def year
-    self.model.years.loaded? ? self.model.years.detect { |e| e.id = year_id } : original_year
+    return nil if year_id.nil?
+    self.model.years.loaded? ? self.model.years.detect { |e| e.id == year_id } : original_year
   end
 
   def active_lien_procedure
@@ -87,6 +89,18 @@ class Car < ActiveRecord::Base
 
   def titled?
     active_lien_procedure.nil? and lien_procedures.any? and !claimed?
+  end
+
+  def self.with_ymm
+    includes(:make, :model, :year)
+  end
+
+  def self.order_by_status
+    includes(:lien_procedures).where(lien_procedures: {active: [true, nil]})
+    .order "active, case
+              when #{LienProcedure._action_required.to_sql} then 2
+              when #{LienProcedure._action_soon.to_sql} then 1
+              else 0 end desc".gsub(/\s+/," ").strip
   end
 
   protected

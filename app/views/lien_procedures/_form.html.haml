@@ -2,14 +2,11 @@
   = f.error_notification
 
   .form-inputs
-    = f.input :date_towed
-    = f.input :tow_requester
-    = f.input :tow_reason
-    = f.input :driver_name
-    = f.input :driver_address
-    = f.input :driver_city
-    = f.input :driver_state
-    = f.input :driver_zip
+    = f.input :date_towed, start_year: 1.year.ago.year, end_year: Date.today.year
+    = f.input :mvd_inquiry_date, include_blank: true,
+      start_year: 1.year.ago.year, end_year: Date.today.year
+    = f.input :lien_notice_mail_date, include_blank: true,
+      start_year: 1.year.ago.year, end_year: Date.today.year
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary'

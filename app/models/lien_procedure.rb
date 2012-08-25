@@ -6,6 +6,7 @@ class LienProcedure < ActiveRecord::Base
   validate :validate_dates
 
   before_create { date_towed ||= Date.today }
+  before_save { active = false if titled }
 
   attr_protected :car_id
 
@@ -43,23 +44,26 @@ class LienProcedure < ActiveRecord::Base
   end
 
   def next_step
-    if date_towed.nil?
+    if date_towed_was.nil?
       :date_towed
-    elsif mvd_inquiry_date.nil?
+    elsif mvd_inquiry_date_was.nil?
       :mvd_inquiry_date
-    elsif lien_notice_mail_date.nil?
+    elsif lien_notice_mail_date_was.nil?
       :lien_notice_mail_date
-    elsif notice_of_public_sale_date.nil?
+    elsif notice_of_public_sale_date_was.nil?
       :notice_of_public_sale_date
+    else
+      :titled
     end
   end
 
   def completed_steps
     ret = Array.new
-    ret << :date_towed unless date_towed.nil?
-    ret << :mvd_inquiry_date unless mvd_inquiry_date.nil?
-    ret << :lien_notice_mail_date unless lien_notice_mail_date.nil?
-    ret << :notice_of_public_sale_date unless notice_of_public_sale_date.nil?
+    ret << :date_towed unless date_towed_was.nil?
+    ret << :mvd_inquiry_date unless mvd_inquiry_date_was.nil?
+    ret << :lien_notice_mail_date unless lien_notice_mail_date_was.nil?
+    ret << :notice_of_public_sale_date unless notice_of_public_sale_date_was.nil?
+    ret << :titled unless active
     ret
   end
 

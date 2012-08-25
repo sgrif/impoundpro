@@ -1,2 +1,0 @@
-module TowRecordsHelper
-end

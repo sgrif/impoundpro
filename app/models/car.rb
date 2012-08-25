@@ -32,6 +32,8 @@ class Car < ActiveRecord::Base
   has_many :lien_procedures, dependent: :destroy
   has_one :active_lien_procedure, class_name: "LienProcedure", conditions: { active: true }
 
+  accepts_nested_attributes_for :active_lien_procedure
+
   alias_method :original_model, :model
   alias_method :original_year, :year
   alias_method :original_active_lien_procedure, :active_lien_procedure

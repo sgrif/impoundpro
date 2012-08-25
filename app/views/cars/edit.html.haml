@@ -1,5 +1,5 @@
 .box
-  %h3.box-header= @car.to_s
+  %h3.box-header #{@car.to_s} #{status_label(@car.status)}
 
   .box-body
     = render 'form'

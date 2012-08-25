@@ -41,6 +41,7 @@ class LienProceduresController < ApplicationController
   def edit
     @car = Car.find(params[:car_id])
     @lien_procedure = @car.lien_procedures.find(params[:id])
+    @lien_procedure.attributes = params[:lien_procedure]
   end
 
   # POST /lien_procedures
@@ -65,7 +66,6 @@ class LienProceduresController < ApplicationController
   def update
     @car = Car.find(params[:car_id])
     @lien_procedure = @car.lien_procedures.find(params[:id])
-    @lien_procedure.active = params[:active] unless params[:active].nil?
 
     respond_to do |format|
       if @lien_procedure.update_attributes(params[:lien_procedure])

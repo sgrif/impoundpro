@@ -5,13 +5,15 @@ module CarsHelper
 
     case args.first
     when "active"
-      "#{options[:type]} #{options[:type]}-success"
+      "#{options[:type]} #{options[:type]}-info"
     when "claimed", "titled"
       "#{options[:type]} #{options[:type]}-inverse"
     when "action soon"
       "#{options[:type]} #{options[:type]}-warning"
     when "action required"
       "#{options[:type]} #{options[:type]}-important"
+    when "ready to title"
+      "#{options[:type]} #{options[:type]}-success"
     else
       "#{options[:type]}"
     end
@@ -27,6 +29,12 @@ module CarsHelper
 
   def car_step_tag(name, path, *args)
     html_options = args.extract_options!
+    if path.is_a?(Array)
+      path_options = path.extract_options!
+      path_options[:action] = :edit if path_options[:action].nil?
+      path = polymorphic_path(path, path_options)
+    end
+
     if args.first or args.second
       link_to "<i class='icon-check#{"-empty" if args.second}'></i> #{name}".html_safe, "#", class: "#{html_options[:class]} disabled"
     else

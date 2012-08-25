@@ -36,10 +36,6 @@ gem "thin"
 gem "kaminari"
 gem "historyjs-rails"
 
-group :development do
-  gem "rack-mini-profiler"
-end
-
 group :test, :development do
   gem "rspec-rails"
   gem "factory_girl_rails"

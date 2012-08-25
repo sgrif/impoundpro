@@ -82,9 +82,9 @@ class CarsController < ApplicationController
         format.html { redirect_to params[:redirect] ? params[:redirect] : @car, notice: 'Car was successfully updated.' }
         format.json { head :no_content }
       else
-        @models = @car.make.models.reload
-        @years = @car.model.years.reload
-        @trims = @car.model.trims.by_year(@car.year_id).reload
+        @models = @car.make_id ? @car.make.models.reload : []
+        @years = @car.model_id ? @car.model.years.reload : []
+        @trims = @car.model_id ? @car.model.trims.by_year(@car.year_id).reload : []
 
         add_breadcrumb @car.to_s, car_path(@car)
         add_breadcrumb "Edit", edit_car_path(@car)

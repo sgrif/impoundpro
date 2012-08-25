@@ -48,6 +48,7 @@ module CarsHelper
     ret[:show_text] = "#{car.active_lien_procedure.nil? ? "Add" : "Edit"} Lien Procedure"
     ret[:btn_class] = "info" if car.active_lien_procedure
     ret[:btn_icon] = "edit" if car.active_lien_procedure
+    ret[:remove_content] = "true" if car.active_lien_procedure.nil?
     ret
   end
 end

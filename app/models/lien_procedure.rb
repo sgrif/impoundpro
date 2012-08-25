@@ -65,6 +65,6 @@ class LienProcedure < ActiveRecord::Base
   def validate_dates
     errors.add :date_towed, "must be before today's date" if date_towed_changed? and date_towed > Date.today
     errors.add :mvd_inquiry_date, "must be after tow date" if date_towed.nil? or (mvd_inquiry_date.present? and mvd_inquiry_date < date_towed)
-    errors.add :lien_notice_mail_date, "must be after mvd inquiry date" if mvd_inquiry_date.nil? or (lien_notice_mail_date.present? and lien_notice_mail_date < mvd_inquiry_date)
+    errors.add :lien_notice_mail_date, "must be after mvd inquiry date" if lien_notice_mail_date.present? and (mvd_inquiry_date.nil? or lien_notice_mail_date < mvd_inquiry_date)
   end
 end

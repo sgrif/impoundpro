@@ -22,6 +22,10 @@ class LienProcedure < ActiveRecord::Base
         "action required"
       elsif lien_notice_mail_date.nil? and mvd_inquiry_date <= 3.days.ago.to_date
         "action soon"
+      elsif notice_of_public_sale_date.nil? and lien_notice_mail_date <= 10.days.ago.to_date
+        "action required"
+      elsif notice_of_public_sale_date.nil? and lien_notice_mail_date <= 8.days.ago.to_date
+        "action soon"
       else
         "active"
       end
@@ -35,27 +39,32 @@ class LienProcedure < ActiveRecord::Base
       "MVD Motor Vehicle Record Request"
     elsif lien_notice_mail_date.nil?
       "Mail Lien Notice"
+    elsif notice_of_public_sale_date.nil?
+      "Post Notice of Public Sale"
     end
   end
 
   def self.action_soon
     t = arel_table
     where t[:mvd_inquiry_date].eq(nil).and(t[:date_towed].eq(Date.yesterday))
-      .or t[:lien_notice_mail_date].eq(nil)
-        .and(t[:mvd_inquiry_date].in(4.days.ago.to_date..3.days.ago.to_date))
+      .or(t[:lien_notice_mail_date].eq(nil)
+        .and(t[:mvd_inquiry_date].in(4.days.ago.to_date..3.days.ago.to_date)))
+      .or(t[:notice_of_public_sale_date].eq(nil)
+        .and(t[:lien_notice_mail_date].in(9.days.ago.to_date..8.days.ago.to_date)))
   end
 
   def self.action_required
     t = arel_table
     where t[:mvd_inquiry_date].eq(nil).and(t[:date_towed].lteq(2.days.ago.to_date))
       .or(t[:lien_notice_mail_date].eq(nil).and(t[:mvd_inquiry_date].lteq(5.days.ago.to_date)))
+      .or(t[:notice_of_public_sale_date].eq(nil).and(t[:lien_notice_mail_date].lteq(10.days.ago.to_date)))
   end
 
   protected
 
   def validate_dates
-    errors.add :date_towed, "must be after today's date" if date_towed_changed? and date_towed < Date.today
-    errors.add :mvd_inquiry_date, "must be after tow date" if mvd_inquiry_date < date_towed
-    errors.add :lien_notice_mail_date, "must be after mvd inquiry date" if lien_notice_mail_date < mvd_inquiry_date
+    errors.add :date_towed, "must be before today's date" if date_towed_changed? and date_towed > Date.today
+    errors.add :mvd_inquiry_date, "must be after tow date" if date_towed.nil? or (mvd_inquiry_date.present? and mvd_inquiry_date < date_towed)
+    errors.add :lien_notice_mail_date, "must be after mvd inquiry date" if mvd_inquiry_date.nil? or (lien_notice_mail_date.present? and lien_notice_mail_date < mvd_inquiry_date)
   end
 end

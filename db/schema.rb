@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120819155921) do
+ActiveRecord::Schema.define(:version => 20120825014058) do
 
   create_table "cars", :force => true do |t|
     t.string   "size"
@@ -44,20 +44,21 @@ ActiveRecord::Schema.define(:version => 20120819155921) do
   create_table "lien_procedures", :force => true do |t|
     t.integer  "car_id"
     t.date     "date_towed"
-    t.string   "tow_requester",         :limit => 50
-    t.string   "tow_reason",            :limit => 50
-    t.string   "driver_name",           :limit => 50
-    t.string   "driver_address",        :limit => 127
-    t.string   "driver_city",           :limit => 50
-    t.string   "driver_state",          :limit => 4
-    t.string   "driver_zip",            :limit => 10
-    t.datetime "created_at",                                             :null => false
-    t.datetime "updated_at",                                             :null => false
-    t.boolean  "active",                               :default => true
+    t.string   "tow_requester",              :limit => 50
+    t.string   "tow_reason",                 :limit => 50
+    t.string   "driver_name",                :limit => 50
+    t.string   "driver_address",             :limit => 127
+    t.string   "driver_city",                :limit => 50
+    t.string   "driver_state",               :limit => 4
+    t.string   "driver_zip",                 :limit => 10
+    t.datetime "created_at",                                                  :null => false
+    t.datetime "updated_at",                                                  :null => false
+    t.boolean  "active",                                    :default => true
     t.date     "mvd_inquiry_date"
     t.boolean  "vehicle_released"
     t.boolean  "personals_released"
     t.date     "lien_notice_mail_date"
+    t.date     "notice_of_public_sale_date"
   end
 
   create_table "makes", :force => true do |t|

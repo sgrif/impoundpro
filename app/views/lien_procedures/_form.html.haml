@@ -7,6 +7,8 @@
       start_year: 1.year.ago.year, end_year: Date.today.year
     = f.input :lien_notice_mail_date, include_blank: true,
       start_year: 1.year.ago.year, end_year: Date.today.year
+    = f.input :notice_of_public_sale_date, include_blank: true,
+      start_year: 1.year.ago.year, end_year: Date.today.year
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary'

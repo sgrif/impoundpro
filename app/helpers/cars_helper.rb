@@ -41,4 +41,13 @@ module CarsHelper
       link_to "<i class='icon-check-empty'></i> #{name}".html_safe, path, html_options
     end
   end
+
+  def lien_procedure_info_button(car)
+    ret = Hash.new
+    ret[:hide] = "true"
+    ret[:show_text] = "#{car.active_lien_procedure.nil? ? "Add" : "Edit"} Lien Procedure"
+    ret[:btn_class] = "info" if car.active_lien_procedure
+    ret[:btn_icon] = "edit" if car.active_lien_procedure
+    ret
+  end
 end

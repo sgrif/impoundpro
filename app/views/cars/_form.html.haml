@@ -67,12 +67,11 @@
 
   .row-fluid
     .well
-      %fieldset#car_active_lien_procedure_info{data: { hide: ("true" if @car.active_lien_procedure.nil?), show_text: "Begin Lien Procedure" }}
+      %fieldset#car_active_lien_procedure_info{ data: lien_procedure_info_button(@car) }
         %legend Active Lien Procedure
         = f.simple_fields_for :active_lien_procedure, @car.active_lien_procedure || @car.lien_procedures.build do |l|
           = l.input :date_towed
 
   .form-actions
     = f.submit "Save Car", class: "btn btn-primary"
-    = link_to "Lien Procedure", new_or_edit_lp_path(@car, @car.active_lien_procedure), class: "btn btn-info"
     = link_to "Back", car_path(@car), class: "btn"

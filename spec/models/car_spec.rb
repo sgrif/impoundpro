@@ -106,7 +106,7 @@ describe Car do
       before { FactoryGirl.create(:lien_procedure, :public_sale_finished, car: car) }
 
       its(:status){ should == "active" }
-      its("active_lien_procedure.next_step"){ should be_nil }
+      its("active_lien_procedure.next_step"){ should eq(:titled) }
       its(:id){ should == user.cars.order_by_status[active_index].id }
     end
 

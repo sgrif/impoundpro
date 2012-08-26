@@ -32,18 +32,17 @@
           .box-small.side-nav
             %ul.nav.nav-list
               %li.nav-header Main
-              %li{class: cp(root_path)}= link_to "<i class='icon-home'></i> Dashboard".html_safe, root_path
+              %li{class: cp(root_path)}= link_to icon_tag(:home, "Dashboard"), root_path
               %li{class: cp([cars_path, new_car_path, car_path(@car.try(:id) || 1), edit_car_path(@car.try(:id) || 1)])}
                 = link_to cars_path do
-                  %i.icon-truck
-                  Cars
+                  = icon_tag(:truck, "Cars")
                   = status_badge("action soon", @current_user.active_lien_procedures.action_soon.size) if @current_user.active_lien_procedures.action_soon.size > 0
                   = status_badge("action required", @current_user.active_lien_procedures.action_required.size) if @current_user.active_lien_procedures.action_required.size > 0
-              %li{class: cp(reports_path)}= link_to "<i class='icon-calendar'></i> Reports".html_safe, reports_path
+              %li{class: cp(reports_path)}= link_to icon_tag(:calendar, "Reports"), reports_path
               %li.nav-header Account
-              %li{class: cp(user_path)}= link_to "<i class='icon-cog'></i> Settings".html_safe, user_path
-              %li{class: cp(subscribe_user_path)}= link_to "<i class='icon-credit-card'></i> Subscription".html_safe, subscribe_user_path
-              %li= link_to "<i class='icon-off'></i> Logout".html_safe, logout_path
+              %li{class: cp(user_path)}= link_to icon_tag(:cog, "Settings"), user_path
+              %li{class: cp(subscribe_user_path)}= link_to icon_tag(:credit, "Subscription"), subscribe_user_path
+              %li= link_to icon_tag(:off, "Logout"), logout_path
 
         .span10
           - if @breadcrumbs.count > 0

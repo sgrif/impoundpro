@@ -67,9 +67,9 @@
 
   .row-fluid
     .well
-      %fieldset#car_active_lien_procedure_info{ data: lien_procedure_info_button(@car) }
+      %fieldset#car_active_lien_procedure_info{ data: lien_procedure_info_button(@lien_procedure) }
         %legend Active Lien Procedure
-        = f.simple_fields_for :active_lien_procedure, @car.active_lien_procedure || @car.lien_procedures.build do |l|
+        = f.simple_fields_for :active_lien_procedure, @lien_procedure do |l|
           = l.input :date_towed
 
   .form-actions

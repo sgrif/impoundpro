@@ -8,11 +8,11 @@
   %td
     .btn-toolbar{style: 'margin: 0;'}
       .btn-group
-        = link_to "<i class='icon-edit'></i> Edit".html_safe, edit_car_path(car), class: 'btn'
+        = link_to icon_tag(:edit, 'Edit'), edit_car_path(car), class: 'btn'
       .btn-group
-        = link_to "<i class='icon-trash'></i> Delete".html_safe, car_path(car), class: 'btn btn-danger', method: 'delete', data: { confirm: "Are you sure?" }
+        = link_to icon_tag(:trash, 'Delete'), car_path(car), class: 'btn btn-danger', method: 'delete', data: { confirm: "Are you sure?" }
       .btn-group
-        = link_to "<i class='icon-print'></i> Forms <span class='caret'></span>".html_safe, "#", data: { toggle: 'dropdown' }, class: 'btn btn-primary dropdown-toggle'
+        = link_to "#{icon_tag :print, "Forms"} <span class='caret'></span>".html_safe, "#", data: { toggle: 'dropdown' }, class: 'btn btn-primary dropdown-toggle'
         %ul.dropdown-menu
           - unless car.owner_name.blank? and car.owner_address.blank?
             %li= link_to 'Owner Lien Notice', owner_lien_notice_car_path(car, format: :pdf)

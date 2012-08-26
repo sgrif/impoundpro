@@ -43,10 +43,11 @@ class CarsController < ApplicationController
 
   # GET /cars/1/edit
   def edit
-    @car = current_user.cars.find(params[:id], include: [{make: :models}])
+    @car = current_user.cars.find(params[:id], include: [{make: :models}, :lien_procedures])
     @models = @car.make_id ? @car.make.models : []
     @years = @car.model_id ? @car.model.years.reload : []
     @trims = @car.model_id ? @car.model.trims.by_year(@car.year_id).reload : []
+    @lien_procedure = @car.active_lien_procedure || @car.lien_procedures.build
 
     add_breadcrumb @car.to_s, car_path(@car)
     add_breadcrumb "Edit", edit_car_path(@car)

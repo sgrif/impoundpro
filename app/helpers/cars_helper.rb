@@ -31,24 +31,27 @@ module CarsHelper
     html_options = args.extract_options!
     if path.is_a?(Array)
       path_options = path.extract_options!
-      path_options[:action] = :edit if path_options[:action].nil?
       path = polymorphic_path(path, path_options)
     end
 
     if args.first or args.second
-      link_to "<i class='icon-check#{"-empty" if args.second}'></i> #{name}".html_safe, "#", class: "#{html_options[:class]} disabled"
+      link_to icon_tag(args.second ? "check-empty" : "check", name), "#", class: "#{html_options[:class]} disabled"
     else
-      link_to "<i class='icon-check-empty'></i> #{name}".html_safe, path, html_options
+      link_to icon_tag('check-empty', name), path, html_options
     end
   end
 
-  def lien_procedure_info_button(car)
+  def car_date_step_tag(title, car, lien_procedure, field)
+    car_step_tag title, [car, lien_procedure, "lien_procedure[#{field}]" => Date.current, action: :edit], lien_procedure.try(field), lien_procedure.nil?
+  end
+
+  def lien_procedure_info_button(lien_procedure)
     ret = Hash.new
     ret[:hide] = "true"
-    ret[:show_text] = "#{car.active_lien_procedure.nil? ? "Add" : "Edit"} Lien Procedure"
-    ret[:btn_class] = "info" if car.active_lien_procedure
-    ret[:btn_icon] = "edit" if car.active_lien_procedure
-    ret[:remove_content] = "true" if car.active_lien_procedure.nil?
+    ret[:show_text] = "#{lien_procedure.new_record? ? "Add" : "Edit"} Lien Procedure"
+    ret[:btn_class] = "info" unless lien_procedure.new_record?
+    ret[:btn_icon] = "edit" unless lien_procedure.new_record?
+    ret[:remove_content] = "true" if lien_procedure.new_record?
     ret
   end
 end

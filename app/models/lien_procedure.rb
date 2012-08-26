@@ -14,22 +14,28 @@ class LienProcedure < ActiveRecord::Base
 
   def status
     if active
-      if notice_of_public_sale_date.present?
-        return "active"
-      elsif lien_notice_mail_date.present?
-        return "action required" if lien_notice_mail_date <= 10.days.ago.to_date
-        return "action soon" if lien_notice_mail_date <= 8.days.ago.to_date
-      elsif mvd_inquiry_date.present?
-        return "action required" if mvd_inquiry_date <= 5.days.ago.to_date
-        return "action soon" if mvd_inquiry_date <= 3.days.ago.to_date
-      elsif date_towed.present?
-        return "action required" if date_towed <= 2.days.ago.to_date
-        return "action soon" if date_towed == Date.yesterday
-      end
-      "active"
-    else
-      "inactive"
+      ret ||= self.send "#{next_step}_action"
+      ret ||= "active"
     end
+    ret ||= "inactive"
+  end
+
+  def titled_action
+  end
+
+  def notice_of_public_sale_date_action
+    return "action required" if lien_notice_mail_date <= 10.days.ago.to_date
+    return "action soon" if lien_notice_mail_date <= 8.days.ago.to_date
+  end
+
+  def lien_notice_mail_date_action
+    return "action required" if mvd_inquiry_date <= 5.days.ago.to_date
+    return "action soon" if mvd_inquiry_date <= 3.days.ago.to_date
+  end
+
+  def mvd_inquiry_date_action
+    return "action required" if date_towed <= 2.days.ago.to_date
+    return "action soon" if date_towed == Date.yesterday
   end
 
   def next_step_string

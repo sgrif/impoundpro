@@ -1,0 +1,20 @@
+%fieldset
+  %legend Step Dates
+  - @lien_procedure.completed_steps.each do |step|
+    = f.input step, start_year: 1.year.ago.year, end_year: Date.today.year
+  = f.input @lien_procedure.next_step, include_blank: !@lien_procedure.new_record? ,
+    start_year: 1.year.ago.year, end_year: Date.today.year
+
+%fieldset
+  %legend Tow Information
+  = f.input :tow_requester
+  = f.input :tow_reason
+
+%fieldset
+  %legend Driver Information
+  = f.input :driver_name
+  = f.input :driver_address
+  = f.input :driver_city
+  = f.input :driver_state, label: "State", collection: States.invert.sort,
+    input_html: { class: "chzn-select-deselect", data: { placeholder: "Choose a State" } }
+  = f.input :driver_zip

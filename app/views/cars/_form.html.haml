@@ -67,10 +67,9 @@
 
   .row-fluid
     .well
-      %fieldset#car_active_lien_procedure_info{ data: lien_procedure_info_button(@lien_procedure) }
-        %legend Active Lien Procedure
+      #car_active_lien_procedure_info{ data: lien_procedure_info_button(@lien_procedure) }
         = f.simple_fields_for :active_lien_procedure, @lien_procedure do |l|
-          = l.input :date_towed
+          = render "lien_procedures/inputs", f: l
 
   .form-actions
     = f.submit "Save Car", class: "btn btn-primary"

@@ -2,10 +2,7 @@
   = f.error_notification
 
   .form-inputs
-    - @lien_procedure.completed_steps.each do |step|
-      = f.input step, start_year: 1.year.ago.year, end_year: Date.today.year
-    = f.input @lien_procedure.next_step, include_blank: !@lien_procedure.new_record? ,
-      start_year: 1.year.ago.year, end_year: Date.today.year
+    = render "inputs", f: f
 
   .form-actions
     = f.button :submit, class: 'btn btn-primary'

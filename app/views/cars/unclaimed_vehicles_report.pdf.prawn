@@ -22,9 +22,9 @@ prawn_document(:margin => [15,15,15,15], :page_layout => :landscape) do |pdf|
       pdf.draw_text car.year_id, :at => [320, 367 - i * row_height]
       pdf.text_box car.size || "", :width => 30, :height => 28, :at => [353, 384 - i * row_height], :align => :center, :v_align => :center
       pdf.text_box "#{car.owner_name}, #{car.owner_address}", :width => 148, :height => 28, :at => [442, 384 - i * row_height], :align => :center, :v_align => :center
-#      pdf.draw_text car.date_towed.to_s(:short_date), :at => [596, 367 - i * row_height]
-#      pdf.draw_text car.tow_requested_by, :at => [651, 373 - i * row_height]
-#      pdf.draw_text car.tow_reason, :at => [651, 360 - i * row_height]
+      pdf.draw_text car.active_lien_procedure.try { |l| l.date_towed.to_s(:short_date) }, :at => [596, 367 - i * row_height]
+      pdf.draw_text car.active_lien_procedure.try(:tow_requester), :at => [651, 373 - i * row_height]
+      pdf.draw_text car.active_lien_procedure.try(:tow_reason), :at => [651, 360 - i * row_height]
     end
 
   end

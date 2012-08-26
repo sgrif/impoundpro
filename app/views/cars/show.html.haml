@@ -35,7 +35,7 @@
             .btn-group
               = link_to icon_tag(:trash, "Delete"), car_path(@car), class: 'btn btn-danger', method: 'delete', data: { confirm: "Are you sure?" }
             .btn-group
-              = link_to icon_tag(:print, "Forms"), "#", data: { toggle: 'dropdown' }, class: 'btn btn-primary dropdown-toggle'
+              = link_to icon_tag(:print, "Forms #{content_tag :span, "", class: 'caret'}"), "#", data: { toggle: 'dropdown' }, class: 'btn btn-primary dropdown-toggle'
               %ul.dropdown-menu.al
                 - unless @car.owner_name.blank? and @car.owner_address.blank?
                   %li= link_to 'Owner Lien Notice', owner_lien_notice_car_path(@car, format: :pdf)

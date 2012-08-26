@@ -19,8 +19,10 @@ prawn_document(:margin => [20, 20, 20, 20]) do |pdf|
   #TODO Do I leave the "vehicle was advertised" section blank?
 
   pdf.font_size 12
-#  pdf.draw_text((@car.mail_notice_of_lien_date + 44.days).to_s(:month_and_day), :at => [225, 222])
-#  pdf.draw_text((@car.mail_notice_of_lien_date + 44.days).to_s(:short_year), :at => [425, 222])
+  if @car.active_lien_procedure.try :lien_notice_mail_date
+    pdf.draw_text((@car.active_lien_procedure.lien_notice_mail_date + 44.days).to_s(:month_and_day), :at => [225, 222])
+    pdf.draw_text((@car.active_lien_procedure.lien_notice_mail_date + 44.days).to_s(:short_year), :at => [425, 222])
+  end
 
   #TODO Is this date always 44 days after lien notice mail date - cahngeable and is it always at 5 PM - changeable?
 

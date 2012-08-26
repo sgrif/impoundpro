@@ -73,6 +73,14 @@ class LienProcedure < ActiveRecord::Base
     ret
   end
 
+  def driver_csz_string
+    fields = Array.new
+    fields << driver_city if driver_city.present?
+    fields << driver_state if driver_state.present?
+    fields << driver_zip if driver_zip.present?
+    fields.join ", "
+  end
+
   def self.action_soon
     where self._action_soon
   end

@@ -105,6 +105,11 @@ class Car < ActiveRecord::Base
               else 0 end desc".gsub(/\s+/," ").strip
   end
 
+  def self.towed_more_than_30_days_ago
+    t = LienProcedure.arel_table
+    joins(:lien_procedures).where t[:active].eq(true).and(t[:date_towed].lteq(30.days.ago.to_date))
+  end
+
   protected
 
   def decode_vin

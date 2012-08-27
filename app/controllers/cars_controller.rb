@@ -226,8 +226,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/unclaimed_vehicles_report.pdf
   def unclaimed_vehicles_report
-    #TODO Base on tow record
-    @cars = current_user.cars.where("created_at <= ?", 30.days.ago)
+    @cars = current_user.cars.towed_more_than_30_days_ago
 
     respond_to do |format|
       format.pdf {render layout: false} #unclaimed_vehicles_report.pdf.prawn

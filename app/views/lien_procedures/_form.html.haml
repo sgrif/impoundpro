@@ -1,0 +1,9 @@
+= simple_form_for(@lien_procedure, url: @lien_procedure.new_record? ? car_lien_procedures_path(@car) : car_lien_procedure_path(@car, @lien_procedure)) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = render "inputs", f: f
+
+  .form-actions
+    = f.button :submit, class: 'btn btn-primary'
+    = link_to "Back", @car, class: 'btn'

@@ -3,9 +3,9 @@
   .well
     %fieldset.form-vertical
       %legend.lead
-        How did we do?
+        Car Information
         %small
-          If possible we generated some information from the VIN. If we got it wrong, you can
+          If possible we generated some information from the VIN. You can review and if needed
           change it below.
       .row-fluid
         .span3
@@ -13,17 +13,17 @@
             input_html: {class: "chzn-select", data: {placeholder: "Choose a Make"}},
             label: false, disabled: false
         .span3
-          = f.association :model, order: :name, collection: (@car.make.nil? ? [] : @car.make.models),
+          = f.association :model, order: :name, collection: @models,
             input_html: {class: "chzn-select", data: {placeholder: "Choose a Model"}},
-            label: false, disabled: @car.make.nil?
+            label: false, disabled: @car.make_id.nil?
         .span3
-          = f.association :year, order: :name, collection: (@car.model.nil? ? [] : @car.model.years),
+          = f.association :year, order: :name, collection: @years,
             input_html: {class: "chzn-select", data: {placeholder: "Choose a Year"}},
-            label: false, disabled: @car.model.nil?
+            label: false, disabled: @car.model_id.nil?
       - if true # Determine if we can show a trim
         .row-fluid
           .span12
-            = f.association :trim, order: :name, collection: (@car.model.nil? ? [] : @car.model.trims.by_year(@car.year_id)),
+            = f.association :trim, order: :name, collection: @trims,
               input_html: {class: "chzn-select-deselect span6", data: {placeholder: "Choose a Trim"}},
               label: false, disabled: @car.year.nil?, wrapper_html: {class: 'last-row'}
 
@@ -45,7 +45,7 @@
   .row-fluid
     .span6
       .well
-        %fieldset#car_owner_info
+        %fieldset#car_owner_info{ data: { hide: ("true" unless @car.owner_name.present? or @car.owner_address.present?), show_text: "Add Owner" } }
           %legend Owner
           = f.input :owner_name, label: "Name"
           = f.input :owner_address, label: "Address"
@@ -56,7 +56,7 @@
 
     .span6
       .well
-        %fieldset#car_lien_holder_info
+        %fieldset#car_lien_holder_info{ data: { hide: ("true" unless @car.lien_holder_name.present? or @car.lien_holder_address.present?), show_text: "Add Lien Holder" } }
           %legend Lien Holder
           = f.input :lien_holder_name, label: "Name"
           = f.input :lien_holder_address, label: "Address"
@@ -64,6 +64,12 @@
           = f.input :lien_holder_state, label: "State", collection: States.invert.sort,
             input_html: { class: "chzn-select-deselect", data: { placeholder: "Choose a State" } }
           = f.input :lien_holder_zip, label: "Zip"
+
+  .row-fluid
+    .well
+      #car_active_lien_procedure_info{ data: lien_procedure_info_button(@lien_procedure) }
+        = f.simple_fields_for :active_lien_procedure, @lien_procedure do |l|
+          = render "lien_procedures/inputs", f: l
 
   .form-actions
     = f.submit "Save Car", class: "btn btn-primary"

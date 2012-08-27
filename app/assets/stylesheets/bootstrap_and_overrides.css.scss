@@ -173,3 +173,15 @@ ul.typeahead, div.popover {
 .alert .close {
   font-size: 12px;
 }
+
+ul.dropdown-menu > li > {
+  a.disabled,
+  a.disabled:visited ,
+  a.disabled:active,
+  a.disabled:hover {
+    background-color:#E6E6E6 !important;
+    color: #333;
+    opacity: 0.65;
+    cursor: default;
+  }
+}

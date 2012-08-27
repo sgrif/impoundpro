@@ -16,8 +16,9 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
   before_update :send_password_changed_notice
 
-  has_many :cars, order: "created_at DESC"
+  has_many :cars
   has_many :stripe_webhooks
+  has_many :active_lien_procedures, through: :cars, class_name: "LienProcedure", conditions: { active: true }
 
   after_initialize {@credit_card = CreditCard.new}
 

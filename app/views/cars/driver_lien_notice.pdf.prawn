@@ -4,9 +4,11 @@ prawn_document() do |pdf|
 
   pdf.draw_text "X", :at => [241, 625]
   pdf.draw_text "Driver", :at => [300, 625]
-#  pdf.draw_text @car.driver_name, :at => [35, 600]
-#  pdf.draw_text @car.driver_address, :at => [45, 570]
-#  pdf.draw_text "#{@car.driver_city}, #{@car.driver_state}, #{@car.driver_zip}", :at => [120, 540]
+  if @car.active_lien_procedure
+    pdf.draw_text @car.active_lien_procedure.driver_name, :at => [35, 600]
+    pdf.draw_text @car.active_lien_procedure.driver_address, :at => [45, 570]
+    pdf.draw_text @car.active_lien_procedure.driver_csz_string, :at => [120, 540]
+  end
 
   pdf.font_size 16
   pdf.draw_text @car.year_id, :at => [0, 485]

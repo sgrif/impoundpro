@@ -16,6 +16,14 @@
   text-align: center;
 }
 
+.al {
+  text-align: left;
+}
+
+.ar {
+  text-align: right;
+}
+
 html, body {
   height: 100%;
 }

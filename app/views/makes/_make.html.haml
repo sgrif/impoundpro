@@ -4,6 +4,6 @@
   %td
     .btn-toolbar{style: 'margin: 0;'}
       .btn-group
-        = link_to "<i class='icon-edit'></i> Edit".html_safe, edit_make_path(make), class: 'btn'
+        = link_to icon_tag(:edit, "Edit"), edit_make_path(make), class: 'btn'
       .btn-group
-        = link_to "<i class='icon-trash'></i> Delete".html_safe, make, data: { confirm: 'Are you sure?' }, method: 'delete', class: 'btn btn-danger'
+        = link_to icon_tag(:trash, "Delete"), make, data: { confirm: 'Are you sure?' }, method: 'delete', class: 'btn btn-danger'

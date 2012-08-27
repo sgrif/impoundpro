@@ -5,12 +5,15 @@ class Year < ActiveRecord::Base
   has_and_belongs_to_many :models
   has_and_belongs_to_many :trims
 
-  scope :by_trim, (lambda do |trim|
-    ret = joins(:trims).where(['trims.id = ?', trim]) if trim
-    return ret.nil? ? self.scoped : ret
-  end)
-
   def to_s
     self.name
+  end
+
+  def self.by_trim(trim)
+    if trim
+      joins(:trims).where(trims_years: {trim_id: trim})
+    else
+      scoped
+    end
   end
 end

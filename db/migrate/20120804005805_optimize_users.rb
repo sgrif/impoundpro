@@ -1,10 +1,7 @@
 class OptimizeUsers < ActiveRecord::Migration
   def up
     change_table :users do |t|
-      t.index :email, :unique => true
-      t.index :auth_token, :unique => true
-      t.index :stripe_customer_token, :unique => true
-      t.change :password_digest, :string, :limit => 63
+      t.change :password_digest, :string, :limit => 60
       t.remove :salt
       t.change :name, :string, :limit => 63
       t.change :address, :string, :limit => 127
@@ -22,9 +19,6 @@ class OptimizeUsers < ActiveRecord::Migration
 
   def down
     change_table :users do |t|
-      t.remove_index :email
-      t.remove_index :auth_token
-      t.remove_index :stripe_customer_token
       t.column :salt, :string
       t.change :password_digest, :string
       t.change :name, :string

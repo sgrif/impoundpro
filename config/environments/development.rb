@@ -30,10 +30,10 @@ ImpoundPro::Application.configure do
   config.active_record.auto_explain_threshold_in_seconds = 0.5
 
   # Do not compress assets
-  config.assets.compress = false
+  config.assets.compress = true
 
   # Expands the lines which load the assets
-  config.assets.debug = true
+  config.assets.debug = false
 
   config.action_mailer.default_url_options = { :host => "0.0.0.0:3000" }
   $stdout.sync = true

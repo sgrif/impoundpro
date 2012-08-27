@@ -1,19 +1,19 @@
 ImpoundPro::Application.routes.draw do
-  resources :trims
-
-  resources :years
-
-  resources :models do
-    resources :years do
-      resources :trims
-    end
-  end
-
-  resources :makes do
-    resources :models
-  end
-
   constraints(:subdomain => "secure") do
+    resources :trims
+
+    resources :years
+
+    resources :models do
+      resources :years do
+        resources :trims
+      end
+    end
+
+    resources :makes do
+      resources :models
+    end
+
     resources :password_resets
 
     controller :sessions do
@@ -50,6 +50,8 @@ ImpoundPro::Application.routes.draw do
         get 'title_application'
         get 'fifty_state_check'
       end
+
+      resources :lien_procedures
     end
 
     match "/" => 'secure#dashboard'

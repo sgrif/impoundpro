@@ -1,6 +1,6 @@
 class Make < ActiveRecord::Base
   has_many :models
-  has_many :years, through: :models, group: 'years.id'
+  has_many :cars
   default_scope order('makes.name')
 
   scope :search, (lambda do |search|

@@ -1,0 +1,38 @@
+%h3 Owner
+%table.table.table-striped.car-info-table
+  %tbody
+    %tr
+      %th Name
+      %td= @car.owner_name
+      %th City
+      %td= @car.owner_city
+    %tr
+      %th Address
+      %td= @car.owner_address
+      %th State
+      %td= States[@car.owner_state]
+    %tr
+      %th
+      %td
+      %th Zip
+      %td= @car.owner_zip
+
+%hr
+%h3 Lien Holder
+%table.table.table-striped.car-info-table
+  %tbody
+    %tr
+      %th Name
+      %td= @car.lien_holder_name
+      %th City
+      %td= @car.lien_holder_city
+    %tr
+      %th Address
+      %td= @car.lien_holder_address
+      %th State
+      %td= States[@car.lien_holder_state]
+    %tr
+      %th
+      %td
+      %th Zip
+      %td= @car.lien_holder_zip

@@ -28,4 +28,4 @@
       = paginate @cars, remote: true
 
       .form-actions
-        = link_to "<i class='icon-plus icon-large'></i> Add New".html_safe, new_car_path, class: 'btn btn-success btn-large'
+        = link_to icon_tag(:plus, text: "Add New", class: "icon-large"), new_car_path, class: 'btn btn-success btn-large'

@@ -7,7 +7,9 @@ prawn_document(:margin => [20,20,20,20]) do |pdf|
 
   pdf.font_size 12
   pdf.move_down 40
-#  pdf.text @car.driver_name, :align => :center
-#  pdf.text @car.driver_address, :align => :center
-#  pdf.text "#{@car.driver_city}, #{@car.driver_state} #{@car.driver_zip}", :align => :center
+  if @car.active_lien_procedure
+    pdf.text @car.active_lien_procedure.driver_name, :align => :center
+    pdf.text @car.active_lien_procedure.driver_address, :align => :center
+    pdf.text @car.active_lien_procedure.driver_csz_string, :align => :center
+  end
 end

@@ -1,0 +1,13 @@
+%tr
+  %td= lien_procedure.car_id
+  %td= lien_procedure.date_towed
+  %td= lien_procedure.tow_requester
+  %td= lien_procedure.tow_reason
+  %td= lien_procedure.driver_name
+  %td= lien_procedure.driver_address
+  %td= lien_procedure.driver_city
+  %td= lien_procedure.driver_state
+  %td= lien_procedure.driver_zip
+  %td= link_to 'Show', car_lien_procedure_path(@car, lien_procedure)
+  %td= link_to 'Edit', edit_car_lien_procedure_path(@car, lien_procedure)
+  %td= link_to 'Destroy', car_lien_procedure_path(@car, lien_procedure), method: :delete, data: { confirm: 'Are you sure?' }

@@ -9,7 +9,7 @@
     = csrf_meta_tags
     = tag :meta, :name => "stripe-key", :content => ENV['STRIPE_PUBLIC_KEY']
     = tag :meta, :name => "viewport", :content => "width=device-width, intial-scale=1.0"
-  %body{:class => controller.controller_name}
+  %body{class: [controller.controller_name, ("gatekeeper" unless @current_user)]}
     #root
       #wrapper
         = content_for?(:content) ? yield(:content) : yield

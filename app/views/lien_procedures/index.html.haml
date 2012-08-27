@@ -1,0 +1,22 @@
+%h1 Listing lien_procedures
+
+%table
+  %tr
+    %th Car
+    %th Date towed
+    %th Tow requester
+    %th Tow reason
+    %th Driver name
+    %th Driver address
+    %th Driver city
+    %th Driver state
+    %th Driver zip
+    %th
+    %th
+    %th
+
+  = render @lien_procedures
+
+%br /
+
+= link_to 'New Tow record', new_car_lien_procedure_path(@car)

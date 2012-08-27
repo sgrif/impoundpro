@@ -1,8 +1,7 @@
 @import "variables";
 @import "bootstrap/mixins";
 
-.sessions, #new_user
-{
+.sessions.gatekeeper, .users.gatekeeper {
   #wrapper {
     padding-top: 60px;
   }

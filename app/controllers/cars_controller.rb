@@ -4,13 +4,21 @@ class CarsController < ApplicationController
   skip_before_filter :has_subscription, only: :index
   before_filter { add_breadcrumb "Cars", cars_path }
     before_filter only: [:new, :create] { add_breadcrumb "Add New", new_car_path }
-    before_filter only: [:show, :edit, :update] { add_breadcrumb Car.find(params[:id]).to_s, car_path(params[:id]) }
-      before_filter only: [:edit, :update] { add_breadcrumb "Edit", edit_car_path(params[:id]) }
+
+  def edit_init
+    @models = @car.make_id ? @car.make.models : []
+    @years = @car.model_id ? @car.model.years.reload : []
+    @trims = @car.model_id ? @car.model.trims.by_year(@car.year_id).reload : []
+    @lien_procedure = @car.active_lien_procedure || @car.lien_procedures.build
+
+    add_breadcrumb @car.to_s, car_path(@car)
+    add_breadcrumb "Edit", edit_car_path(@car)
+  end
 
   # GET /cars
   # GET /cars.json
   def index
-    @cars = current_user.cars.includes(:make, :model, :year).page(params[:page]).per(5)
+    @cars = current_user.cars.with_ymm.order_by_status.page(params[:page]).per(5)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -22,8 +30,10 @@ class CarsController < ApplicationController
   # GET /cars/1
   # GET /cars/1.json
   def show
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
+    @lien_procedure = @car.active_lien_procedure
 
+    add_breadcrumb @car.to_s, car_path(@car)
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @car }
@@ -43,14 +53,15 @@ class CarsController < ApplicationController
 
   # GET /cars/1/edit
   def edit
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id], include: [{make: :models}, :lien_procedures])
+    edit_init
   end
 
   # POST /cars
   # POST /cars.json
   def create
     vin = params[:car].delete :vin
-    @car = Car.find_or_initialize_by_vin_and_user_id(vin, current_user.id)
+    @car = current_user.cars.find_or_initialize_by_vin(vin)
     @car.override_check_vin = params[:override_check_vin]
 
     respond_to do |format|
@@ -69,13 +80,15 @@ class CarsController < ApplicationController
   # PUT /cars/1
   # PUT /cars/1.json
   def update
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     respond_to do |format|
       if @car.update_attributes(params[:car])
-        format.html { redirect_to @car, notice: 'Car was successfully updated.' }
+        format.html { redirect_to params[:redirect] ? params[:redirect] : @car, notice: 'Car was successfully updated.' }
         format.json { head :no_content }
       else
+        edit_init
+
         format.html { render action: "edit" }
         format.json { render json: @car.errors, status: :unprocessable_entity }
       end
@@ -85,7 +98,7 @@ class CarsController < ApplicationController
   # DELETE /cars/1
   # DELETE /cars/1.json
   def destroy
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
     @car.destroy
 
     respond_to do |format|
@@ -95,7 +108,7 @@ class CarsController < ApplicationController
   end
 
   def unlock
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     unless @car.paid
       invoice = Stripe::InvoiceItem.create(
@@ -117,7 +130,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/owner_lien_notice.pdf
   def owner_lien_notice
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
     #@car.mail_notice_of_lien_date = Date.today
     @car.save
 
@@ -128,7 +141,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/owner_lien_notice.pdf
   def lien_holder_lien_notice
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
     #@car.mail_notice_of_lien_date = Date.today
     @car.save
 
@@ -139,7 +152,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/owner_lien_notice.pdf
   def driver_lien_notice
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
     #@car.mail_notice_of_lien_date = Date.today
     @car.save
 
@@ -150,7 +163,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/owner_mail_labels.pdf
   def owner_mail_labels
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     respond_to do |format|
       format.pdf {render layout: false} #owner_mail_labels.pdf.prawn
@@ -159,7 +172,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/lien_holder_mail_labels.pdf
   def lien_holder_mail_labels
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     respond_to do |format|
       format.pdf {render layout: false} #lien_holder_mail_labels.pdf.prawn
@@ -168,7 +181,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/driver_mail_labels.pdf
   def driver_mail_labels
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     respond_to do |format|
       format.pdf {render layout: false} #driver_mail_labels.pdf.prawn
@@ -177,7 +190,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/notice_of_public_sale.pdf
   def notice_of_public_sale
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     respond_to do |format|
       format.pdf {render layout: false} #notice_of_public_sale.pdf.prawn
@@ -186,7 +199,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/affidavit_of_resale.pdf
   def affidavit_of_resale
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     respond_to do |format|
       format.pdf {render layout: false} #affidavit_of_resale.pdf.prawn
@@ -195,7 +208,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/title_application.pdf
   def title_application
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     respond_to do |format|
       format.pdf {render layout: false} #title_application.pdf.prawn
@@ -204,7 +217,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/fifty_state_check.pdf
   def fifty_state_check
-    @car = Car.find(params[:id])
+    @car = current_user.cars.find(params[:id])
 
     respond_to do |format|
       format.pdf {render layout: false} #fifty_state_check.pdf.prawn
@@ -213,8 +226,7 @@ class CarsController < ApplicationController
 
   # GET /cars/1/unclaimed_vehicles_report.pdf
   def unclaimed_vehicles_report
-    #TODO Base on tow record
-    @cars = current_user.cars.where("created_at <= ?", 30.days.ago)
+    @cars = current_user.cars.towed_more_than_30_days_ago
 
     respond_to do |format|
       format.pdf {render layout: false} #unclaimed_vehicles_report.pdf.prawn
@@ -225,15 +237,8 @@ class CarsController < ApplicationController
 
   protected
 
-  def authorize_cars
-    unless Car.find(params[:id]).user == current_user
-      redirect_to cars_url
-      logger.error "Attempt to access unowned car userid: #{current_user} carid: #{params[:id]}"
-    end
-  end
-
   def requires_unlocked
-    unless Car.find(params[:id]).paid
+    unless current_user.cars.find(params[:id]).paid
       flash[:error] = "You must unlock the car before you can do that"
       redirect_to cars_path
     end

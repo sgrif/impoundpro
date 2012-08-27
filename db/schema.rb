@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120804005805) do
+ActiveRecord::Schema.define(:version => 20120825201431) do
 
   create_table "cars", :force => true do |t|
     t.string   "size"
@@ -39,6 +39,27 @@ ActiveRecord::Schema.define(:version => 20120804005805) do
     t.integer  "make_id"
     t.integer  "model_id"
     t.integer  "trim_id"
+  end
+
+  create_table "lien_procedures", :force => true do |t|
+    t.integer  "car_id"
+    t.date     "date_towed"
+    t.string   "tow_requester",              :limit => 50
+    t.string   "tow_reason",                 :limit => 50
+    t.string   "driver_name",                :limit => 50
+    t.string   "driver_address",             :limit => 127
+    t.string   "driver_city",                :limit => 50
+    t.string   "driver_state",               :limit => 4
+    t.string   "driver_zip",                 :limit => 10
+    t.datetime "created_at",                                                   :null => false
+    t.datetime "updated_at",                                                   :null => false
+    t.boolean  "active",                                    :default => true
+    t.date     "mvd_inquiry_date"
+    t.boolean  "vehicle_released"
+    t.boolean  "personals_released"
+    t.date     "lien_notice_mail_date"
+    t.date     "notice_of_public_sale_date"
+    t.boolean  "titled",                                    :default => false, :null => false
   end
 
   create_table "makes", :force => true do |t|
@@ -82,7 +103,7 @@ ActiveRecord::Schema.define(:version => 20120804005805) do
 
   create_table "users", :force => true do |t|
     t.string   "email"
-    t.string   "password_digest",        :limit => 63
+    t.string   "password_digest",        :limit => 60
     t.string   "name",                   :limit => 63
     t.string   "address",                :limit => 127
     t.datetime "created_at",                                               :null => false
@@ -100,10 +121,6 @@ ActiveRecord::Schema.define(:version => 20120804005805) do
     t.boolean  "paid"
     t.boolean  "admin",                                 :default => false
   end
-
-  add_index "users", ["auth_token"], :name => "index_users_on_auth_token", :unique => true
-  add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["stripe_customer_token"], :name => "index_users_on_stripe_customer_token", :unique => true
 
   create_table "years", :force => true do |t|
     t.string   "name"

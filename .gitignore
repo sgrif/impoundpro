@@ -34,3 +34,6 @@
 
 # Ignore Mac OS files
 .DS_Store
+
+# Ignore sass cache
+.sass-cache/

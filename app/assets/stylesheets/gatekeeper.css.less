@@ -1,5 +1,5 @@
-@import "variables";
-@import "bootstrap/mixins";
+@import "_variables.css.less";
+@import "twitter/bootstrap/mixins";
 
 .sessions.gatekeeper, .users.gatekeeper {
   #wrapper {
@@ -7,20 +7,20 @@
   }
 
   fieldset {
-    background-color: $white;
-    border: 1px solid $grayLightish;
+    background-color: @white;
+    border: 1px solid @grayLightish;
     @include border-radius(5px);
 
     h3.form-header {
-      background-color: $whiteSmoke;
-      border-bottom: 1px solid $grayLightish;
+      background-color: @whiteSmoke;
+      border-bottom: 1px solid @grayLightish;
       @include border-radius(5px 5px 0 0);
-      text-shadow: 1px 1px 0 $white;
-      padding: $spacing * 2/3;
+      text-shadow: 1px 1px 0 @white;
+      padding: @spacing * 2/3;
     }
 
     div.form-content {
-      margin: $spacing*2/3 $spacing;
+      margin: @spacing*2/3 @spacing;
     }
 
     div.form-actions {
@@ -28,17 +28,17 @@
       @include border-radius(0 0 5px 5px);
 
       .btn {
-        margin-right: $spacing/2;
+        margin-right: @spacing/2;
       }
 
       p.helper {
-        margin-top: $spacing/2;
+        margin-top: @spacing/2;
       }
     }
   }
 
   .brand {
-    margin-bottom: $spacing*2;
+    margin-bottom: @spacing*2;
   }
 
   .inline {

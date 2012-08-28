@@ -4,7 +4,7 @@
   .box-body
     .row-fluid
       .page-header
-        - if @lien_procedure.nil?
+        - if @car.active_lien_procedure.nil?
           %h1 Lien Procedure Inactive
         - else
           %h1 Next Step #{content_tag :small, @lien_procedure.next_step_string}
@@ -18,18 +18,21 @@
               %button.btn.dropdown-toggle{data: {toggle: 'dropdown'}}
                 %span.caret
               %ul.dropdown-menu.al
-                %li= car_date_step_tag "MVD Inquiry", @car, @lien_procedure, 'mvd_inquiry_date'
-                %li= car_date_step_tag "Lien Notice Mailed", @car, @lien_procedure, 'lien_notice_mail_date'
-                %li= car_date_step_tag "Public Sale Notice", @car, @lien_procedure, 'notice_of_public_sale_date'
+                %li= car_date_step_tag "Request MVR", @car, @lien_procedure, 'mvd_inquiry_date'
+                %li= car_date_step_tag "Lien Notice(s) Mailed", @car, @lien_procedure, 'lien_notice_mail_date'
+                %li= car_date_step_tag "Notice of Sale Posted", @car, @lien_procedure, 'notice_of_public_sale_date'
+                %li.divider
                 %li= car_step_tag "Titled", [@car, @lien_procedure, 'lien_procedure[titled]' => true],
-                  @car.titled?, @car.lien_procedures.empty? , data: [confirm: "End lien procedure and mark car as titled?"]
-                %li= car_step_tag "Claimed", [@car, @lien_procedure, 'lien_procedure[active]' => false],
-                  @car.claimed? , @car.lien_procedures.empty? , data: { confirm: "End lien procedure and mark car as claimed?" }
+                  @car.titled?, @lien_procedure.try(:next_step) != :titled, data: { confirm: "End lien procedure and mark car as titled?" }, method: :put
+                %li= car_step_tag "Scrapped", [@car, @lien_procedure, 'lien_procedure[titled]' => true],
+                  @car.scrapped?, @lien_procedure.try(:next_step) != :titled , data: { confirm: "End lien procedure and mark car as scrapped?" }, method: :put
+                %li= car_step_tag "Claimed", [@car, @lien_procedure, 'lien_procedure[claimed]' => true],
+                  @car.claimed? , @car.active_lien_procedure.nil? , data: { confirm: "End lien procedure and mark car as claimed?" }, method: :put
                 %li.divider
                   %li= car_step_tag "Vehicle Released", [@car, @lien_procedure, 'lien_procedure[vehicle_released]' => true],
-                    @lien_procedure.try(:vehicle_released), @lien_procedure.nil? , method: "put"
+                    @lien_procedure.try(:vehicle_released), @car.active_lien_procedure.nil? , method: "put"
                 %li= car_step_tag "Personals Released", [@car, @lien_procedure, 'lien_procedure[personals_released]' => true],
-                  @lien_procedure.try(:personals_released), @lien_procedure.nil? , method: "put"
+                  @lien_procedure.try(:personals_released), @car.active_lien_procedure.nil? , method: "put"
             = render "control_buttons", car: @car
 
     .row-fluid

@@ -85,8 +85,12 @@ class Car < ActiveRecord::Base
     end
   end
 
-  def claimed? #TODO We'll need to differentiate between actually being claimed and being sold
-    active_lien_procedure.nil? and lien_procedures.any? and !lien_procedures.last.new_record?
+  def claimed?
+    active_lien_procedure.nil? and lien_procedures.any? and lien_procedures.last.claimed
+  end
+
+  def scrapped?
+    active_lien_procedure.nil? and lien_procedures.any? and lien_procedures.last.scrapped
   end
 
   def titled?

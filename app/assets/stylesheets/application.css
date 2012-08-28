@@ -36,6 +36,10 @@ html, body {
   margin-bottom: -70px;
 }
 
+@media (min-width: 980px) {
+  #wrapper { padding-top: 60px; }
+}
+
 #footer-pusher { height: 70px; }
 
 footer {

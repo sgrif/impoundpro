@@ -1,0 +1,97 @@
+@import "_variables.css.less";
+@import "twitter/bootstrap/mixins.less";
+
+body {
+  background-image: image-url('noise.png');
+}
+
+.breadcrumb {
+	#gradient.vertical(@boxBackground, @boxBackgroundHighlight);
+	.box-shadow(inset 0 1px 0 @white);
+	border: 1px solid @grayLightish;
+}
+
+.box-small {
+	#gradient.vertical(@boxBackground, @boxBackgroundHighlight);
+	.border-radius(5px);
+	.box-shadow(inset 0 1px 0 @white);
+	border: 1px solid @grayLightish;
+	padding: 9px;
+	margin: 0 0 @baseLineHeight;
+
+	.avatar {
+		width: 50px;
+		height: 50px;
+		margin-right: 10px;
+		border: 1px solid @grayLightish;
+		.border-radius(3px);
+	}
+
+	.one-line {
+		white-space: nowrap;
+	}
+
+	small {
+		font-size: 85%;
+	}
+
+	&.side-nav {
+		padding-left: 0;
+		padding-right: 0;
+
+		li {
+			i {
+				vertical-align: 0;
+			}
+
+			&:not(.active) a i {
+				color: @textColor;
+			}
+		}
+	}
+}
+
+.box {
+	.box-header {
+		#gradient.vertical(@boxBackground, @boxBackgroundHighlight);
+		.border-radius(5px 5px 0 0);
+		.box-shadow(inset 0 1px 0 @white);
+		border: 1px solid @grayLightish;
+		padding: 10px 20px;
+		margin-bottom: 0;
+	}
+
+	.box-body {
+		@border: 1px solid @grayLightish;
+		border-left: @border;
+		border-right: @border;
+		border-bottom: @border;
+		.border-radius(0 0 5px 5px);
+
+		padding: 20px;
+		background-color: @white;
+
+		.well {
+			fieldset {
+				&.form-vertical {
+					.control-group {
+						> .controls {
+							margin-left: 0;
+							margin-right: @spacing*4;
+						}
+
+						&.last-row {
+							margin-bottom: 0;
+						}
+
+						label {
+							text-align: left;
+							padding-top: 0;
+						}
+					}
+				}
+			}
+		}
+
+	}
+}

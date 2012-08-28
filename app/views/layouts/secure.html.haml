@@ -45,16 +45,7 @@
               %li= link_to icon_tag(:off, "Logout"), logout_path
 
         .span10
-          - if @breadcrumbs.count > 0
-            %ul.breadcrumb
-              - @breadcrumbs.each do |b|
-                - unless b == @breadcrumbs.last
-                  %li
-                    = link_to b[:name], b[:url]
-                    %span.divider /
-                - else
-                  %li.active
-                    = b[:name]
+          = render_breadcrumbs
 
           = render('shared/display_flash')
           = yield

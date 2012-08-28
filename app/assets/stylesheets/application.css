@@ -37,7 +37,7 @@ html, body {
 }
 
 @media (min-width: 980px) {
-  #wrapper { padding-top: 90px; }
+  #wrapper { padding-top: 60px; }
 }
 
 #footer-pusher { height: 70px; }

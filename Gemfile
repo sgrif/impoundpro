@@ -18,11 +18,9 @@ group :assets do
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem "therubyracer"
 
-  gem "uglifier"
-end
-
-group :assets, :production do
   gem "twitter-bootstrap-rails", "~> 2.1.3" # I shouldn't need to put this here...
+
+  gem "uglifier"
 end
 
 gem "stripe", "~> 1.7.0"

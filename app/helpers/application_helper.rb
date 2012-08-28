@@ -15,4 +15,7 @@ module ApplicationHelper
       "#{icon_tag icon} #{text}".html_safe
     end
   end
+  def render_breadcrumbs(divider = '/')
+    render :partial => 'twitter-bootstrap/breadcrumbs', :locals => { :divider => divider }
+  end
 end

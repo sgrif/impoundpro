@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120825201431) do
+ActiveRecord::Schema.define(:version => 20120828015109) do
 
   create_table "cars", :force => true do |t|
     t.string   "size"
@@ -60,6 +60,8 @@ ActiveRecord::Schema.define(:version => 20120825201431) do
     t.date     "lien_notice_mail_date"
     t.date     "notice_of_public_sale_date"
     t.boolean  "titled",                                    :default => false, :null => false
+    t.boolean  "claimed",                                   :default => false, :null => false
+    t.boolean  "scrapped",                                  :default => false, :null => false
   end
 
   create_table "makes", :force => true do |t|

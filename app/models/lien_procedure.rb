@@ -6,11 +6,25 @@ class LienProcedure < ActiveRecord::Base
   validate :validate_dates
 
   before_create { date_towed ||= Date.today }
-  before_save { active = false if titled }
 
   attr_protected :car_id
 
   belongs_to :car
+
+  def titled= (titled)
+    self.active = false if titled
+    write_attribute(:titled, titled)
+  end
+
+  def scrapped= (scrapped)
+    self.active = false if scrapped
+    write_attribute(:scrapped, scrapped)
+  end
+
+  def claimed= (claimed)
+    self.active = false if claimed
+    write_attribute(:claimed, claimed)
+  end
 
   def status
     if active
@@ -41,16 +55,20 @@ class LienProcedure < ActiveRecord::Base
   def next_step_string
     case next_step
     when :mvd_inquiry_date
-      "MVD Motor Vehicle Record Request"
+      "Request MVR"
     when :lien_notice_mail_date
-      "Mail Lien Notice"
+      "Mail Lien Notice(s)"
     when :notice_of_public_sale_date
-      "Post Notice of Public Sale"
+      "Post Notice of Sale"
+    when :titled
+      "Title or Scrap"
     end
   end
 
   def next_step
-    if date_towed_was.nil?
+    if !active_was
+      :none
+    elsif date_towed_was.nil?
       :date_towed
     elsif mvd_inquiry_date_was.nil?
       :mvd_inquiry_date

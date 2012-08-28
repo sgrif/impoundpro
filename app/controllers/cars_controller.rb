@@ -31,7 +31,7 @@ class CarsController < ApplicationController
   # GET /cars/1.json
   def show
     @car = current_user.cars.find(params[:id])
-    @lien_procedure = @car.active_lien_procedure
+    @lien_procedure = @car.active_lien_procedure || @car.lien_procedures.last
 
     add_breadcrumb @car.to_s, car_path(@car)
     respond_to do |format|

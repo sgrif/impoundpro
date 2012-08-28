@@ -35,14 +35,14 @@ module CarsHelper
     end
 
     if args.first or args.second
-      link_to icon_tag(args.second ? "check-empty" : "check", name), "#", class: "#{html_options[:class]} disabled"
+      link_to icon_tag(args.first ? "check" : "check-empty", name), "#", class: "#{html_options[:class]} disabled"
     else
       link_to icon_tag('check-empty', name), path, html_options
     end
   end
 
   def car_date_step_tag(title, car, lien_procedure, field)
-    car_step_tag title, [car, lien_procedure, "lien_procedure[#{field}]" => Date.current, action: :edit], lien_procedure.try(field), lien_procedure.nil?
+    car_step_tag title, [car, lien_procedure, "lien_procedure[#{field}]" => Date.current, action: :edit], lien_procedure.try(field), lien_procedure.try(:next_step) != field.to_sym
   end
 
   def lien_procedure_info_button(lien_procedure)

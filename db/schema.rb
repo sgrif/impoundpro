@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120828015109) do
+ActiveRecord::Schema.define(:version => 20120829020445) do
 
   create_table "cars", :force => true do |t|
     t.string   "size"
@@ -120,7 +120,8 @@ ActiveRecord::Schema.define(:version => 20120828015109) do
     t.datetime "password_reset_sent_at"
     t.string   "preparers_name",         :limit => 50
     t.string   "stripe_customer_token",  :limit => 20
-    t.boolean  "paid"
+    t.boolean  "subscription_active"
+    t.datetime "last_webhook_recieved"
     t.boolean  "admin",                                 :default => false
   end
 

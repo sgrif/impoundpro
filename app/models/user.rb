@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   validates :state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
 
   attr_accessible :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card
-  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card, :email, as: :admin
+  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card, :email, :subscription_active, as: :admin
   attr_accessor :stripe_card_token, :credit_card
 
   has_secure_password
@@ -30,11 +30,12 @@ class User < ActiveRecord::Base
   end
 
   def has_subscription?
-=begin TODO Optimize to use webhooks instead
-    sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
-    !sub.nil? and sub.status == "active"
-=end
-    true
+    return true if admin
+    if user.last_webhook_recieved <= 1.month.ago
+      sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
+      update_column :subscription_active, !sub.nil? and sub.status == "active"
+    end
+    subscription_active
   end
 
   def needs_subscription?
@@ -86,7 +87,12 @@ class User < ActiveRecord::Base
 
   def get_stripe_customer_token
       unless self.stripe_customer_token
-        customer = Stripe::Customer.create(:email => self.email)
+        params = {email: email, description: name}
+        unless admin
+          params[:trial_end] = (self.created_at + 7.days).timestamp
+          params[:plan] = 'basic'
+        end
+        customer = Stripe::Customer.create(params)
         self.update_attribute(:stripe_customer_token, customer.id)
       end
       self.stripe_customer_token

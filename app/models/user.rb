@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
 
   def has_subscription?
     return true if admin
-    if user.last_webhook_recieved <= 1.month.ago
+    if last_webhook_recieved.nil? or last_webhook_recieved <= 1.month.ago
       sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
       update_column :subscription_active, !sub.nil? and sub.status == "active"
     end
@@ -89,9 +89,10 @@ class User < ActiveRecord::Base
       unless self.stripe_customer_token
         params = {email: email, description: name}
         unless admin
-          params[:trial_end] = trial_end_date.to_i
+          params[:trial_end] = trial_end_date.to_i if trial_end_date >= Time.now
           params[:plan] = 'basic'
         end
+        puts params.to_yaml
         customer = Stripe::Customer.create(params)
         self.update_attribute(:stripe_customer_token, customer.id)
       end

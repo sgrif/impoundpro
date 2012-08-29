@@ -89,7 +89,7 @@ class User < ActiveRecord::Base
       unless self.stripe_customer_token
         params = {email: email, description: name}
         unless admin
-          params[:trial_end] = (self.created_at + 7.days).timestamp
+          params[:trial_end] = trial_end_date.to_i
           params[:plan] = 'basic'
         end
         customer = Stripe::Customer.create(params)

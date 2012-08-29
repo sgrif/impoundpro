@@ -8,7 +8,7 @@
     = f.input :password_confirmation, label: "Confirm Password"
   %fieldset
     %legend Company Details
-    .row
+    .row-fluid
       .span4
         = f.input :name, disabled: !@current_user.admin, label: "Company name"
         = f.input :phone_number, placeholder: "(505) 555-1234"

@@ -14,7 +14,6 @@ class User < ActiveRecord::Base
   has_secure_password
 
   before_create { generate_token(:auth_token) }
-  before_update :send_password_changed_notice
 
   has_many :cars
   has_many :stripe_webhooks
@@ -50,15 +49,11 @@ class User < ActiveRecord::Base
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
     save!
-    #UserMailer.password_reset(self).deliver
-  end
-
-  def send_password_changed_notice
-    #UserMailer.password_changed(self).deliver if password.present?
+    UserMailer.password_reset(self).deliver
   end
 
   def welcome
-    #UserMailer.welcome(self).deliver
+    UserMailer.welcome(self).deliver
   end
 
   def save_with_payment

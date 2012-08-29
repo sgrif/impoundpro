@@ -1,5 +1,6 @@
 @import "twitter/bootstrap/bootstrap";
 @import "twitter/bootstrap/responsive";
+@import "_variables.css.less";
 
 // Set the correct sprite paths
 @iconSpritePath: asset-path('twitter/bootstrap/glyphicons-halflings.png');
@@ -26,7 +27,6 @@
 //
 // Example:
 // @linkColor: #ff0000;
-@import "_variables.css.less";
 
 // BUTTONS
 // -----------------------------------------------------
@@ -54,4 +54,9 @@ ul.dropdown-menu > li > {
     opacity: 0.65;
     cursor: default;
   }
+}
+
+// Fix for font-awesome in sidebar
+.nav > .active > a > [class^="icon-"], .nav > .active > a > [class*=" icon-"] {
+	background-image: none;
 }

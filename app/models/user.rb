@@ -33,13 +33,14 @@ class User < ActiveRecord::Base
     return true if admin
     if last_webhook_recieved.nil? or last_webhook_recieved <= 1.month.ago
       sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
-      update_column :subscription_active, !sub.nil? and sub.status == "active"
+      update_column :subscription_active, sub.try(:status) == "active"
+      update_column :last_webhook_recieved, Time.now
     end
     subscription_active
   end
 
   def needs_subscription?
-    !self.has_subscription? && (self.trial_end_date.past? || self.cars.count > 5)
+    !self.has_subscription? || !admin && self.cars.count > 5
   end
 
   def profile_complete?
@@ -83,18 +84,23 @@ class User < ActiveRecord::Base
   def add_subscription(card)
     customer = Stripe::Customer.retrieve(get_stripe_customer_token)
     customer.update_subscription(:plan => "basic", card: card)
+    subscription_active = true
   end
 
   def get_stripe_customer_token
       unless self.stripe_customer_token
         params = {email: email, description: name}
         unless admin
-          params[:trial_end] = trial_end_date.to_i if trial_end_date >= Time.now
-          params[:plan] = 'basic'
+          unless trial_end_date.past?
+            params[:trial_end] = trial_end_date.to_i
+            params[:plan] = 'basic'
+          else
+            self.update_column(:subscription_active, false)
+          end
         end
         puts params.to_yaml
         customer = Stripe::Customer.create(params)
-        self.update_attribute(:stripe_customer_token, customer.id)
+        self.update_column(:stripe_customer_token, customer.id)
       end
       self.stripe_customer_token
   end

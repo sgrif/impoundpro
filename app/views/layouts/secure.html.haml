@@ -26,7 +26,7 @@
             %span
               %strong.one-line= truncate(@current_user.name, length: 22)
               %br
-              = link_to @current_user.preparers_name, user_path
+              = link_to @current_user.preparers_name, user_path if @current_user.preparers_name
               %br
               %small #{link_to "Profile", edit_user_path} | #{link_to "Log Out", logout_path}
           .box-small.side-nav

@@ -13,6 +13,7 @@ class StripeWebhooksController < ApplicationController
     user = User.find_by_stripe_customer_token user_token
     if user
       user.subscription_active = true if ["charge.succeeded", "invoice.payment_succeeded"].include? params[:type]
+      user.subscription_active = false if ["charge.failed", "charge.disputed", "invoice.payment_failed", "invoice.payment_failed"].include? params[:type]
       user.last_webhook_recieved = Time.now
       user.save!
     end

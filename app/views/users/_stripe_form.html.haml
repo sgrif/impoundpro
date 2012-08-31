@@ -1,11 +1,13 @@
+%fieldset
+  %legend Update Payment Info
+  = simple_fields_for @user.credit_card do |c|
+    = c.input :number
+    = c.input :expiry, as: :date, order: [:month, :year], add_month_numbers: true
+    = c.input :cvc, label: "CVC"
+
 = simple_form_for @user, url: user_path, html: { class: 'form-vertical' } do |f|
-  %fieldset
-    %legend Update Payment Info
-    = f.error :stripe_card_token
-    = simple_fields_for @user.credit_card do |c|
-      = c.input :number
-      = c.input :expiry, as: :date, order: [:month, :year], add_month_numbers: true
-      = c.input :cvc, label: "CVC"
+  = f.error :stripe_card_token
+  = f.input :stripe_card_token, as: :hidden
 
   .form-actions
     = f.submit "Subscribe", class: 'btn btn-primary'

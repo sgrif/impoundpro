@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   validates :state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
 
   attr_accessible :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card
-  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card, :email, as: :admin
+  attr_accessible :name, :address, :city, :state, :zip, :phone_number, :county, :password, :password_confirmation, :preparers_name, :stripe_card_token, :credit_card, :email, :subscription_active, as: :admin
   attr_accessor :stripe_card_token, :credit_card
 
   has_secure_password
@@ -30,15 +30,17 @@ class User < ActiveRecord::Base
   end
 
   def has_subscription?
-=begin TODO Optimize to use webhooks instead
-    sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
-    !sub.nil? and sub.status == "active"
-=end
-    true
+    return true if admin || !trial_end_date.past?
+    if last_webhook_recieved.nil? or last_webhook_recieved <= 1.month.ago
+      sub = Stripe::Customer.retrieve(self.get_stripe_customer_token).subscription
+      update_column :subscription_active, sub.try(:status) == "active"
+      update_column :last_webhook_recieved, Time.now
+    end
+    subscription_active
   end
 
   def needs_subscription?
-    !self.has_subscription? && (self.trial_end_date.past? || self.cars.count > 5)
+    !self.has_subscription? || !admin && self.cars.count > 5
   end
 
   def profile_complete?
@@ -82,12 +84,23 @@ class User < ActiveRecord::Base
   def add_subscription(card)
     customer = Stripe::Customer.retrieve(get_stripe_customer_token)
     customer.update_subscription(:plan => "basic", card: card)
+    subscription_active = true
   end
 
   def get_stripe_customer_token
       unless self.stripe_customer_token
-        customer = Stripe::Customer.create(:email => self.email)
-        self.update_attribute(:stripe_customer_token, customer.id)
+        params = {email: email, description: name}
+        unless admin
+          unless trial_end_date.past?
+            params[:trial_end] = trial_end_date.to_i
+            params[:plan] = 'basic'
+            self.update_column :subscription_active, true
+          else
+            self.update_column :subscription_active, false
+          end
+        end
+        customer = Stripe::Customer.create(params)
+        self.update_column(:stripe_customer_token, customer.id)
       end
       self.stripe_customer_token
   end

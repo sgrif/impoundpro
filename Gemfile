@@ -36,6 +36,8 @@ gem "historyjs-rails"
 
 group :development do
   gem "rack-mini-profiler"
+  gem "localtunnel"
+  gem "brakeman"
 end
 
 group :test, :development do

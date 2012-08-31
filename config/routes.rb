@@ -30,8 +30,6 @@ ImpoundPro::Application.routes.draw do
       get 'subscribe' => :subscribe
     end
 
-    post 'stripe_webhook' => 'stripe_webhooks#create'
-
     match 'cars/unclaimed_vehicles_report' => 'cars#unclaimed_vehicles_report'
 
     get 'reports' => 'secure#reports'
@@ -56,6 +54,8 @@ ImpoundPro::Application.routes.draw do
 
     match "/" => 'secure#dashboard'
   end
+
+  post 'stripe_webhook' => 'stripe_webhooks#create'
 
   controller :landing do
     get 'home'

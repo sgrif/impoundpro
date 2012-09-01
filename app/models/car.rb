@@ -1,7 +1,5 @@
 require 'decode_vin'
 class Car < ActiveRecord::Base
-  include DecodeVin
-
   validates :state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
   validates :vin,
     presence: true,
@@ -18,7 +16,7 @@ class Car < ActiveRecord::Base
   validate :check_vin, on: :create
 
   before_validation :ensure_vin_is_upcase
-  before_create :decode_vin
+  before_create :parse_vin
 
   attr_accessor :charge_total, :charge_subtotal, :charges, :tax_amount, :override_check_vin
   attr_protected :stripe_invoice_item_token, :paid, :vin, :user_id
@@ -118,14 +116,12 @@ class Car < ActiveRecord::Base
     joins(:lien_procedures).where t[:active].eq(true).and(t[:date_towed].lteq(30.days.ago.to_date))
   end
 
-  protected
-
-  def decode_vin
-    keep = []
-    new_attrs = Car.find_by_vin(self.vin).try(:attributes) || parse_vin(self.vin)
-    new_attrs.keep_if { |k, v| keep.include?(k) }
-    self.attributes = new_attrs
+  def parse_vin
+    self.make ||= Make.all.detect { |m| begin; m.vin_regex.present? and Regexp.new(m.vin_regex).match(vin); rescue RegexpError; nil; end }
+    self
   end
+
+  protected
 
   def ensure_vin_is_upcase
     self.vin = self.vin.upcase if self.new_record?

@@ -109,6 +109,5 @@ describe Car do
       its("active_lien_procedure.next_step"){ should eq(:titled) }
       its(:id){ should == user.cars.order_by_status[active_index].id }
     end
-
   end
 end

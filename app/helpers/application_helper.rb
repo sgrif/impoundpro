@@ -15,7 +15,15 @@ module ApplicationHelper
       "#{icon_tag icon} #{text}".html_safe
     end
   end
+
   def render_breadcrumbs(divider = '/')
     render :partial => 'twitter-bootstrap/breadcrumbs', :locals => { :divider => divider }
+  end
+
+  def sortable column, title = nil
+    title ||= column.to_s.titleize
+    direction = (column.to_s == params[:sort] && params[:direction] == "asc") ? "desc" : "asc"
+    title += " #{icon_tag "caret-#{direction == "desc" ? "up" : "down"}"}" if (column.to_s == params[:sort])
+    link_to title.html_safe, params.merge(sort: column, direction: direction, page: nil)
   end
 end

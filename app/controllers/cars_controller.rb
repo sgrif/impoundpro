@@ -17,7 +17,9 @@ class CarsController < ApplicationController
   # GET /cars
   # GET /cars.json
   def index
-    @cars = current_user.cars.with_ymm.order_by_status.page(params[:page]).per(5)
+    @cars = current_user.cars.with_ymm.includes(:lien_procedures)
+      .order_by(sort_column, sort_direction).page(params[:page]).per(5)
+    puts @cars.count
 
     respond_to do |format|
       format.html # index.html.erb
@@ -232,9 +234,15 @@ class CarsController < ApplicationController
     end
   end
 
-
-
   protected
+
+  def sort_column
+    Car.column_names.include?(params[:sort]) ? params[:sort] : "status"
+  end
+
+  def sort_direction
+    ["asc", "desc"].include?(params[:direction]) ? params[:direction] : "desc"
+  end
 
   def requires_unlocked
     unless current_user.cars.find(params[:id]).paid

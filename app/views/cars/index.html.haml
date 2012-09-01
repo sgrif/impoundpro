@@ -16,9 +16,9 @@
       %table#cars.table.table-striped.table-bordered
         %thead
           %tr
-            %th Car
-            %th Date Added
-            %th Status
+            %th= sortable :vin, "Car"
+            %th= sortable :created_at, "Date Added"
+            %th= sortable :status
             %th Actions
         %tbody
           = render(@cars)

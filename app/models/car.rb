@@ -101,12 +101,16 @@ class Car < ActiveRecord::Base
     includes(:make, :model, :year)
   end
 
-  def self.order_by_status
+  def self.order_by sort = "status", direction = "desc"
+    if sort == "status" then self.order_by_status direction else order "#{sort} #{direction}" end
+  end
+
+  def self.order_by_status direction = "desc"
     includes(:lien_procedures).where(lien_procedures: {active: [true, nil]})
-    .order "active, case
+    .order "active #{"desc" if direction == "asc"}, case
               when #{LienProcedure._action_required.to_sql} then 2
               when #{LienProcedure._action_soon.to_sql} then 1
-              else 0 end desc".gsub(/\s+/," ").strip
+              else 0 end #{direction}".gsub(/\s+/," ").strip
   end
 
   def self.towed_more_than_30_days_ago

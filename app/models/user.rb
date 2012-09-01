@@ -1,4 +1,3 @@
-#TODO CC Broken
 require 'digest/sha2'
 
 class User < ActiveRecord::Base

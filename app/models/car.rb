@@ -1,4 +1,3 @@
-require 'decode_vin'
 class Car < ActiveRecord::Base
   validates :state, inclusion: {in: States.keys, message: "%{value} is not a valid state", allow_blank: true}
   validates :vin,

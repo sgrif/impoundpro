@@ -6,8 +6,7 @@ class MakesController < ApplicationController
   # GET /makes
   # GET /makes.json
   def index
-    @makes = Make.search(params[:search]).select("makes.*, count(models.id) as models_count")
-      .joins("left outer join models on make_id=makes.id").group("makes.id").page(params[:page]).per(10)
+    @makes = Make.search(params[:search]).includes(:models).page(params[:page]).per(10)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -45,7 +44,7 @@ class MakesController < ApplicationController
   # POST /makes
   # POST /makes.json
   def create
-    @make = Make.new(params[:make])
+    @make = Make.new(params[:make], as: (:admin if current_user.admin))
 
     respond_to do |format|
       if @make.save
@@ -64,7 +63,7 @@ class MakesController < ApplicationController
     @make = Make.find(params[:id])
 
     respond_to do |format|
-      if @make.update_attributes(params[:make])
+      if @make.update_attributes(params[:make], as: (:admin if current_user.admin))
         format.html { redirect_to makes_path, notice: 'Car make was successfully updated.' }
         format.json { head :no_content }
       else

@@ -1,0 +1,10 @@
+= simple_form_for(@make) do |f|
+  = f.error_notification
+
+  %div.form-inputs
+    = f.input :name
+    = f.input :vin_regex
+
+  %div.form-actions
+    = f.button :submit, class: 'btn btn-primary'
+    = link_to "Back", makes_path, class: 'btn'

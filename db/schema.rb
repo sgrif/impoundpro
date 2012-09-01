@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120829031004) do
+ActiveRecord::Schema.define(:version => 20120901183647) do
 
   create_table "cars", :force => true do |t|
     t.string   "size"
@@ -68,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20120829031004) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "vin_regex"
   end
 
   create_table "models", :force => true do |t|
@@ -75,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20120829031004) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "vin_regex"
   end
 
   create_table "models_years", :id => false, :force => true do |t|
@@ -129,6 +131,7 @@ ActiveRecord::Schema.define(:version => 20120829031004) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "vin_regex"
   end
 
 end

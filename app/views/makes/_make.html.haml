@@ -1,6 +1,6 @@
 %tr
   %td= make.name
-  %td= link_to pluralize(make.models.count, "Models"), make_models_path(make)
+  %td= link_to pluralize(make.models.size, "Models"), make_models_path(make)
   %td
     .btn-toolbar{style: 'margin: 0;'}
       .btn-group

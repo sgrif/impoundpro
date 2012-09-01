@@ -38,6 +38,7 @@ group :development do
   gem "rack-mini-profiler"
   gem "localtunnel"
   gem "brakeman"
+  gem "seed_dumper", "~> 0.1.3"
 end
 
 group :test, :development do

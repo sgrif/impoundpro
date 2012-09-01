@@ -14,6 +14,7 @@ group :assets do
   gem "coffee-rails"
   gem "jquery-rails"
   gem "jquery-ui-rails"
+  gem "chosen-rails", "= 0.9.8.1"
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem "therubyracer"
@@ -29,13 +30,14 @@ gem "bcrypt-ruby"
 gem "haml"
 gem "simple_form"
 gem "active_attr"
-gem "chosen-rails"
 gem "thin"
 gem "kaminari"
 gem "historyjs-rails"
 
 group :development do
   gem "rack-mini-profiler"
+  gem "localtunnel"
+  gem "brakeman"
 end
 
 group :test, :development do

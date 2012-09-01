@@ -1,40 +1,38 @@
-%p#notice= notice
+%h3 Tow Info
+%table.table.table-striped.car-info-table
+  %tbody
+    %tr
+      %th Tow Requester
+      %td= @lien_procedure.tow_requester
+      %th Tow Reason
+      %td= @lien_procedure.tow_reason
 
-%p
-  %b Car:
-  = @lien_procedure.car_id
+    %tr
+      %th Towed
+      %td= @lien_procedure.date_towed
+      %th MVR Request
+      %td= @lien_procedure.mvd_inquiry_date
+    %tr
+      %th Lien Notice(s)
+      %td= @lien_procedure.lien_notice_mail_date
+      %th Notice of Sale
+      %td= @lien_procedure.notice_of_public_sale_date
 
-%p
-  %b Date towed:
-  = @lien_procedure.date_towed
-
-%p
-  %b Tow requester:
-  = @lien_procedure.tow_requester
-
-%p
-  %b Tow reason:
-  = @lien_procedure.tow_reason
-
-%p
-  %b Driver name:
-  = @lien_procedure.driver_name
-
-%p
-  %b Driver address:
-  = @lien_procedure.driver_address
-
-%p
-  %b Driver city:
-  = @lien_procedure.driver_city
-
-%p
-  %b Driver state:
-  = @lien_procedure.driver_state
-
-%p
-  %b Driver zip:
-  = @lien_procedure.driver_zip
-
-
-= link_to 'Edit', edit_car_lien_procedure_path(@car, @lien_procedure), class: 'btn'
+%h3 Driver Info
+%table.table.table-striped.car-info-table
+  %tbody
+    %tr
+      %th Name
+      %td= @lien_procedure.driver_name
+      %th City
+      %td= @lien_procedure.driver_city
+    %tr
+      %th Address
+      %td= @lien_procedure.driver_address
+      %th State
+      %td= States[@lien_procedure.driver_state]
+    %tr
+      %th
+      %td
+      %th Zip
+      %td= @lien_procedure.driver_zip

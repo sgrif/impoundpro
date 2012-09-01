@@ -1,7 +1,6 @@
 class CarsController < ApplicationController
   layout "secure"
 
-  skip_before_filter :has_subscription, only: :index
   before_filter { add_breadcrumb "Cars", cars_path }
     before_filter only: [:new, :create] { add_breadcrumb "Add New", new_car_path }
 

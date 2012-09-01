@@ -60,7 +60,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_with_payment(params[:user], as: (:admin if current_user.admin))
-        @user.send_password_changed_notice
+        UserMailer.password_changed(@user).deliver if params[:user][:password].present?
         format.html { redirect_to root_path, flash: { success: 'Profile changed successfully.' } }
         format.json { head :no_content }
       else
